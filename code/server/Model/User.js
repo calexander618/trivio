@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+// schema
 const userSchema = mongoose.Schema({
     email: {
         type: String, 
@@ -15,8 +16,8 @@ const userSchema = mongoose.Schema({
     }
 });
 
+// hash password before saving user in database
 let SALT = 10;
-
 userSchema.pre('save', function(next){
     var user = this;
 
