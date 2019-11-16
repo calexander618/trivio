@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-trivia-card',
+  selector: 'trivia-card',
   templateUrl: './trivia-card.component.html',
   styleUrls: ['./trivia-card.component.css']
 })

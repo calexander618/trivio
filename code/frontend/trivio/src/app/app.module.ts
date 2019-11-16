@@ -12,6 +12,9 @@ import { DifficultyComponent } from './difficulty/difficulty.component';
 import { CategoryComponent } from './category/category.component';
 import { TriviaCardComponent } from './trivia-card/trivia-card.component';
 
+import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon'; 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +29,9 @@ import { TriviaCardComponent } from './trivia-card/trivia-card.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
