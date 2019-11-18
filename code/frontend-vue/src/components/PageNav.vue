@@ -12,15 +12,15 @@ export default {
       links: [
         {
           name: "Leaderboards",
-          href: "#"
+          href: "/dashboard/leaderboard"
         },
         {
           name: "About",
-          href: "###"
+          href: "/dashboard/about"
         },
         {
           name: "Play",
-          href: "##"
+          href: "/dashboard/landing"
         }
       ]
     };
@@ -55,5 +55,10 @@ p {
   color: black;
   background-color: #dedede;
   cursor: pointer;
+}
+
+.router-link-active {
+    background-color: #dedede !important;
+    color: black !important;
 }
 </style>

@@ -6,6 +6,8 @@ import Dashboard from '../views/Dashboard.vue';
 import LandingPage from '../views/DashboardPages/LandingPage.vue';
 import GamePage from '../views/DashboardPages/GamePage.vue';
 import UserProfilePage from '../views/DashboardPages/UserProfilePage.vue';
+import LeaderboardsPage from '../views/DashboardPages/LeaderboardsPage.vue';
+import AboutPage from '../views/DashboardPages/AboutPage.vue';
 
 Vue.use(VueRouter)
 
@@ -41,6 +43,14 @@ const routes = [
       {
         path: 'profile/:id', 
         component: UserProfilePage
+      }, 
+      {
+        path: 'leaderboard', 
+        component: LeaderboardsPage
+      }, 
+      {
+        path: 'about', 
+        component: AboutPage
       }
     ]
   }

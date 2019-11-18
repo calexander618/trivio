@@ -1,8 +1,11 @@
 <template>
   <div id="page-header">
-    <h1>Trivio</h1>
-    <div class="buttons">
-      <img src="../assets/profile.png" alt="Profile">
+    <div class="left">
+      <img src="../assets/logo.png" alt />
+      <h1>Trivio</h1>
+    </div>
+    <div class="right">
+      <img src="../assets/profile.png" alt="Profile" />
       <img src="../assets/logout.jpg" alt="Logout" v-if="loggedIn" />
     </div>
   </div>
@@ -32,25 +35,40 @@ h1 {
   font-size: 3rem;
   color: #ededed;
   margin-left: 1rem;
-  width: 80%;
 }
 
-img {
-  width: 3rem;
-  height: 3rem;
-    padding: .3rem;
-    transition: background-color .3s ease;
+.left {
+    display: flex;
+    align-items: center;
+    width: 80%;
 }
 
-img:hover {
-    background-color: #cc6565;
+.left > img {
+    width: 5rem;
+    height: 5rem;
+}
+
+.left > img:hover {
     cursor: pointer;
 }
 
-.buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    width: 20%;
+.right > img {
+  width: 3rem;
+  height: 3rem;
+  padding: 0.3rem;
+  transition: background-color 0.3s ease;
+}
+
+.right > img:hover {
+  background-color: #cc6565;
+  cursor: pointer;
+}
+
+.right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 20%;
 }
 </style>
