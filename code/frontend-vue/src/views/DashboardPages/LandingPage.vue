@@ -1,5 +1,6 @@
 <template>
   <div id="landing-page">
+      <h1>Play Trivio</h1>
     <div class="buttons">
       <button>Play against stranger</button>
       <button>Play against friend</button>
@@ -37,6 +38,12 @@ export default {
     button:hover {
         cursor: pointer;
         background-color: #dedede;
+    }
+
+    h1 {
+        font-family: 'Play';
+        text-align: center;
+        font-size: 3rem;
     }
 
 </style>
