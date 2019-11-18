@@ -4,9 +4,9 @@
       <img src="../assets/logo.png" alt />
       <h1>Trivio</h1>
     </div>
-    <div class="right">
+    <div class="right" v-if="loggedIn">
       <img src="../assets/profile.png" alt="Profile" />
-      <img src="../assets/logout.jpg" alt="Logout" v-if="loggedIn" />
+      <img src="../assets/logout.jpg" alt="Logout" />
     </div>
   </div>
 </template>
