@@ -10,6 +10,9 @@
 # dependencies
 /node_modules
 code/server/node_modules
+code/frontend/trivio/node_modules
+code/sockets/node_modules
+
 
 # profiling files
 chrome-profiler-events.json
