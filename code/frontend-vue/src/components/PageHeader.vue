@@ -2,11 +2,11 @@
   <div id="page-header">
     <div class="left">
       <img src="../assets/logo.png" alt />
-      <h1>Trivio</h1>
+      <h1>Triv.io</h1>
     </div>
-    <div class="right">
-      <img src="../assets/profile.png" alt="Profile" />
-      <img src="../assets/logout.jpg" alt="Logout" v-if="loggedIn" />
+    <div class="right" v-if="loggedIn">
+      <!-- <img src="../assets/profile.png" alt="Profile" />
+      <img src="../assets/logout.jpg" alt="Logout" /> -->
     </div>
   </div>
 </template>
@@ -21,13 +21,14 @@ export default {
 <style scoped>
 #page-header {
   font-family: "Play";
-  background-color: #ee7575;
+  background-color: #4dcc9bf8;
   padding: 1rem;
-  box-shadow: 0 0 30px black;
+  /* box-shadow: 0 0 30px black; */
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  z-index: 2;
 }
 
 h1 {

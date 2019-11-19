@@ -1,5 +1,6 @@
 <template>
   <div id="landing-page">
+      <h1>Play Trivio</h1>
     <div class="buttons">
       <button>Play against stranger</button>
       <button>Play against friend</button>
@@ -14,6 +15,8 @@ export default {
 </script>
 
 <style scoped>
+    
+
     .buttons {
         width: 80%;
         max-width: 600px;
@@ -37,6 +40,13 @@ export default {
     button:hover {
         cursor: pointer;
         background-color: #dedede;
+    }
+
+    h1 {
+        font-family: 'Play';
+        text-align: center;
+        font-size: 3rem;
+        color: #acacac;;
     }
 
 </style>

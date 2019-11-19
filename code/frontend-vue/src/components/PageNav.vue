@@ -1,6 +1,10 @@
 <template>
   <div id="page-nav">
     <router-link v-for="link in links" :key="link.href" :to="link.href" class="link">{{ link.name }}</router-link>
+    <div id="buttons">
+      <img src="../assets/profile.png" alt="">
+      <img src="../assets/logout.png" alt="">
+    </div>
   </div>
 </template>
 
@@ -11,16 +15,16 @@ export default {
     return {
       links: [
         {
+          name: "Play",
+          href: "/dashboard/landing"
+        },
+        {
           name: "Leaderboards",
           href: "/dashboard/leaderboard"
         },
         {
           name: "About",
           href: "/dashboard/about"
-        },
-        {
-          name: "Play",
-          href: "/dashboard/landing"
         }
       ]
     };
@@ -30,13 +34,13 @@ export default {
 
 <style scoped>
 #page-nav {
-  border-bottom: 1px solid #b8b8b8;
-  background-color: #c8c8c8;
+  background-color: #4dcc9bf8;
   margin: 0;
   padding: 0.9rem;
   position: relative;
-  z-index: 2;
-  box-shadow: 0 0px 30px grey;
+  z-index: 1;
+  /* box-shadow: 0 0px 30px grey; */
+  overflow: hidden;
 }
 
 p {
@@ -46,19 +50,47 @@ p {
 .link {
   color: white;
   text-decoration: none;
+  border-radius: 10px 10px 0 0;
   font-family: "Play";
   padding: 0.8rem;
   transition: background-color 0.2s ease, color 0.2s ease;
+  position: relative;
+  top: 5px;
 }
 
 .link:hover {
-  color: black;
-  background-color: #dedede;
+  color: white;
+  background-color: #3baf83f8;
   cursor: pointer;
 }
 
 .router-link-active {
-    background-color: #dedede !important;
-    color: black !important;
+    background-color: #3baf83f8 !important;
+    color: white !important;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: .3rem .3rem;
+}
+
+#buttons > img {
+  width: 2rem;
+  height: 2rem;
+  padding: .3rem;
+  margin-right: 5px;
+  border-radius: 2rem;
+
+}
+
+#buttons > img:hover {
+  background-color: #3baf83f8;
+  cursor: pointer;
 }
 </style>
