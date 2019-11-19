@@ -15,6 +15,8 @@ export default {
 </script>
 
 <style scoped>
+    
+
     .buttons {
         width: 80%;
         max-width: 600px;
@@ -44,6 +46,7 @@ export default {
         font-family: 'Play';
         text-align: center;
         font-size: 3rem;
+        color: #acacac;;
     }
 
 </style>

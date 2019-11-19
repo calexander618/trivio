@@ -3,7 +3,7 @@
     <page-header :loggedIn="false"></page-header>
     <div id="login-content">
       <div class="left">
-        <h2>Play Trivio</h2>
+        <h2>Play Trivia Online</h2>
         <ul>
           <li>A fast-paced competitive trivia game</li>
           <li>Play against friends and other competitors online</li>
@@ -39,14 +39,30 @@ export default {
   max-width: 1000px;
   margin: auto;
   display: flex;
+  font-family: 'Play';
 }
 
 .left {
     width: 60%;
+    background-color: #113a2466;
+    padding: 40px;
+    margin-right: 30px;
+    color: #ededed99;
+    height: 500px;
+}
+
+.left > h2 {
+  margin: 0;
+  font-size: 3rem;
+}
+
+li {
+  margin-top: 2rem;
+  font-size: 1.5rem;
 }
 
 .right {
     width: 40%;
-    border: 1px solid black;
+    background-color: #ededed44;
 }
 </style>
