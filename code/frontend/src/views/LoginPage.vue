@@ -2,21 +2,33 @@
   <div id="login-page">
     <page-header :loggedIn="false"></page-header>
     <div id="login-content">
-      <div class="left">
-        <h2>Play Trivia Online</h2>
+      <md-card id="left">
+        <md-card-header>
+           <h2>Play Trivia Online</h2>
+        </md-card-header>
         <ul>
-          <li>A fast-paced competitive trivia game</li>
-          <li>Play against friends and other competitors online</li>
-          <li>Track you and your friends stats</li>
-          <li>Check how you stack up in the global leaderboard</li>
+          <md-card-content>A fast-paced competitive trivia game</md-card-content>
+          <md-card-content>Play against friends and other competitors online</md-card-content>
+          <md-card-content>Track you and your friends stats</md-card-content>
+          <md-card-content>Check how you stack up in the global leaderboard</md-card-content>
         </ul>
-      </div>
-      <div class="right">
+      </md-card>
+      <md-card id="right">
           <div id="forms-container">
-              <div class="form"></div>
-              <div class="form"></div>
+             <form>
+                <md-card-header>
+                   <h2 id="login-header">Login</h2>
+                </md-card-header>
+                <md-field>
+                   <md-input placeholder="Username"></md-input>
+                </md-field>
+                <md-field>
+                   <md-input placeholder="Password"></md-input>
+                </md-field>
+                <md-button id="login-button">Login</md-button>
+             </form>
           </div>
-      </div>
+      </md-card>
     </div>
   </div>
 </template>
@@ -33,6 +45,31 @@ export default {
 </script>
 
 <style scoped>
+form {
+    text-align: center;
+}
+#right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #6EC1A1;
+}
+
+#left {
+    background-color: #2D815F;
+}
+
+#forms-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+#login-header {
+    text-align: center;
+}
+
 #login-content {
   padding: 2rem;
   width: 100%;
@@ -42,7 +79,7 @@ export default {
   font-family: 'Roboto';
 }
 
-.left {
+#left {
     width: 60%;
     background-color: #113a2466;
     padding: 40px;
@@ -51,18 +88,14 @@ export default {
     height: 500px;
 }
 
-.left > h2 {
-  margin: 0;
-  font-size: 3rem;
-}
-
 li {
   margin-top: 2rem;
   font-size: 1.5rem;
 }
 
-.right {
+#right {
     width: 40%;
     background-color: #ededed44;
 }
+
 </style>
