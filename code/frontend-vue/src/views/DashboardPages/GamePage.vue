@@ -1,26 +1,22 @@
 <template>
   <div id="game-page">
-    <div id="left">
+    <md-card md-with-hover id="left">
       <div v-if="started" id="game">
         <h1>{{currentTime}}</h1>
         <h3 v-html="questions[currentQuestion-1].question"></h3>
-        <div
-          class="answer"
-          v-for="(answer, index) in questions[currentQuestion-1].answers"
-          :key="index"
-        >
+        <div class="answer" v-for="(answer, index) in currentAnswers.answers" :key="index">
           <md-radio
             type="radio"
             name="currentAnswer"
             :value="answer"
-            v-model="questions[currentQuestion-1].selectedAnswer"
+            v-model="currentAnswers.selected"
           />
           <p>{{answer}}</p>
         </div>
       </div>
       <button id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</button>
-    </div>
-    <div id="right">
+    </md-card>
+    <md-card md-with-hover id="right">
       <div class="messages">
         <div class="message" v-for="(message, index) in chatMessages" :key="index">{{ message }}</div>
       </div>
@@ -28,7 +24,7 @@
         <input v-model="message" placeholder="Send a message" />
         <button v-on:click="sendMessage(gameId, playerId, message)">SEND</button>
       </div>
-    </div>
+    </md-card>
   </div>
 </template>
 
@@ -45,6 +41,10 @@ export default {
       started: false,
       questions: [],
       currentQuestion: 1,
+      currentAnswers: {
+        selected: "",
+        answers: []
+      },
       chatMessages: [],
       message: ""
     };
@@ -68,14 +68,10 @@ export default {
       this.chatMessages.push(data.playerId + ": " + data.message);
     },
     newQuestions(data) {
-      data.questions.forEach(q => {
-        q.answers = [
-          ...q.incorrect_answers, 
-          q.correct_answer
-        ];
-        q.selectedAnswer = 'n/a';
-        this.questions.push(q);
-      });
+      for (var i = 0; i < data.questions.length; i++) {
+        this.questions.push(data.questions[i]);
+      }
+      this.getAnswers();
     }
   },
   methods: {
@@ -98,12 +94,7 @@ export default {
         playerId: playerId
       });
     },
-    // startGame(gameId) {
-    //   this.getQuestions(gameId);
-    // },
     getQuestions(gameId) {
-      /* eslint-disable-next-line no-console */
-      console.log("hello");
       this.$socket.emit("triviaRequest", {
         gameId: gameId
       });
@@ -118,8 +109,21 @@ export default {
         this.started = true;
         return;
       }
+
       // WE COULD SET STARTED TO FALSE HERE ON LAST LOOP
       this.currentQuestion++;
+      this.getAnswers();
+    },
+    getAnswers() {
+      this.currentAnswers = {
+        selected: "",
+        answers: []
+      };
+
+      var question = this.questions[this.currentQuestion - 1];
+      this.currentAnswers.answers = question.incorrect_answers;
+      this.currentAnswers.answers.push(question.correct_answer);
+      this.shuffle(this.currentAnswers.answers);
     },
     sendMessage(gameId, playerId, message) {
       this.$socket.emit("messageRequest", {
@@ -127,6 +131,15 @@ export default {
         playerId: playerId,
         message: message
       });
+    },
+    shuffle(array) {
+      var j, x, i;
+      for (i = array.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = array[i];
+        array[i] = array[j];
+        array[j] = x;
+      }
     }
   }
 };
