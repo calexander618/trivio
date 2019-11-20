@@ -5,9 +5,13 @@ import router from './router'
 import socketio from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io';
 
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.min.css'
+
 export const SocketInstance = socketio('http://localhost:3000');
 
 Vue.use(VueSocketIO, SocketInstance);
+Vue.use(VueMaterial);
 
 Vue.config.productionTip = false;
 
