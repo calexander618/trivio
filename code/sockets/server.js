@@ -68,11 +68,12 @@ io.on('connection', function (socket) {
     });
     
     socket.on('messageRequest', function (req) {
+        console.log('PLAYER ' + req.playerId + ' TO GAME ' + req.gameId + ': ' + req.message);
         io.to(req.gameId).emit('playerMessage', { playerId: req.playerId, message: req.message });
     });
     
     socket.on('triviaRequest', function (req) {            
-        https.get('https://opentdb.com/api.php?amount=10', (resp) => {
+        https.get('https://opentdb.com/api.php?amount=10&type=multiple', (resp) => {
             var data = '';
 
             // A chunk of data has been recieved.
@@ -81,6 +82,7 @@ io.on('connection', function (socket) {
             });
 
             resp.on('end', () => {
+                console.log('SENDING TRIVIA TO GAME ' + req.gameId);
                 io.to(req.gameId).emit('newQuestions', { questions: JSON.parse(data).results });
             });
 

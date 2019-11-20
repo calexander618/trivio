@@ -37,7 +37,7 @@ const routes = [
         component: LandingPage
       }, 
       {
-        path: 'game', 
+        path: 'game/:id', 
         component: GamePage
       }, 
       {
