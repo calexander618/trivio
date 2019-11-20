@@ -88,8 +88,8 @@ io.on('connection', function (socket) {
                 io.to(req.gameId).emit('newQuestions', { questions: JSON.parse(data).results });
             });
 
-        }).on("error", (err) => {
-          console.log("Error: " + err.message);
+        }).on('error', (err) => {
+          console.log("ERROR GETTING TRIVIA: " + err.message);
         });
         
     });

@@ -39,7 +39,6 @@ export default {
   //   },
   created() {
     this.joinGame(this.gameId, this.playerId);
-    this.getQuestions(this.gameId);
   },
 
   sockets: {
@@ -48,6 +47,7 @@ export default {
 
     playerJoin(data) {
       this.chatMessages.push("Player " + data.playerId + " has joined.");
+      this.getQuestions(this.gameId);
     },
     playerMessage(data) {
       this.chatMessages.push(data.playerId + ": " + data.message);
