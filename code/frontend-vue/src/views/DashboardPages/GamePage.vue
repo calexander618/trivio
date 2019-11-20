@@ -6,16 +6,16 @@
         <h3 v-html="questions[currentQuestion-1].question"></h3>
         <div
           class="answer"
-          v-for="answer in questions[currentQuestion-1].answers"
-          :key="answer.answer"
+          v-for="(answer, index) in questions[currentQuestion-1].answers"
+          :key="index"
         >
           <md-radio
             type="radio"
             name="currentAnswer"
-            :value="answer.answer"
+            :value="answer"
             v-model="questions[currentQuestion-1].selectedAnswer"
           />
-          <p>{{answer.answer}}</p>
+          <p>{{answer}}</p>
         </div>
       </div>
       <button id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</button>
@@ -55,21 +55,6 @@ export default {
   created() {
     this.joinGame(this.gameId, this.playerId);
   },
-  watch: {
-    questions() {
-      // set up array in each question object to contain all answers, incorrect or correct
-      this.questions.forEach(q => {
-        q.answers = [{ answer: q.correct_answer, selected: false }];
-        q.incorrect_answers.forEach(ia => {
-          q.answers.push({
-            answer: ia,
-            selected: false
-          });
-        });
-        q.selectedAnswer = 'n/a';
-      });
-    }
-  },
 
   sockets: {
     connect() {},
@@ -83,9 +68,14 @@ export default {
       this.chatMessages.push(data.playerId + ": " + data.message);
     },
     newQuestions(data) {
-      for (var i = 0; i < data.questions.length; i++) {
-        this.questions.push(data.questions[i]);
-      }
+      data.questions.forEach(q => {
+        q.answers = [
+          ...q.incorrect_answers, 
+          q.correct_answer
+        ];
+        q.selectedAnswer = 'n/a';
+        this.questions.push(q);
+      });
     }
   },
   methods: {
