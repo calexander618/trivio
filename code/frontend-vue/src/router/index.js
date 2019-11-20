@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import LoginPage from '../views/LoginPage.vue';
 import CreatePage from '../views/CreatePage.vue';
 import Dashboard from '../views/Dashboard.vue';
-import LandingPage from '../views/DashboardPages/LandingPage.vue';
+import LobbyEntryPage from '../views/DashboardPages/LobbyEntryPage.vue';
 import GamePage from '../views/DashboardPages/GamePage.vue';
 import UserProfilePage from '../views/DashboardPages/UserProfilePage.vue';
 import LeaderboardsPage from '../views/DashboardPages/LeaderboardsPage.vue';
@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/',
     name: 'redirect-to-login',
-    redirect: '/dashboard/landing', 
+    redirect: '/dashboard/lobbyentry', 
   },
   {
     path: '/login',
@@ -33,8 +33,8 @@ const routes = [
     component: Dashboard, 
     children: [
       {
-        path: 'landing', 
-        component: LandingPage
+        path: 'lobbyentry', 
+        component: LobbyEntryPage
       }, 
       {
         path: 'game/:id', 
