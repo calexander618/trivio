@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/',
     name: 'redirect-to-login',
-    redirect: '/dashboard/landing', 
+    redirect: '/dashboard/lobbyentry', 
   },
   {
     path: '/login',
