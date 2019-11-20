@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <input v-model="message" placeholder="Send a message" />
-    <button v-on:click="sendMessage(gameId, playerId, message)">SEND</button>
-    <hr />
-    <!-- <button v-on:click="startGame(gameId)">START GAME</button> -->
-    <button id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</button>
-    <div v-if="started">
-      <h3 v-html="questions[currentQuestion-1].question"></h3>
-      <h1>{{currentTime}}</h1>
+  <div id="game-page">
+    <div id="left">
+      <button id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</button>
+      <div v-if="started">
+        <h3 v-html="questions[currentQuestion-1].question"></h3>
+        <h1>{{currentTime}}</h1>
+      </div>
     </div>
-    <div>
-      <ul>
-        <li v-for="message in chatMessages" v-bind:key="message">{{ message }}</li>
-      </ul>
+    <div id="right">
+      <div class="messages">
+        <div class="message" v-for="(message, index) in chatMessages" :key="index">{{ message }}</div>
+      </div>
+      <div id="chat-inputs">
+        <input v-model="message" placeholder="Send a message" />
+        <button v-on:click="sendMessage(gameId, playerId, message)">SEND</button>
+      </div>
     </div>
   </div>
 </template>
@@ -109,3 +111,53 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#game-page {
+  display: flex;
+  width: 100%;
+  margin: auto;
+  justify-content: space-evenly;
+  margin-top: 2rem;
+}
+#left {
+  width: 50%;
+  height: 400px;
+  background-color: #08381e44;
+}
+#right {
+  width: 30%;
+  height: 400px;
+  border: 1px solid black;
+  background-color: #343434be;
+  padding: 1rem;
+  position: relative;
+}
+#chat-inputs {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: calc(100% - 20px);
+}
+#chat-inputs > input {
+  width: calc(70% - 5px);
+  border: none;
+  padding: 5px;
+  color: white;
+  background-color: #25a15fbd;
+}
+#chat-inputs > button {
+  width: calc(30% - 5px);
+  border: none;
+  padding: 5px;
+}
+#chat-inputs > button:hover {
+  background-color: lightgrey;
+  cursor: pointer;
+}
+.message {
+  font-family: 'Roboto';
+  color: white;
+  margin-top: 10px;
+}
+</style>
