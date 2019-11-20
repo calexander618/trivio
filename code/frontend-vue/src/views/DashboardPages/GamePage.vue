@@ -9,7 +9,12 @@
           v-for="answer in questions[currentQuestion-1].answers"
           :key="answer.answer"
         >
-          <input type="radio" name="currentAnswer" />
+          <md-radio
+            type="radio"
+            name="currentAnswer"
+            :value="answer.answer"
+            v-model="questions[currentQuestion-1].selectedAnswer"
+          />
           <p>{{answer.answer}}</p>
         </div>
       </div>
@@ -53,17 +58,18 @@ export default {
   watch: {
     questions() {
       // set up array in each question object to contain all answers, incorrect or correct
-          this.questions.forEach(q => {
-            q.answers = [{ answer: q.correct_answer, selected: false }];
-            q.incorrect_answers.forEach(ia => {
-              q.answers.push({
-                answer: ia,
-                selected: false
-              });
-            });
+      this.questions.forEach(q => {
+        q.answers = [{ answer: q.correct_answer, selected: false }];
+        q.incorrect_answers.forEach(ia => {
+          q.answers.push({
+            answer: ia,
+            selected: false
           });
+        });
+        q.selectedAnswer = 'n/a';
+      });
     }
-  }, 
+  },
 
   sockets: {
     connect() {},
@@ -108,12 +114,9 @@ export default {
     getQuestions(gameId) {
       /* eslint-disable-next-line no-console */
       console.log("hello");
-      this.$socket.emit(
-        "triviaRequest",
-        {
-          gameId: gameId
-        }
-      );
+      this.$socket.emit("triviaRequest", {
+        gameId: gameId
+      });
     },
     nextQuestion() {
       clearInterval(this.timer);
