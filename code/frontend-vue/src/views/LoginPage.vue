@@ -39,7 +39,7 @@ export default {
   max-width: 1000px;
   margin: auto;
   display: flex;
-  font-family: 'Play';
+  font-family: 'Roboto';
 }
 
 .left {
