@@ -1,11 +1,19 @@
 <template>
   <div id="game-page">
     <div id="left">
-      <button id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</button>
-      <div v-if="started">
-        <h3 v-html="questions[currentQuestion-1].question"></h3>
+      <div v-if="started" id="game">
         <h1>{{currentTime}}</h1>
+        <h3 v-html="questions[currentQuestion-1].question"></h3>
+        <div
+          class="answer"
+          v-for="answer in questions[currentQuestion-1].answers"
+          :key="answer.answer"
+        >
+          <input type="radio" name="currentAnswer" />
+          <p>{{answer.answer}}</p>
+        </div>
       </div>
+      <button id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</button>
     </div>
     <div id="right">
       <div class="messages">
@@ -42,6 +50,20 @@ export default {
   created() {
     this.joinGame(this.gameId, this.playerId);
   },
+  watch: {
+    questions() {
+      // set up array in each question object to contain all answers, incorrect or correct
+          this.questions.forEach(q => {
+            q.answers = [{ answer: q.correct_answer, selected: false }];
+            q.incorrect_answers.forEach(ia => {
+              q.answers.push({
+                answer: ia,
+                selected: false
+              });
+            });
+          });
+    }
+  }, 
 
   sockets: {
     connect() {},
@@ -84,9 +106,14 @@ export default {
     //   this.getQuestions(gameId);
     // },
     getQuestions(gameId) {
-      this.$socket.emit("triviaRequest", {
-        gameId: gameId
-      });
+      /* eslint-disable-next-line no-console */
+      console.log("hello");
+      this.$socket.emit(
+        "triviaRequest",
+        {
+          gameId: gameId
+        }
+      );
     },
     nextQuestion() {
       clearInterval(this.timer);
@@ -156,7 +183,7 @@ export default {
   cursor: pointer;
 }
 .message {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   color: white;
   margin-top: 10px;
 }
