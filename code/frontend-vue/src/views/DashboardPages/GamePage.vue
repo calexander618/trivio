@@ -3,6 +3,7 @@
     <md-card md-with-hover id="left">
       <div v-if="started" id="game">
         <h1>{{currentTime}}</h1>
+        <h1>{{score}}</h1>
         <h3 v-html="questions[currentQuestion-1].question"></h3>
         <div class="answer" v-for="(answer, index) in currentAnswers.answers" :key="index">
           <md-radio
@@ -46,17 +47,14 @@ export default {
         correct: "",
         answers: []
       },
+      score: 0,
       chatMessages: [],
       message: ""
     };
   },
-  //   mounted() {
-  //     this.joinGame(this.gameId, this.playerId);
-  //   },
   created() {
     this.joinGame(this.gameId, this.playerId);
   },
-
   sockets: {
     connect() {},
     disconnect() {},
@@ -83,7 +81,11 @@ export default {
           if (this.currentQuestion < 10) {
             this.nextQuestion();
           }
-          // WE COULD SET STARTED TO FALSE HERE ON LAST LOOP
+          else {
+              this.evaluateResponse();
+            // UNCOMMENT THIS LATER ON, KEEP IT HERE
+            //   this.started = false;
+          }
           return;
         }
         this.currentTime--;
@@ -111,7 +113,8 @@ export default {
         return;
       }
 
-      // WE COULD SET STARTED TO FALSE HERE ON LAST LOOP
+      this.evaluateResponse();
+
       this.currentQuestion++;
       this.getAnswers();
     },
@@ -127,6 +130,11 @@ export default {
       this.currentAnswers.answers = question.incorrect_answers;
       this.currentAnswers.answers.push(question.correct_answer);
       this.shuffle(this.currentAnswers.answers);
+    },
+    evaluateResponse() {
+        if (this.currentAnswers.selected === this.currentAnswers.correct) {
+            this.score += 50;
+        }
     },
     sendMessage(gameId, playerId, message) {
       this.$socket.emit("messageRequest", {
