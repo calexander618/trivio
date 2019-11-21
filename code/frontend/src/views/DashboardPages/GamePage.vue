@@ -12,7 +12,7 @@
             :value="answer"
             v-model="currentAnswers.selected"
           />
-          <p>{{answer}}</p>
+          <p v-html="answer"></p>
         </div>
       </div>
       <md-button class="md-raised md-primary" id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</md-button>
