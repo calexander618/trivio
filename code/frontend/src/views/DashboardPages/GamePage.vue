@@ -15,7 +15,7 @@
             :value="answer"
             v-model="questions[currentQuestion-1].selectedAnswer"
           />
-          <p>{{answer}}</p>
+          <p v-html="answer"></p>
         </div>
       </div>
       <button id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</button>
