@@ -10,7 +10,7 @@
 # dependencies
 /node_modules
 code/backend/node_modules
-code/frontend/trivio/node_modules
+code/frontend/node_modules
 
 
 # profiling files

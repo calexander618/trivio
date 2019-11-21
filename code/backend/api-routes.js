@@ -34,7 +34,8 @@ router.route('/user/signin')
                 if (err) throw err;
                 if (!isMatch) return res.status(400).json({
                     message: 'Wrong Password.'
-                });
+                }).end();
+                
                 res.status(200).send('Logged in successfully.');
             });
         });
