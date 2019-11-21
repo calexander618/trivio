@@ -1,34 +1,31 @@
 <template>
   <div id="game-page">
-    <div id="left">
+    <md-card md-with-hover id="left">
       <div v-if="started" id="game">
         <h1>{{currentTime}}</h1>
+        <h1>{{score}}</h1>
         <h3 v-html="questions[currentQuestion-1].question"></h3>
-        <div
-          class="answer"
-          v-for="(answer, index) in questions[currentQuestion-1].answers"
-          :key="index"
-        >
+        <div class="answer" v-for="(answer, index) in currentAnswers.answers" :key="index">
           <md-radio
             type="radio"
             name="currentAnswer"
             :value="answer"
-            v-model="questions[currentQuestion-1].selectedAnswer"
+            v-model="currentAnswers.selected"
           />
           <p v-html="answer"></p>
         </div>
       </div>
-      <button id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</button>
-    </div>
-    <div id="right">
+      <md-button class="md-raised md-primary" id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</md-button>
+    </md-card>
+    <md-card md-with-hover id="right">
       <div class="messages">
         <div class="message" v-for="(message, index) in chatMessages" :key="index">{{ message }}</div>
       </div>
       <div id="chat-inputs">
         <input v-model="message" placeholder="Send a message" />
-        <button v-on:click="sendMessage(gameId, playerId, message)">SEND</button>
+        <md-button class="md-raised md-primary" v-on:click="sendMessage(gameId, playerId, message)">SEND</md-button>
       </div>
-    </div>
+    </md-card>
   </div>
 </template>
 
@@ -45,17 +42,19 @@ export default {
       started: false,
       questions: [],
       currentQuestion: 1,
+      currentAnswers: {
+        selected: "",
+        correct: "",
+        answers: []
+      },
+      score: 0,
       chatMessages: [],
       message: ""
     };
   },
-  //   mounted() {
-  //     this.joinGame(this.gameId, this.playerId);
-  //   },
   created() {
     this.joinGame(this.gameId, this.playerId);
   },
-
   sockets: {
     connect() {},
     disconnect() {},
@@ -68,14 +67,10 @@ export default {
       this.chatMessages.push(data.playerId + ": " + data.message);
     },
     newQuestions(data) {
-      data.questions.forEach(q => {
-        q.answers = [
-          ...q.incorrect_answers, 
-          q.correct_answer
-        ];
-        q.selectedAnswer = 'n/a';
-        this.questions.push(q);
-      });
+      for (var i = 0; i < data.questions.length; i++) {
+        this.questions.push(data.questions[i]);
+      }
+      this.getAnswers();
     }
   },
   methods: {
@@ -86,7 +81,11 @@ export default {
           if (this.currentQuestion < 10) {
             this.nextQuestion();
           }
-          // WE COULD SET STARTED TO FALSE HERE ON LAST LOOP
+          else {
+              this.evaluateResponse();
+            // UNCOMMENT THIS LATER ON, KEEP IT HERE
+            //   this.started = false;
+          }
           return;
         }
         this.currentTime--;
@@ -98,12 +97,7 @@ export default {
         playerId: playerId
       });
     },
-    // startGame(gameId) {
-    //   this.getQuestions(gameId);
-    // },
     getQuestions(gameId) {
-      /* eslint-disable-next-line no-console */
-      console.log("hello");
       this.$socket.emit("triviaRequest", {
         gameId: gameId
       });
@@ -118,8 +112,29 @@ export default {
         this.started = true;
         return;
       }
-      // WE COULD SET STARTED TO FALSE HERE ON LAST LOOP
+
+      this.evaluateResponse();
+
       this.currentQuestion++;
+      this.getAnswers();
+    },
+    getAnswers() {
+      this.currentAnswers = {
+        selected: "",
+        correct: "",
+        answers: []
+      };
+
+      var question = this.questions[this.currentQuestion - 1];
+      this.currentAnswers.correct = question.correct_answer;
+      this.currentAnswers.answers = question.incorrect_answers;
+      this.currentAnswers.answers.push(question.correct_answer);
+      this.shuffle(this.currentAnswers.answers);
+    },
+    evaluateResponse() {
+        if (this.currentAnswers.selected === this.currentAnswers.correct) {
+            this.score += 50;
+        }
     },
     sendMessage(gameId, playerId, message) {
       this.$socket.emit("messageRequest", {
@@ -127,6 +142,15 @@ export default {
         playerId: playerId,
         message: message
       });
+    },
+    shuffle(array) {
+      var j, x, i;
+      for (i = array.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = array[i];
+        array[i] = array[j];
+        array[j] = x;
+      }
     }
   }
 };
@@ -166,14 +190,10 @@ export default {
   color: white;
   background-color: #25a15fbd;
 }
-#chat-inputs > button {
+#chat-inputs > md-button {
   width: calc(30% - 5px);
   border: none;
   padding: 5px;
-}
-#chat-inputs > button:hover {
-  background-color: lightgrey;
-  cursor: pointer;
 }
 .message {
   font-family: "Roboto";
