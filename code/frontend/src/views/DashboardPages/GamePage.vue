@@ -53,6 +53,7 @@ export default {
   //     this.joinGame(this.gameId, this.playerId);
   //   },
   created() {
+    
     this.joinGame(this.gameId, this.playerId);
   },
 

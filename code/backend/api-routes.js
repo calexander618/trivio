@@ -21,36 +21,42 @@ router.route('/user/signup')
         });
     });
 
-// test endpoint that needs jwt verification
-function verifyToken(req, res, next) {
-    // Get auth header value
-    // tokens are sent in header as 'authorization' value
-    const bearerHeader = req.headers['authorization'];
-    // check if token is defined
-    if (typeof bearerHeader !== 'undefined') {
-        // verify token is considered signed in
-        jwt.verify(bearerHeader, 'secretkey', function(err, authData) {
-            if (err) {
-                res.status(403).send('forbidden').end();
-            } else {
-                req.userData = authData.user;
-                req.token = bearerHeader;
-                next();
-            }
-        })
-    } else {
-        res.status(403).send('forbidden').end();
+    
+    // test endpoint that needs jwt verification
+    function verifyToken(req, res, next) {
+        // Get auth header value
+        // tokens are sent in header as 'authorization' value
+        const bearerHeader = req.headers['authorization'];
+        // check if token is defined
+        if (typeof bearerHeader !== 'undefined') {
+            // verify token is considered signed in
+            jwt.verify(bearerHeader, 'secretkey', function(err, authData) {
+                if (err) {
+                    res.status(403).send('forbidden').end();
+                } else {
+                    req.userData = authData.user;
+                    req.token = bearerHeader;
+                    next();
+                }
+            })
+        } else {
+            res.status(403).send('forbidden').end();
+        }
     }
-}
-
-// jwt authentication test route
-router.route('/protected')
+    
+    // jwt authentication test route
+    router.route('/protected')
     .post(verifyToken, function (req, res) {
         res.status(200).send('okay it worked').end();
     });
-
-
-router.route('/user/signin')
+    
+    // authentication endpoint
+    router.route('/user/verifySignin')
+        .post(verifyToken, function (req, res) {
+            res.status(200).send('signed in').end();
+        });
+    
+    router.route('/user/signin')
     .post(function (req, res) {
         User.findOne({
             "username": req.body.username
