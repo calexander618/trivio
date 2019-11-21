@@ -14,7 +14,7 @@
           <p>{{answer}}</p>
         </div>
       </div>
-      <button id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</button>
+      <md-button class="md-raised md-primary" id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</md-button>
     </md-card>
     <md-card md-with-hover id="right">
       <div class="messages">
@@ -22,7 +22,7 @@
       </div>
       <div id="chat-inputs">
         <input v-model="message" placeholder="Send a message" />
-        <button v-on:click="sendMessage(gameId, playerId, message)">SEND</button>
+        <md-button class="md-raised md-primary" v-on:click="sendMessage(gameId, playerId, message)">SEND</md-button>
       </div>
     </md-card>
   </div>
@@ -43,6 +43,7 @@ export default {
       currentQuestion: 1,
       currentAnswers: {
         selected: "",
+        correct: "",
         answers: []
       },
       chatMessages: [],
@@ -117,10 +118,12 @@ export default {
     getAnswers() {
       this.currentAnswers = {
         selected: "",
+        correct: "",
         answers: []
       };
 
       var question = this.questions[this.currentQuestion - 1];
+      this.currentAnswers.correct = question.correct_answer;
       this.currentAnswers.answers = question.incorrect_answers;
       this.currentAnswers.answers.push(question.correct_answer);
       this.shuffle(this.currentAnswers.answers);
@@ -179,14 +182,10 @@ export default {
   color: white;
   background-color: #25a15fbd;
 }
-#chat-inputs > button {
+#chat-inputs > md-button {
   width: calc(30% - 5px);
   border: none;
   padding: 5px;
-}
-#chat-inputs > button:hover {
-  background-color: lightgrey;
-  cursor: pointer;
 }
 .message {
   font-family: "Roboto";
