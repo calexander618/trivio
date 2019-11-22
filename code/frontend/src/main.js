@@ -2,6 +2,19 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 
+import Vuex from 'vuex';
+Vue.use(Vuex);
+const store = new Vuex.Store({
+  state: {
+      token: null
+  }, 
+  mutations: {
+      addToken(state, newToken) {
+          state.token = newToken;
+      }
+  }
+});
+
 import socketio from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io';
 
@@ -18,5 +31,6 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
+  store, 
   render: h => h(App)
 }).$mount('#app');
