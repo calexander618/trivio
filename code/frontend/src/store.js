@@ -1,6 +1,8 @@
 import Vuex from 'vuex';
+import Vue from 'vue';
+Vue.use(Vuex);
 
-const store = new Vuex.Store({
+export const store = new Vuex.Store({
     state: {
         token: null
     }, 
@@ -10,5 +12,3 @@ const store = new Vuex.Store({
         }
     }
 })
-
-module.exports.store = store;

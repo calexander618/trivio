@@ -18,7 +18,7 @@ export default {
       links: [
         {
           name: "Play",
-          href: "/dashboard/landing"
+          href: "/dashboard/lobbyentry"
         },
         {
           name: "Leaderboards",

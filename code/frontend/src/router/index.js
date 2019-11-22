@@ -8,6 +8,7 @@ import GamePage from '../views/DashboardPages/GamePage.vue';
 import UserProfilePage from '../views/DashboardPages/UserProfilePage.vue';
 import LeaderboardsPage from '../views/DashboardPages/LeaderboardsPage.vue';
 import AboutPage from '../views/DashboardPages/AboutPage.vue';
+import { store } from '../store.js';
 
 Vue.use(VueRouter);
 
@@ -15,7 +16,7 @@ const routes = [
   {
     path: '/',
     name: 'redirect-to-login',
-    redirect: '/dashboard/lobbyentry', 
+    redirect: '/dashboard/lobbyentry',
   },
   {
     path: '/login',
@@ -30,26 +31,26 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: Dashboard, 
+    component: Dashboard,
     children: [
       {
-        path: 'lobbyentry', 
+        path: 'lobbyentry',
         component: LobbyEntryPage
-      }, 
+      },
       {
-        path: 'game/:id', 
+        path: 'game/:id',
         component: GamePage
-      }, 
+      },
       {
-        path: 'profile/:id', 
+        path: 'profile/:id',
         component: UserProfilePage
-      }, 
+      },
       {
-        path: 'leaderboard', 
+        path: 'leaderboard',
         component: LeaderboardsPage
-      }, 
+      },
       {
-        path: 'about', 
+        path: 'about',
         component: AboutPage
       }
     ]
@@ -64,7 +65,21 @@ router.beforeEach((to, from, next) => {
   const publicroutes = ['/login', '/create'];
   // if public route, allow through
   if (publicroutes.includes(to.path)) return next();
-  else return next();
+  else {
+    console.log(store.state.token);
+    fetch('http://localhost:3000/api/user/verifySignin', {
+      headers: {
+        'Authorization': store.state.token
+      },
+      method: 'post'
+    })
+      .then(res => {
+        if (res.status === 200) return next();
+        else return next('/login');
+      })
+      .then(res => console.log(res));
+    // console.log(store.state.token);
+  }
   // else
   //   pull token from vuex
   //   call on /api/user/verifySignin endpoint
