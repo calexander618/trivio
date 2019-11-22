@@ -25,7 +25,11 @@
             <md-field :md-toggle-password="false" class="input-field">
               <md-input placeholder="Password" type="password" v-model="password"></md-input>
             </md-field>
-            <md-button class="md-raised md-primary" id="login-button">Login</md-button>
+            <md-button
+              class="md-raised md-primary"
+              id="login-button"
+              v-on:click="submitSignin()"
+            >Login</md-button>
           </form>
         </div>
         <!-- <a href="/#/create">Create Account</a> -->
@@ -91,8 +95,34 @@ export default {
       create_right.classList.add("hidden");
     },
     submitSignin() {
-
-    }, 
+      // set up sign in object
+      const signinObject = {
+        username: this.username,
+        password: this.password
+      };
+      console.log(signinObject);
+      // make request to sign in
+      fetch("http://localhost:3000/api/user/signin", {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        method: "post",
+        body: JSON.stringify(signinObject)
+      })
+        .then(res => {
+          if (res.status === 404) {
+            console.log("username or password invalid");
+            return "";
+          } else {
+            return res.json();
+          }
+        })
+        .then(res => {
+           if (typeof res.token !== 'undefined') {
+              // store token here
+           }
+        });
+    },
     submitSignup() {
       // check if passwords match
       if (this.createPassword !== this.confirmPassword) {
@@ -105,22 +135,21 @@ export default {
         password: this.createPassword
       };
       // make request
-      fetch('http://localhost:3000/api/user/signup', {
+      fetch("http://localhost:3000/api/user/signup", {
         headers: {
-           'Content-Type': 'application/json'
-        }, 
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(signupObject),
         method: "post"
-      })
-        .then(res => {
-           if (res.status === 200) {
-              // signup successful
-              console.log('successfully signed up');
-           } else if (res.status === 400) {
-              // signup failed
-              console.log('signup failed');
-           }
-        });
+      }).then(res => {
+        if (res.status === 200) {
+          // signup successful
+          console.log("successfully signed up");
+        } else if (res.status === 400) {
+          // signup failed
+          console.log("signup failed");
+        }
+      });
     }
   }
 };
