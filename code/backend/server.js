@@ -17,7 +17,7 @@ app.use(express.static(__dirname));
 app.use('/api', apiRoutes);
 
 var mongo = 'mongodb://127.0.0.1:27017/trivio';
-var port = process.env.PORT || 3001;
+var port = process.env.PORT || 3000;
 
 mongoose.connect(mongo)
     .then(() => 'Connected to MongoDB')
