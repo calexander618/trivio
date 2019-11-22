@@ -53,6 +53,7 @@ export default {
     };
   },
   created() {
+    
     this.joinGame(this.gameId, this.playerId);
   },
   sockets: {
