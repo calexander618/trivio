@@ -1,28 +1,29 @@
 <template>
   <div id="game-page">
     <md-card md-with-hover id="left">
-      <div v-if="started" id="game">
-        <h1>{{currentTime}}</h1>
-        <h1>{{score}}</h1>
-        <h3 v-html="questions[currentQuestion-1].question"></h3>
-        <div class="answer" v-for="(answer, index) in currentAnswers.answers" :key="index">
-          <md-radio
-            type="radio"
-            name="currentAnswer"
-            :value="answer"
-            v-model="currentAnswers.selected"
-          />
-          <p v-html="answer"></p>
+      <md-card v-if="started" id="game">
+        <div id="card-header">
+          <h1 id="timer" class="md-card-header">{{currentTime}}</h1>
+          <h1 id="score" class="md-card-header">{{score}}</h1>
         </div>
-      </div>
+        <h3 v-html="questions[currentQuestion-1].question" class="trivia-question"></h3>
+        <div class="answer" v-for="(answer, index) in currentAnswers.answers" :key="index">
+<div>
+          <md-radio class="trivia-radio" type="radio" name="currentAnswer" :value="answer" v-model="currentAnswers.selected" />
+          <p v-html="answer" class="trivia-option"></p>
+</div>
+        </div>
+      </md-card>
       <md-button class="md-raised md-primary" id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</md-button>
     </md-card>
     <md-card md-with-hover id="right">
       <div class="messages">
-        <div class="message" v-for="(message, index) in chatMessages" :key="index">{{ message }}</div>
+        <md-card class="message" v-for="(message, index) in chatMessages" :key="index">{{ message }}</md-card>
       </div>
       <div id="chat-inputs">
-        <input v-model="message" placeholder="Send a message" />
+        <md-field id="input-field">
+           <md-input id="chat-input" v-model="message" placeholder="Send a message"></md-input>
+        </md-field>
         <md-button class="md-raised md-primary" v-on:click="sendMessage(gameId, playerId, message)">SEND</md-button>
       </div>
     </md-card>
@@ -157,21 +158,40 @@ export default {
 </script>
 
 <style scoped>
+@import './animate.css';
+.md-field {
+	margin: 0px !important;
+	background: white;
+	border-radius: 2px 2px 2px 2px;
+	padding-top: 0px !important;
+	box-sizing: border-box;
+}
+.md-input {
+	height: 36px !important;
+}
+#input-field {
+	margin-top: 6px !important;
+	height: 36px !important;
+	min-height: 36px !important;
+}
 #game-page {
   display: flex;
   width: 100%;
+  height: 740px;
   margin: auto;
   justify-content: space-evenly;
   margin-top: 2rem;
 }
 #left {
-  width: 50%;
-  height: 400px;
+  width: 60%;
   background-color: #08381e44;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 #right {
   width: 30%;
-  height: 400px;
   border: 1px solid black;
   background-color: #343434be;
   padding: 1rem;
@@ -180,24 +200,59 @@ export default {
 #chat-inputs {
   position: absolute;
   bottom: 10px;
-  left: 10px;
+  left: 15px;
   width: calc(100% - 20px);
+  display: flex;
 }
-#chat-inputs > input {
+#chat-inputs > .md-input {
   width: calc(70% - 5px);
   border: none;
   padding: 5px;
   color: white;
   background-color: #25a15fbd;
 }
-#chat-inputs > md-button {
+#chat-inputs > .md-button {
   width: calc(30% - 5px);
   border: none;
   padding: 5px;
 }
 .message {
   font-family: "Roboto";
-  color: white;
-  margin-top: 10px;
+  color: black;
+  margin-bottom: 5px;
+  padding: 5px;
+  width: auto;
+  margin-right: 10px;
+  background: white;
 }
+.messages {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: calc(100% - 41px);
+	overflow: auto;
+}
+#game {
+	width: 500px;
+	height: 500px;
+}
+#card-header {
+	display: flex;
+	justify-content: space-between;
+}
+.trivia-option {
+	display: inline-block;
+	padding-bottom: 0px;
+	font-size: 14pt;
+}
+.trivia-question {
+	text-align: center;
+}
+.answer {
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+	margin-left: 50px;
+}
+
 </style>
