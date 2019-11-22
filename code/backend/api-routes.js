@@ -29,7 +29,7 @@ function verifyToken(req, res, next) {
     // check if token is defined
     if (typeof bearerHeader !== 'undefined') {
         // verify token is considered signed in
-        jwt.verify(bearerHeader, 'secretkey', function(err, authData) {
+        jwt.verify(bearerHeader, 'secretkey', function (err, authData) {
             if (err) {
                 res.status(403).send('forbidden').end();
             } else {
@@ -42,6 +42,12 @@ function verifyToken(req, res, next) {
         res.status(403).send('forbidden').end();
     }
 }
+
+// authentication endpoint
+router.route('/user/verifySignin')
+    .post(verifyToken, function (req, res) {
+        res.status(200).send('signed in').end();
+    });
 
 // jwt authentication test route
 router.route('/protected')
