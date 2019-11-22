@@ -60,4 +60,16 @@ const router = new VueRouter({
   routes
 });
 
+router.beforeEach((to, from, next) => {
+  const publicroutes = ['/login', '/create'];
+  // if public route, allow through
+  if (publicroutes.includes(to.path)) return next();
+  else return next();
+  // else
+  //   pull token from vuex
+  //   call on /api/user/verifySignin endpoint
+  //   if 200 status, allow to next page
+  //   else return next('/login')
+})
+
 export default router;
