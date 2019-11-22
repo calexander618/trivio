@@ -120,6 +120,7 @@ export default {
         .then(res => {
            if (typeof res.token !== 'undefined') {
               // store token here
+              this.$store.state.token = res.token;
            }
         });
     },
