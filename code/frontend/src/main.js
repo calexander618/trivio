@@ -2,6 +2,9 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 
+import Vuex from 'vuex';
+Vue.use(Vuex);
+
 import socketio from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io';
 

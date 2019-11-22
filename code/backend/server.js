@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 
+var cors = require('cors');
+
 var server = require('http').Server(app);
 var io = require('socket.io')(server, {
   pingTimeout: 60000,
@@ -12,12 +14,13 @@ var bodyparser = require('body-parser');
 var mongoose = require('mongoose');
 var apiRoutes = require("./api-routes");
 
+app.use(cors());
 app.use(bodyparser.json());       
 app.use(express.static(__dirname));
 app.use('/api', apiRoutes);
 
 var mongo = 'mongodb://127.0.0.1:27017/trivio';
-var port = process.env.PORT || 3001;
+var port = process.env.PORT || 3000;
 
 mongoose.connect(mongo)
     .then(() => 'Connected to MongoDB')

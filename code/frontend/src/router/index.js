@@ -64,7 +64,7 @@ router.beforeEach((to, from, next) => {
   const publicroutes = ['/login', '/create'];
   // if public route, allow through
   if (publicroutes.includes(to.path)) return next();
-  else return next();
+  else return next('/login');
   // else
   //   pull token from vuex
   //   call on /api/user/verifySignin endpoint
