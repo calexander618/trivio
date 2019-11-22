@@ -41,7 +41,7 @@ io.on('connection', function (socket) {
         var playerId = req.playerId;
         var gameId = req.gameId;
 
-        // SESION IS ALREADY FULL
+        // SESSION IS ALREADY FULL
         if (gameSessions.has(gameId) && gameSessions.get(gameId).playerCount >= 2) {
             console.log('ERROR: GAME ' + gameId + ' IS FULL');
             socket.emit('fullGameError', { gameId: gameId });

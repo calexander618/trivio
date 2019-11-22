@@ -16,18 +16,41 @@
       <md-card id="right">
           <div id="forms-container">
              <form>
-                <md-card-header>
-                   <h2 id="login-header">Login</h2>
+                <md-card-header id="login-header-container">
+                   <h2 id="login-header">Log In</h2>
                 </md-card-header>
-                <md-field>
-                   <md-input placeholder="Username"></md-input>
+                <md-field class="input-field">
+                   <md-input md-clearable placeholder="Username"></md-input>
                 </md-field>
-                <md-field>
-                   <md-input placeholder="Password"></md-input>
+                <md-field :md-toggle-password="false" class="input-field">
+                   <md-input placeholder="Password" type="password"></md-input>
                 </md-field>
-                <md-button id="login-button">Login</md-button>
+                <md-button class="md-raised md-primary" id="login-button">Login</md-button>
              </form>
           </div>
+         <!-- <a href="/#/create">Create Account</a> -->
+         <md-button id="create-button" v-on:click="createAccount()">Create Account</md-button>
+      </md-card>
+      <md-card id="create-right" class="hidden">
+          <div id="forms-container">
+             <form>
+                <md-card-header id="login-header-container">
+                   <h2 id="login-header">Create Account</h2>
+                </md-card-header>
+                <md-field class="input-field">
+                   <md-input placeholder="Username"></md-input>
+                </md-field>
+                <md-field :md-toggle-password="false" class="input-field">
+                   <md-input placeholder="Password" type="password"></md-input>
+                </md-field>
+                <md-field :md-toggle-password="false" class="input-field">
+                   <md-input placeholder="Confirm Password" type="password"></md-input>
+                </md-field>
+                <md-button class="md-raised md-primary .md-field.md-input-actionary" id="login-button">Sign Up</md-button>
+             </form>
+          </div>
+         <!-- <a href="/#/create">Create Account</a> -->
+         <md-button id="uncreate-button" v-on:click="goBack()">I already have an account</md-button>
       </md-card>
     </div>
   </div>
@@ -40,36 +63,66 @@ export default {
   name: "loginpage",
   components: {
     PageHeader
+  },
+  methods: {
+     createAccount() {
+        var right = document.getElementById("right");
+        var create_right = document.getElementById("create-right");
+        right.classList.add("hidden");
+        create_right.classList.remove("hidden");
+     },
+     goBack() {
+        var right = document.getElementById("right");
+        var create_right = document.getElementById("create-right");
+        right.classList.remove("hidden");
+        create_right.classList.add("hidden");
+     }
+
   }
 };
 </script>
 
 <style scoped>
+.md-field {
+	background: white;
+	border-radius: 2px 2px 2px 2px;
+	margin: 0 !important;
+	padding-top: 0px !important;
+	top: 0px !important;
+	margin-bottom: 20px !important;
+}
+.md-field {
+	top: 0px !important;
+}
+.md-input {
+	height: 36px !important;
+}
+.input-field {
+	/*margin-top: 6px !important;*/
+	min-height: 36px !important;
+}
 form {
     text-align: center;
 }
-#right {
+#right, #create-right {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #6EC1A1;
 }
-
 #left {
     background-color: #2D815F;
 }
-
 #forms-container {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
 }
-
 #login-header {
     text-align: center;
+    margin: 0;
 }
-
 #login-content {
   padding: 2rem;
   width: 100%;
@@ -78,7 +131,6 @@ form {
   display: flex;
   font-family: 'Roboto';
 }
-
 #left {
     width: 60%;
     background-color: #113a2466;
@@ -87,15 +139,29 @@ form {
     color: #ededed99;
     height: 500px;
 }
-
 li {
   margin-top: 2rem;
   font-size: 1.5rem;
 }
-
-#right {
+#right, #create-right {
     width: 40%;
     background-color: #ededed44;
 }
-
+#login-header-container {
+box-shadow: 0 3px 1px -2px rgba(0,0,0,.2);
+margin-bottom: 30px;
+}
+a {
+	position: absolute;
+	bottom: 0;
+	margin-bottom: 30px;
+}
+#create-button, #uncreate-button {
+	position: absolute;
+	bottom: 0;
+	margin-bottom: 30px;
+}
+.hidden {
+	display: none !important;
+}
 </style>

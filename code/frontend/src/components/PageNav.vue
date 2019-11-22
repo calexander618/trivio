@@ -2,7 +2,9 @@
   <div id="page-nav">
     <router-link v-for="link in links" :key="link.href" :to="link.href" class="link">{{ link.name }}</router-link>
     <div id="buttons">
-      <img src="../assets/profile.png" alt="">
+       <a href="/#/login">
+         <img src="../assets/profile.png" alt="">
+       </a>
       <img src="../assets/logout.png" alt="">
     </div>
   </div>
@@ -39,7 +41,7 @@ export default {
   padding: 0.9rem;
   position: relative;
   z-index: 1;
-  /* box-shadow: 0 0px 30px grey; */
+box-shadow: 0 3px 1px -2px rgba(0,0,0,.2);
   overflow: hidden;
 }
 
@@ -80,7 +82,7 @@ p {
   padding: .3rem .3rem;
 }
 
-#buttons > img {
+#buttons img {
   width: 2rem;
   height: 2rem;
   padding: .3rem;
@@ -89,7 +91,7 @@ p {
 
 }
 
-#buttons > img:hover {
+#buttons img:hover {
   background-color: #3baf83f8;
   cursor: pointer;
 }
