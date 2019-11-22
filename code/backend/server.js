@@ -37,7 +37,8 @@ app.get('/', function(res){
 var gameSessions = new Map();
 
 io.on('connection', function (socket) {
-
+    // jwt.verify
+    // if not signed in (verified), socket.close();
     // JOIN THE GAME, OR CREATE NEW SOCKET ROOM FOR IT
     socket.on('joinRequest', function (req) {
 
