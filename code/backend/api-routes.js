@@ -43,18 +43,17 @@ function verifyToken(req, res, next) {
     }
 }
 
+// jwt authentication test route
+router.route('/protected')
+.post(verifyToken, function (req, res) {
+    res.status(200).send('okay it worked').end();
+});
+
 // authentication endpoint
 router.route('/user/verifySignin')
     .post(verifyToken, function (req, res) {
         res.status(200).send('signed in').end();
     });
-
-// jwt authentication test route
-router.route('/protected')
-    .post(verifyToken, function (req, res) {
-        res.status(200).send('okay it worked').end();
-    });
-
 
 router.route('/user/signin')
     .post(function (req, res) {
