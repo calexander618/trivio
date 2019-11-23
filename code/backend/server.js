@@ -59,10 +59,8 @@ function addLeadingZero(n) {
 io.on('connection', function (socket) {
     // ON CREATE GAME REQUEST
     socket.on('createRequest', function (req) {
-        // generate a unique id
-        const gameId = generateId();
         // store gamesession in map
-        gameSessions.set(gameId, {
+        gameSessions.set(req.gameId, {
             players: [req.username], 
             gameInfo: {
                 category: req.category, 
@@ -74,10 +72,10 @@ io.on('connection', function (socket) {
             player2Score: 0
         });
         // user creating game will join gamesession
-        socket.join(gameId);
+        socket.join(req.gameId);
         // store in game queue
-        gameQueue.push(gameId);
-        socket.emit('gameCreated', { gameId: gameId });
+        gameQueue.push(req.gameId);
+        socket.emit('gameCreated', { gameId: req.gameId });
     });
 
     // JOIN THE GAME, OR CREATE NEW SOCKET ROOM FOR IT

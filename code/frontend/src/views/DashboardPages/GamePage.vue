@@ -53,10 +53,11 @@ export default {
       message: ""
     };
   },
+
   created() {
-    
-    this.joinGame(this.gameId, this.playerId);
+    this.getQuestions(this.gameId);
   },
+
   sockets: {
     connect() {},
     disconnect() {},
@@ -75,6 +76,7 @@ export default {
       this.getAnswers();
     }
   },
+
   methods: {
     countDownTimer() {
       this.timer = setInterval(() => {
@@ -93,12 +95,14 @@ export default {
         this.currentTime--;
       }, 1000);
     },
+
     joinGame(gameId, playerId) {
       this.$socket.emit("joinRequest", {
         gameId: gameId,
         playerId: playerId
       });
     },
+    
     getQuestions(gameId) {
       this.$socket.emit("triviaRequest", {
         gameId: gameId
