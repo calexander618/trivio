@@ -14,7 +14,7 @@
 </div>
         </div>
       </md-card>
-      <md-button class="md-raised md-primary" id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=10">START GAME</md-button>
+      <md-button class="md-raised md-primary" id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=questions.length">START GAME</md-button>
     </md-card>
     <md-card md-with-hover id="right">
       <div class="messages">
@@ -53,10 +53,11 @@ export default {
       message: ""
     };
   },
+
   created() {
-    
-    this.joinGame(this.gameId, this.playerId);
+    this.getQuestions(this.gameId);
   },
+
   sockets: {
     connect() {},
     disconnect() {},
@@ -75,12 +76,13 @@ export default {
       this.getAnswers();
     }
   },
+
   methods: {
     countDownTimer() {
       this.timer = setInterval(() => {
         if (this.currentTime <= 0) {
           clearInterval(this.timer);
-          if (this.currentQuestion < 10) {
+          if (this.currentQuestion < this.questions.length) {
             this.nextQuestion();
           }
           else {
@@ -93,12 +95,14 @@ export default {
         this.currentTime--;
       }, 1000);
     },
+
     joinGame(gameId, playerId) {
       this.$socket.emit("joinRequest", {
         gameId: gameId,
         playerId: playerId
       });
     },
+
     getQuestions(gameId) {
       this.$socket.emit("triviaRequest", {
         gameId: gameId
