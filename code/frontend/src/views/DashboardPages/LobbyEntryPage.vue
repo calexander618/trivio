@@ -20,17 +20,17 @@
             id="difficulty"
             placeholder="Difficulty"
           >
-            <md-option value="Easy">Easy</md-option>
-            <md-option value="Normal">Normal</md-option>
-            <md-option value="Hard">Hard</md-option>
+            <md-option value="easy">Easy</md-option>
+            <md-option value="medium">Medium</md-option>
+            <md-option value="hard">Hard</md-option>
           </md-select>
         </md-field>
         <span>Category</span>
         <md-field>
           <md-select v-model="category" name="category" id="category" placeholder="Category">
-            <md-option value="Geography">Geography</md-option>
-            <md-option value="Media">Media</md-option>
-            <md-option value="History">History</md-option>
+            <md-option value="22">Geography</md-option>
+            <md-option value="24">Politics</md-option>
+            <md-option value="23">History</md-option>
           </md-select>
         </md-field>
         <span>Number of Questions</span>
@@ -41,11 +41,9 @@
             id="questions"
             placeholder="Number of Questions"
           >
-            <md-option value="1">1</md-option>
-            <md-option value="2">2</md-option>
-            <md-option value="3">3</md-option>
-            <md-option value="4">4</md-option>
             <md-option value="5">5</md-option>
+            <md-option value="10">10</md-option>
+            <md-option value="15">15</md-option>
           </md-select>
         </md-field>
       </div>
@@ -84,6 +82,7 @@ export default {
     createGame() {
       this.gameId = generateId();
       this.$socket.emit("createRequest", {
+        playerId: this.$store.state.username, 
         gameId: this.gameId,
         difficulty: this.difficulty,
         category: this.category,

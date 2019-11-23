@@ -61,7 +61,7 @@ io.on('connection', function (socket) {
     socket.on('createRequest', function (req) {
         // store gamesession in map
         gameSessions.set(req.gameId, {
-            players: [req.username], 
+            players: [req.playerId], 
             gameInfo: {
                 category: req.category, 
                 difficulty: req.difficulty, 
@@ -130,8 +130,12 @@ io.on('connection', function (socket) {
         io.to(req.gameId).emit('playerMessage', { playerId: req.playerId, message: req.message });
     });
     
-    socket.on('triviaRequest', function (req) {            
-        https.get('https://opentdb.com/api.php?amount=10&type=multiple', (resp) => {
+    socket.on('triviaRequest', function (req) {         
+        
+        var gameSession = gameSessions.get(req.gameId);
+        console.log(gameSession);
+
+        https.get(`https://opentdb.com/api.php?amount=${gameSession.gameInfo.questionCount}&category=${gameSession.gameInfo.category}&difficulty=${gameSession.gameInfo.difficulty}&type=multiple`, (resp) => {
             var data = '';
 
             // A chunk of data has been recieved.
@@ -140,6 +144,7 @@ io.on('connection', function (socket) {
             });
 
             resp.on('end', () => {
+                console.log(data);
                 console.log('SENDING TRIVIA TO GAME ' + req.gameId);
                 io.to(req.gameId).emit('newQuestions', { questions: JSON.parse(data).results });
             });
