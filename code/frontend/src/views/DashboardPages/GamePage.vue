@@ -34,6 +34,7 @@
 
 <script>
 import Notification from '../../components/Notification';
+import {updatePlayerRecord} from '../../controllers/GameController';
 
 export default {
   components: {
@@ -103,6 +104,10 @@ export default {
       }
       this.gameIsFinished = true;
       console.log('game result: ' + this.gameResult);
+      updatePlayerRecord({
+        username: this.$store.state.username, 
+        result: this.gameResult
+      });
     }, 
     waitingForPlayersToFinish() {
       console.log('waiting for other player to finish');

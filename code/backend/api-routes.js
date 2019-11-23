@@ -95,6 +95,7 @@ router.route('/user/signin')
 
 router.route('/user/updateHistory')
     .post(function (req, res) {
+        console.log(req.body);
 
         User.findOne({
             "username": req.body.username
