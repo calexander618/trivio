@@ -55,17 +55,16 @@ io.on('connection', function (socket) {
                 // once request is processed, add questions to gameSession being created
                 // store gamesession in map
                 gameSessions.set(req.gameId, {
-                    players: [req.playerId],
+                    players: [{playerId: req.playerId, score: 0}],
                     playersServed: [], 
+                    playersDone: [],
                     gameInfo: {
                         category: req.category,
                         difficulty: req.difficulty,
                         questionCount: req.questionCount
                     },
                     questions: JSON.parse(data).results,
-                    playerCount: 1,
-                    player1Score: 0,
-                    player2Score: 0
+                    playerCount: 1
                 });
                 console.log('GETTTING FROM MAP');
                 console.log(gameSessions.get(req.gameId));
@@ -86,7 +85,7 @@ io.on('connection', function (socket) {
     socket.on('joinRequest', function (req) {
         // check if gameQueue is empty
         if (gameQueue.length === 0) {
-            // create game and emit gameCreated
+            socket.emit('errorMessage', {message: 'no games available'});
             return;
         }
 
@@ -95,7 +94,7 @@ io.on('connection', function (socket) {
         let gameToJoin = gameSessions.get(gameId);
 
         // keep from players playing themselves
-        if (gameToJoin.players[0] === playerId) {
+        if (gameToJoin.players[0].playerId === playerId) {
             console.log('ERROR: PLAYER ' + playerId + ' ALREADY IN GAME ');
             socket.emit('inGameError', { gameId: gameId });
             return;
@@ -103,7 +102,7 @@ io.on('connection', function (socket) {
 
         // update gamesession object
         gameToJoin.playerCount++;
-        gameToJoin.players.push(playerId);
+        gameToJoin.players.push({playerId: playerId, score: 0});
         gameSessions.set(gameId, gameToJoin);
 
         // notify lobby that player joined
@@ -164,6 +163,24 @@ io.on('connection', function (socket) {
 
     // });
 
+    socket.on('finishGame', function(req) {
+        // update score for finished game
+        let gameSession = gameSessions.get(req.gameId);
+        gameSession.players[gameSession.players.findIndex(p => p.playerId === req.playerId)].score = req.score;
+        gameSession.playersDone.push(req.playerId);
+        gameSessions.set(req.gameId, gameSession);
+
+        if (gameSession.playersDone.length === 2) {
+            // tell frontend who won
+            // notify frontend with game results
+            io.to(req.gameId).emit('gameFinished', gameSession);
+            return;
+        }
+
+        console.log('waiting for player to finish');
+        socket.emit('waitingForPlayersToFinish');
+    });
+
     socket.on('messageRequest', function (req) {
         console.log('PLAYER ' + req.playerId + ' TO GAME ' + req.gameId + ': ' + req.message);
         io.to(req.gameId).emit('playerMessage', { playerId: req.playerId, message: req.message });
@@ -175,7 +192,7 @@ io.on('connection', function (socket) {
             socket.emit('inGameError', {message: 'game not found'});
             return;
         }
-        if (!gameSession.players.includes(req.playerId)) {
+        if (typeof gameSession.players.find(p => p.playerId === req.playerId) === 'undefined') {
             socket.emit('inGameError', {message: 'player not in game'});
             return;
         }
