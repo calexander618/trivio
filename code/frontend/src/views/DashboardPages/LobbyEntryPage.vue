@@ -5,7 +5,7 @@
         <h1>Create New Game</h1>
         <img src="../../assets/battle.png" alt />
       </div>
-      <div class="tile">
+      <div class="tile" @click="joinGame()">
         <h1>Join Game</h1>
       </div>
     </div>
@@ -78,6 +78,14 @@ export default {
       socketInfo: {}
     };
   },
+  sockets: {
+    gameJoined(data) {
+      this.$router.push(`/dashboard/game/${data.gameId}`);
+    }, 
+    gameCreated(data) {
+      this.$router.push(`/dashboard/game/${data.gameId}`);
+    }
+  }, 
   methods: {
     createGame() {
       this.gameId = generateId();
@@ -88,10 +96,13 @@ export default {
         category: this.category,
         questionCount: this.questions
       });
-      this.$router.push(`/dashboard/game/${this.gameId}`);
+    }, 
+    joinGame() {
+      this.$socket.emit("joinRequest", {
+        playerId: this.$store.state.username, 
+      });
     }
-  },
-  sockets: {}
+  }
 };
 </script>
 
