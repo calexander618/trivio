@@ -14,7 +14,7 @@
 </div>
         </div>
       </md-card>
-      <md-button class="md-raised md-primary" id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=questions.length">START GAME</md-button>
+      <md-button class="md-raised md-primary" id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=questions.length || !gameStart">START GAME</md-button>
     </md-card>
     <md-card md-with-hover id="right">
       <div class="messages">
@@ -50,7 +50,8 @@ export default {
       },
       score: 0,
       chatMessages: [],
-      message: ""
+      message: "", 
+      gameStart: false
     };
   },
 
@@ -74,7 +75,14 @@ export default {
         this.questions.push(data.questions[i]);
       }
       this.getAnswers();
+    }, 
+    inGameError(data) {
+      console.log(data.message);
+    }, 
+    gameReady() {
+      this.gameStart = true;
     }
+
   },
 
   methods: {
@@ -105,7 +113,8 @@ export default {
 
     getQuestions(gameId) {
       this.$socket.emit("triviaRequest", {
-        gameId: gameId
+        gameId: gameId, 
+        playerId: this.$store.state.username
       });
     },
     nextQuestion() {
@@ -145,7 +154,7 @@ export default {
     sendMessage(gameId, playerId, message) {
       this.$socket.emit("messageRequest", {
         gameId: gameId,
-        playerId: playerId,
+        playerId: this.$store.state.username,
         message: message
       });
     },
