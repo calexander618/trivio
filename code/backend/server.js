@@ -35,10 +35,49 @@ app.get('/', function(res){
 }); 
 
 var gameSessions = new Map();
+var gameQueue = [];
+
+// data structure to hold all logged on usernames and corresponding sockets
+// data structure to hold rooms, which just includes both the players sockets in the current room and match info
+// work out listener 
+
+function generateId() {
+    var today = new Date();
+    var time = addLeadingZero(today.getHours()) + addLeadingZero(today.getMinutes()) + addLeadingZero(today.getSeconds());
+    var rand = Math.random().toString(36).substr(2, 10);
+
+    // NEED TO CHECK IF ID IS NOT TAKEN ALREADY
+
+    return time + rand;
+}
+
+function addLeadingZero(n) {
+    return (n < 10 ? '0' : '') + n;
+}
+
 
 io.on('connection', function (socket) {
-    // jwt.verify
-    // if not signed in (verified), socket.close();
+    // ON CREATE GAME REQUEST
+    socket.on('createRequest', function (req) {
+        // store gamesession in map
+        gameSessions.set(req.gameId, {
+            players: [req.playerId], 
+            gameInfo: {
+                category: req.category, 
+                difficulty: req.difficulty, 
+                questionCount: req.questionCount
+            }, 
+            playerCount: 1, 
+            player1Score: 0, 
+            player2Score: 0
+        });
+        // user creating game will join gamesession
+        socket.join(req.gameId);
+        // store in game queue
+        gameQueue.push(req.gameId);
+        socket.emit('gameCreated', { gameId: req.gameId });
+    });
+
     // JOIN THE GAME, OR CREATE NEW SOCKET ROOM FOR IT
     socket.on('joinRequest', function (req) {
 
@@ -52,7 +91,7 @@ io.on('connection', function (socket) {
             return;
         }
 
-        // CREATE NEW GAME SESSION IN MAP
+        // CREATE NEW GAME SESSION IN MAP IF GAME DOESNT EXIST
         if (!gameSessions.has(gameId)) {
             var newSession = {
                 players: [playerId],
@@ -62,7 +101,7 @@ io.on('connection', function (socket) {
             };
             gameSessions.set(gameId, newSession);
         }
-        // RETRIEVE MAP ENTRY AND UPDATE IT
+        // OTHERWISE RETRIEVE MAP ENTRY AND UPDATE IT
         // SEND MESSAGE TO REST OF SESSION
         else {
             var session = gameSessions.get(gameId);
@@ -91,8 +130,12 @@ io.on('connection', function (socket) {
         io.to(req.gameId).emit('playerMessage', { playerId: req.playerId, message: req.message });
     });
     
-    socket.on('triviaRequest', function (req) {            
-        https.get('https://opentdb.com/api.php?amount=10&type=multiple', (resp) => {
+    socket.on('triviaRequest', function (req) {         
+        
+        var gameSession = gameSessions.get(req.gameId);
+        console.log(gameSession);
+
+        https.get(`https://opentdb.com/api.php?amount=${gameSession.gameInfo.questionCount}&category=${gameSession.gameInfo.category}&difficulty=${gameSession.gameInfo.difficulty}&type=multiple`, (resp) => {
             var data = '';
 
             // A chunk of data has been recieved.
@@ -101,6 +144,7 @@ io.on('connection', function (socket) {
             });
 
             resp.on('end', () => {
+                console.log(data);
                 console.log('SENDING TRIVIA TO GAME ' + req.gameId);
                 io.to(req.gameId).emit('newQuestions', { questions: JSON.parse(data).results });
             });
