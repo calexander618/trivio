@@ -1,13 +1,16 @@
 <template>
   <div id="landing-page">
     <div class="row">
-      <div class="tile" @click="showDialog = true">
-        <h1>Create New Game</h1>
-        <img src="../../assets/battle.png" alt />
-      </div>
-      <div class="tile">
-        <h1>Join Game</h1>
-      </div>
+      <md-card class="tile" @click.native="showDialog = true">
+         <h1>Create<br>
+            <img src="../../assets/battle.png" alt="game-start" id="start-icon"/><br>
+         Game</h1>
+      </md-card>
+      <md-card class="tile" @click.native="showJoinDialog = true">
+         <h1>Join<br>
+            <img src="../../assets/join.png" alt="game-join" id="join-icon"/><br>
+         Game</h1>
+      </md-card>
     </div>
     <md-dialog :md-active.sync="showDialog">
       <md-dialog-title>Create Game</md-dialog-title>
@@ -56,6 +59,33 @@
         >Create</md-button>
       </md-dialog-actions>
     </md-dialog>
+<!-- this is unfinished. values are not tied to any data at this moment-->
+    <md-dialog :md-active.sync="showJoinDialog">
+      <md-dialog-title>Join Game</md-dialog-title>
+      <div class="md-layout-item">
+        <span>Open Games</span>
+        <md-field>
+          <md-select
+            v-model="games"
+            name="games"
+            id="games"
+            placeholder="Select Game"
+          >
+            <md-option value="gameValue">Option 1</md-option>
+            <md-option value="gameValue">Option 2</md-option>
+            <md-option value="null">...</md-option>
+          </md-select>
+        </md-field>
+      </div>
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showJoinDialog = false">Close</md-button>
+        <md-button
+          class="md-primary"
+          @click="joinGame()"
+          v-bind:disabled="!game"
+        >Join</md-button>
+      </md-dialog-actions>
+    </md-dialog>
   </div>
 </template>
 
@@ -71,6 +101,7 @@ export default {
       category: undefined,
       questions: undefined,
       showDialog: false,
+      showJoinDialog: false,
       settings: {
         difficulty: null,
         category: null
@@ -89,6 +120,9 @@ export default {
         questionCount: this.questions
       });
       this.$router.push(`/dashboard/game/${this.gameId}`);
+    },
+    joinGame(){
+       // logic goes here
     }
   },
   sockets: {}
@@ -148,11 +182,17 @@ h1 {
 
 .tile {
   background-color: lightgrey;
-  padding: 30px;
+  padding: 50px 80px 50px 80px;
   box-shadow: 10px 10px 20px #22222277;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 3rem;
+  flex-direction: column;
 }
 
-img {
+#start-icon, #join-icon {
   width: 3rem;
+  margin: 40px;
 }
 </style>

@@ -19,6 +19,12 @@
             <md-card-header id="login-header-container">
               <h2 id="login-header">Log In</h2>
             </md-card-header>
+            <div class="md-subhead hidden" id="act-create-success">
+               Account Creation Successful
+            </div>
+            <div class="md-subhead hidden" id="login-failure">
+               Invalid Username/Password
+            </div>
             <md-field class="input-field">
               <md-input md-clearable placeholder="Username" v-model="username"></md-input>
             </md-field>
@@ -41,6 +47,12 @@
             <md-card-header id="login-header-container">
               <h2 id="login-header">Create Account</h2>
             </md-card-header>
+            <div class="md-subhead hidden" id="act-create-failure-pwd">
+               Passwords do not match
+            </div>
+            <div class="md-subhead hidden" id="act-create-failure-usr">
+               Username taken
+            </div>
             <md-field class="input-field">
               <md-input placeholder="Username" v-model="createUsername"></md-input>
             </md-field>
@@ -112,6 +124,8 @@ export default {
         .then(res => {
           if (res.status === 404) {
             console.log("username or password invalid");
+            document.getElementById("act-create-success").classList.add("hidden");
+            document.getElementById("login-failure").classList.remove("hidden");
             return "";
           } else {
             return res.json();
@@ -130,6 +144,9 @@ export default {
       // check if passwords match
       if (this.createPassword !== this.confirmPassword) {
         console.log("passwords dont match");
+          document.getElementById("act-create-success").classList.add("hidden");
+          document.getElementById("act-create-failure-pwd").classList.remove("hidden");
+          document.getElementById("act-create-failure-usr").classList.add("hidden");
         return;
       }
       // create signup object to send to signup endpoint
@@ -148,9 +165,17 @@ export default {
         if (res.status === 200) {
           // signup successful
           console.log("successfully signed up");
+          document.getElementById("create-right").classList.add("hidden");
+          document.getElementById("right").classList.remove("hidden");
+          document.getElementById("act-create-success").classList.remove("hidden");
+          document.getElementById("act-create-failure-pwd").classList.add("hidden");
+          document.getElementById("act-create-failure-usr").classList.add("hidden");
         } else if (res.status === 400) {
           // signup failed
           console.log("signup failed");
+          document.getElementById("act-create-success").classList.add("hidden");
+          document.getElementById("act-create-failure-pwd").classList.add("hidden");
+          document.getElementById("act-create-failure-usr").classList.remove("hidden");
         }
       });
     }
@@ -242,5 +267,17 @@ a {
 }
 .hidden {
   display: none !important;
+}
+#act-create-success {
+	margin-bottom: 30px;
+	color: #121212 !important;
+	background-color: #5f875f;
+	border-radius: 2px;
+}
+#login-failure, #act-create-failure-pwd, #act-create-failure-usr {
+	text-align: center;
+	margin-bottom: 30px;
+	background-color: #a85f5f;
+	color: #121212 !important;
 }
 </style>
