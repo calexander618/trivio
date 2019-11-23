@@ -12,6 +12,22 @@ const userSchema = mongoose.Schema({
         type: String, 
         required: true, 
         minlength: 6
+    }, 
+    gamesPlayed: {
+        type: Number, 
+        required: true
+    }, 
+    gamesWon: {
+        type: Number, 
+        required: true
+    }, 
+    gamesLost: {
+        type: Number, 
+        required: true
+    }, 
+    gamesTied: {
+        type: Number, 
+        required: true
     }
 });
 
