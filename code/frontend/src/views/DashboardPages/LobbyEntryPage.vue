@@ -187,7 +187,7 @@ h1 {
 }
 
 .tile {
-  background-color: lightgrey;
+  background-color: white;
   padding: 30px;
   box-shadow: 10px 10px 20px #22222277;
   height: 20rem;

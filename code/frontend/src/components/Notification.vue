@@ -1,30 +1,37 @@
 <template>
-  <div id="notification">
-    <md-card>
-      <md-card-header>{{notificationMessage}}</md-card-header>
-      <md-button @click="$emit('ok')">Ok</md-button>
-    </md-card>
+  <div id="backdrop">
+    <div id="notification">
+      <md-card>
+        <md-card-header>{{notificationMessage}}</md-card-header>
+        <md-button @click="$emit('ok')">Ok</md-button>
+      </md-card>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'notification', 
-    props: [
-        'notificationMessage'
-    ]
-}
+  name: "notification",
+  props: ["notificationMessage"]
+};
 </script>
 
 <style scoped>
 #notification {
-  width: 100%;
-  position: absolute;
-  z-index: 2;
+  width: 300px;
+  position: fixed;
+  z-index: 3;
+  left: calc(50% - 150px);
+  top: 300px;
 }
-md-card {
-  text-align: center;
-  width: 100%;
-  height: 100%;
+
+#backdrop {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  background-color: #11111144;
 }
 </style>
