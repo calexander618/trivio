@@ -67,7 +67,7 @@ router.route('/user/signin')
         }, (err, user) => {
             if (err) throw err;
             if (!user) {
-                res.status(404).json({
+                res.status(400).json({
                     message: 'Login failed, user not found.'
                 }).end();
             } else {
@@ -86,7 +86,6 @@ router.route('/user/signin')
                         res.status(200).json({ token }).end();
                     })
 
-                    // res.status(200).send('Logged in successfully.');
                 });
             }
 
@@ -106,13 +105,13 @@ router.route('/user/updateHistory')
                 gamesPlayed: user.gamesPlayed + 1,
             }
             switch (req.body.result) {
-                case 'win':
+                case 'You win!':
                     setObject.gamesWon = user.gamesWon + 1;
                     break;
-                case 'lose':
+                case 'You lose!':
                     setObject.gamesLost = user.gamesLost + 1;
                     break;
-                case 'tie':
+                case 'You tied!':
                     setObject.gamesTied = user.gamesTied + 1;
                     break;
             }
@@ -139,7 +138,7 @@ router.route('/user/getusers')
                     gamesWon: u.gamesWon, 
                     gamesLost: u.gamesLost, 
                     gamesTied: u.gamesTied, 
-                    ratio: u.gamesWon / ((u.gamesWon + u.gamesLost) === 0 ? 1 : (u.gamesWon + u.gamesLost))
+                    ratio: u.gamesWon / ((u.gamesPlayed) === 0 ? 1 : (u.gamesPlayed))
                 };
             });
             res.status(200).json(usersToReturn).end();
