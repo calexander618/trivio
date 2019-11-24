@@ -1,6 +1,12 @@
 <template>
   <div id="login-page">
     <page-header :loggedIn="false"></page-header>
+    <notification
+      class="notification"
+      :notificationMessage="notification"
+      v-if="notification"
+      @ok="notification = undefined"
+    ></notification>
     <div id="login-content">
       <md-card id="left">
         <md-card-header>
@@ -25,11 +31,7 @@
             <md-field :md-toggle-password="false" class="input-field">
               <md-input placeholder="Password" type="password" v-model="password"></md-input>
             </md-field>
-            <md-button
-              class="md-raised md-primary"
-              id="login-button"
-              v-on:click="submitSignin()"
-            >Login</md-button>
+            <md-button class="md-raised md-primary login-button" v-on:click="submitSignin()">Login</md-button>
           </form>
         </div>
         <!-- <a href="/#/create">Create Account</a> -->
@@ -51,8 +53,7 @@
               <md-input placeholder="Confirm Password" type="password" v-model="confirmPassword"></md-input>
             </md-field>
             <md-button
-              class="md-raised md-primary .md-field.md-input-actionary"
-              id="login-button"
+              class="md-raised md-primary .md-field.md-input-actionary login-button"
               v-on:click="submitSignup()"
             >Sign Up</md-button>
           </form>
@@ -66,12 +67,14 @@
 
 <script>
 import PageHeader from "../components/PageHeader.vue";
+import Notification from "../components/Notification";
 import { signin, signup } from "../controllers/LoginController";
 
 export default {
   name: "loginpage",
   components: {
-    PageHeader
+    PageHeader,
+    Notification
   },
   data() {
     return {
@@ -79,7 +82,8 @@ export default {
       password: "",
       createUsername: "",
       createPassword: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      notification: undefined
     };
   },
   methods: {
@@ -104,15 +108,19 @@ export default {
       console.log(signinObject);
 
       signin(signinObject).then(token => {
-        this.$store.state.token = token;
-        this.$store.state.username = this.username;
-        this.$router.push("dashboard/lobbyentry");
+        if (token) {
+          this.$store.state.token = token;
+          this.$store.state.username = this.username;
+          this.$router.push("dashboard/lobbyentry");
+        } else {
+          this.notification = "Invalid info, please try again.";
+        }
       });
     },
     submitSignup() {
       // check if passwords match
       if (this.createPassword !== this.confirmPassword) {
-        console.log("passwords dont match");
+          this.notification = "Passwords don't match, please try again.";
         return;
       }
       // create signup object to send to signup endpoint
@@ -123,11 +131,10 @@ export default {
       // make request
       signup(signupObject).then(res => {
         if (res.status === 200) {
-          // signup successful
-          console.log("successfully signed up");
+          this.notification = "Successfully signed up.";
         } else if (res.status === 400) {
           // signup failed
-          console.log("signup failed");
+          this.notification = "Signup failed, please try again.";
         }
       });
     }

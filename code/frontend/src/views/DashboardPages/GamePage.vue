@@ -1,8 +1,12 @@
 <template>
   <div id="game-page">
-    <!-- <p id="notificiation">{{notificationMessage}}</p> -->
-    <notification class="noti" :notificationMessage="gameResult" v-if="gameIsFinished" @ok="endingRedirect()"></notification>
-    <md-card md-with-hover id="left">
+    <notification
+      class="notification"
+      :notificationMessage="gameResult"
+      v-if="gameResult"
+      @ok="endingRedirect()"
+    ></notification>
+    <md-card id="left">
       <md-card v-if="started" id="game">
         <div id="card-header">
           <h1 id="timer" class="md-card-header">{{currentTime}}</h1>
@@ -10,36 +14,50 @@
         </div>
         <h3 v-html="questions[currentQuestion-1].question" class="trivia-question"></h3>
         <div class="answer" v-for="(answer, index) in currentAnswers.answers" :key="index">
-<div>
-          <md-radio class="trivia-radio" type="radio" name="currentAnswer" :value="answer" v-model="currentAnswers.selected" />
-          <p v-html="answer" class="trivia-option"></p>
-</div>
+          <div>
+            <md-radio
+              class="trivia-radio"
+              type="radio"
+              name="currentAnswer"
+              :value="answer"
+              v-model="currentAnswers.selected"
+            />
+            <p v-html="answer" class="trivia-option"></p>
+          </div>
         </div>
       </md-card>
-      <md-button class="md-raised md-primary" id="start" v-on:click="nextQuestion()" :disabled="currentQuestion>=questions.length || !gameStart">START GAME</md-button>
+      <md-button
+        class="md-raised md-primary"
+        id="start"
+        v-on:click="nextQuestion()"
+        :disabled="currentQuestion>=questions.length || !gameStart"
+      >START GAME</md-button>
     </md-card>
-    <md-card md-with-hover id="right">
+    <md-card id="right">
       <div class="messages">
         <md-card class="message" v-for="(message, index) in chatMessages" :key="index">{{ message }}</md-card>
       </div>
       <div id="chat-inputs">
         <md-field id="input-field">
-           <md-input id="chat-input" v-model="message" placeholder="Send a message"></md-input>
+          <md-input id="chat-input" v-model="message" placeholder="Send a message"></md-input>
         </md-field>
-        <md-button class="md-raised md-primary" v-on:click="sendMessage(gameId, playerId, message)">SEND</md-button>
+        <md-button
+          class="md-raised md-primary"
+          v-on:click="sendMessage(gameId, playerId, message)"
+        >SEND</md-button>
       </div>
     </md-card>
   </div>
 </template>
 
 <script>
-import Notification from '../../components/Notification';
-import {updatePlayerRecord} from '../../controllers/GameController';
+import Notification from "../../components/Notification";
+import { updatePlayerRecord } from "../../controllers/GameController";
 
 export default {
   components: {
     Notification
-  }, 
+  },
   data() {
     return {
       gameId: this.$route.params.id,
@@ -55,31 +73,29 @@ export default {
       },
       score: 0,
       chatMessages: [],
-      message: "", 
-      gameStart: false, 
-      notificationMessage: '', 
-      gameResult: '', 
+      message: "",
+      gameStart: false,
+      gameResult: undefined,
       gameIsFinished: false
     };
   },
 
   created() {
     this.getQuestions(this.gameId);
-    window.addEventListener('beforeunload', function(event) {
-      console.log(event);
-      this.$socket.emit('navigatingAway', {
-        gameId: this.gameId, 
+    window.addEventListener("beforeunload", function() {
+      this.$socket.emit("navigatingAway", {
+        gameId: this.gameId,
         playerId: this.$store.state.username
       });
     });
   },
 
   beforeDestroy() {
-    this.$socket.emit('navigatingAway', {
-      gameId: this.gameId, 
+    this.$socket.emit("navigatingAway", {
+      gameId: this.gameId,
       playerId: this.$store.state.username
     });
-  }, 
+  },
 
   sockets: {
     connect() {},
@@ -96,61 +112,65 @@ export default {
         this.questions.push(data.questions[i]);
       }
       this.getAnswers();
-    }, 
+    },
     inGameError(data) {
       console.log(data.message);
-    }, 
+    },
     gameReady() {
       this.gameStart = true;
-    }, 
+    },
     gameFinished(data) {
-      console.log(data);
       //this is where we would update backend with win or loss
-      let myScore = data.players.find(p => p.playerId === this.$store.state.username).score;
-      let otherScore = data.players.find(p => p.playerId !== this.$store.state.username).score;
+      let myScore = data.players.find(
+        p => p.playerId === this.$store.state.username
+      ).score;
+      let otherScore = data.players.find(
+        p => p.playerId !== this.$store.state.username
+      ).score;
       if (myScore > otherScore) {
-        this.gameResult = 'win';
+        this.gameResult = "You win!";
       } else if (otherScore > myScore) {
-        this.gameResult = 'lose';
+        this.gameResult = "You lose!";
       } else {
-        this.gameResult = 'tie';
+        this.gameResult = "You tied!";
       }
       this.gameIsFinished = true;
-      console.log('game result: ' + this.gameResult);
       updatePlayerRecord({
-        username: this.$store.state.username, 
+        username: this.$store.state.username,
         result: this.gameResult
       });
-    }, 
+    },
     waitingForPlayersToFinish() {
-      console.log('waiting for other player to finish');
-      this.notificationMessage = 'waiting for other player to finish'
-    }, 
+      this.gameResult = "Waiting for other players to finish.";
+    },
     earlyEnd() {
-      this.gameResult = "other player left the game";
+      this.gameResult = "The other player has left, please join new game.";
       this.gameIsFinished = true;
     }
-
   },
 
   methods: {
     endingRedirect() {
-      this.$router.push('/dashboard/lobbyentry');
-    }, 
+      if (this.gameResult !== "Waiting for other players to finish.") {
+        this.$router.push("/dashboard/lobbyentry");
+      }
+      else {
+        this.gameResult = undefined;
+      }
+    },
     countDownTimer() {
       this.timer = setInterval(() => {
         if (this.currentTime <= 0) {
           clearInterval(this.timer);
           if (this.currentQuestion < this.questions.length) {
             this.nextQuestion();
-          }
-          else {
-              this.evaluateResponse();
-              this.$socket.emit('finishGame', {
-                playerId: this.$store.state.username, 
-                gameId: this.gameId, 
-                score: this.score
-              });
+          } else {
+            this.evaluateResponse();
+            this.$socket.emit("finishGame", {
+              playerId: this.$store.state.username,
+              gameId: this.gameId,
+              score: this.score
+            });
           }
           return;
         }
@@ -167,7 +187,7 @@ export default {
 
     getQuestions(gameId) {
       this.$socket.emit("triviaRequest", {
-        gameId: gameId, 
+        gameId: gameId,
         playerId: this.$store.state.username
       });
     },
@@ -201,9 +221,9 @@ export default {
       this.shuffle(this.currentAnswers.answers);
     },
     evaluateResponse() {
-        if (this.currentAnswers.selected === this.currentAnswers.correct) {
-            this.score += 50;
-        }
+      if (this.currentAnswers.selected === this.currentAnswers.correct) {
+        this.score += 50;
+      }
     },
     sendMessage(gameId, playerId, message) {
       this.$socket.emit("messageRequest", {
@@ -226,21 +246,21 @@ export default {
 </script>
 
 <style scoped>
-@import './animate.css';
+@import "./animate.css";
 .md-field {
-	margin: 0px !important;
-	background: white;
-	border-radius: 2px 2px 2px 2px;
-	padding-top: 0px !important;
-	box-sizing: border-box;
+  margin: 0px !important;
+  background: white;
+  border-radius: 2px 2px 2px 2px;
+  padding-top: 0px !important;
+  box-sizing: border-box;
 }
 .md-input {
-	height: 36px !important;
+  height: 36px !important;
 }
 #input-field {
-	margin-top: 6px !important;
-	height: 36px !important;
-	min-height: 36px !important;
+  margin-top: 6px !important;
+  height: 36px !important;
+  min-height: 36px !important;
 }
 #game-page {
   display: flex;
@@ -294,33 +314,32 @@ export default {
   background: white;
 }
 .messages {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	height: calc(100% - 41px);
-	overflow: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 41px);
+  overflow: auto;
 }
 #game {
-	width: 500px;
-	height: 500px;
+  width: 500px;
+  height: 500px;
 }
 #card-header {
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 .trivia-option {
-	display: inline-block;
-	padding-bottom: 0px;
-	font-size: 14pt;
+  display: inline-block;
+  padding-bottom: 0px;
+  font-size: 14pt;
 }
 .trivia-question {
-	text-align: center;
+  text-align: center;
 }
 .answer {
-	display: flex;
-	flex-direction: column;
-	align-items: left;
-	margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-left: 50px;
 }
-
 </style>
