@@ -72,6 +72,7 @@ export default {
 
 .profile-tab {
   position: absolute;
+  z-index: 10;
   bottom: -405px;
   right: 5px;
   background-color: white !important;

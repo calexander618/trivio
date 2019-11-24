@@ -9,8 +9,8 @@
     <md-card id="left">
       <md-card v-if="started" id="game">
         <div id="card-header">
-          <h1 id="timer" class="md-card-header">{{currentTime}}</h1>
-          <h1 id="score" class="md-card-header">{{score}}</h1>
+          <h1 id="timer" class="md-card-header">Time: {{currentTime}}</h1>
+          <h1 id="score" class="md-card-header">Score: {{score}}</h1>
         </div>
         <h3 v-html="questions[currentQuestion-1].question" class="trivia-question"></h3>
         <div class="answer" v-for="(answer, index) in currentAnswers.answers" :key="index">
@@ -306,6 +306,7 @@ export default {
   padding: 1rem;
   position: relative;
   overflow: hidden;
+  z-index: 8;
 }
 #chat-inputs {
   position: absolute;
