@@ -17,11 +17,12 @@ export function updatePlayerRecord(data) {
 }
 
 export function getLeaderboards() {
-    fetch('http://localhost:3000/api/user/getusers', {
+    return fetch('http://localhost:3000/api/user/getusers', {
         method: 'get',
     })
         .then(res => res.json())
         .then(res => {
-            console.log(res);
-        })
+            let sortedRankings = res.sort((a, b) => (b.ratio > a.ratio ? 1 : -1));
+            return sortedRankings;
+        });
 }

@@ -138,7 +138,8 @@ router.route('/user/getusers')
                     gamesPlayed: u.gamesPlayed, 
                     gamesWon: u.gamesWon, 
                     gamesLost: u.gamesLost, 
-                    gamesTied: u.gamesTied
+                    gamesTied: u.gamesTied, 
+                    ratio: u.gamesWon / ((u.gamesWon + u.gamesLost) === 0 ? 1 : (u.gamesWon + u.gamesLost))
                 };
             });
             res.status(200).json(usersToReturn).end();
