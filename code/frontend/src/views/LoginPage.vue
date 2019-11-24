@@ -32,10 +32,10 @@
               <md-input placeholder="Password" type="password" v-model="password"></md-input>
             </md-field>
             <md-button class="md-raised md-primary login-button" v-on:click="submitSignin()">Login</md-button>
+            <md-button v-on:click="createAccount()">Create Account</md-button>
           </form>
         </div>
         <!-- <a href="/#/create">Create Account</a> -->
-        <md-button id="create-button" v-on:click="createAccount()">Create Account</md-button>
       </md-card>
       <md-card id="create-right" class="hidden">
         <div id="forms-container">
@@ -56,10 +56,10 @@
               class="md-raised md-primary .md-field.md-input-actionary login-button"
               v-on:click="submitSignup()"
             >Sign Up</md-button>
+            <md-button v-on:click="goBack()">I already have an account</md-button>
           </form>
         </div>
         <!-- <a href="/#/create">Create Account</a> -->
-        <md-button id="uncreate-button" v-on:click="goBack()">I already have an account</md-button>
       </md-card>
     </div>
   </div>
@@ -145,6 +145,7 @@ export default {
       signup(signupObject).then(res => {
         if (res.status === 200) {
           this.notification = "Successfully signed up.";
+          this.$router.push('/dashboard/lobbyentry');
         } else if (res.status === 400) {
           // signup failed
           this.notification = "Signup failed, please try again.";
@@ -156,6 +157,23 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (max-width: 600px) {
+  #left {
+    display: none;
+  }
+
+  #right,
+  #create-right {
+    width: 100% !important;
+    height: auto;
+  }
+
+  #login-content {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 .md-field {
   background: white;
   border-radius: 2px 2px 2px 2px;
@@ -176,6 +194,8 @@ export default {
 }
 form {
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 #right,
 #create-right {
@@ -191,7 +211,6 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
 }
 #login-header {
   text-align: center;
@@ -239,5 +258,11 @@ a {
 }
 .hidden {
   display: none !important;
+}
+.md-field {
+  margin-top: 20px !important;
+}
+.md-button {
+  margin-top: 20px !important;
 }
 </style>
