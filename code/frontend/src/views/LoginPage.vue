@@ -132,7 +132,6 @@ export default {
       signup(signupObject).then(res => {
         if (res.status === 200) {
           this.notification = "Successfully signed up.";
-          this.$router.push('/dashboard/lobbyentry');
         } else if (res.status === 400) {
           // signup failed
           this.notification = "Signup failed, please try again.";

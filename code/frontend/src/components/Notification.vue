@@ -34,4 +34,10 @@ export default {
   left: 0;
   background-color: #11111144;
 }
+
+.md-button {
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+}
 </style>

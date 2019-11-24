@@ -31,3 +31,11 @@ export function getLeaderboards() {
             return sortedRankings;
         });
 }
+
+export function getProfile(playerId) {
+    console.log(playerId);
+    return fetch(`http://localhost:3000/api/user/getuser?playerId=${playerId}`, {
+        method: 'get'
+    })
+        .then(res => res.json());
+}
