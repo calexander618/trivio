@@ -2,10 +2,10 @@
   <div id="page-nav">
     <router-link v-for="link in links" :key="link.href" :to="link.href" class="link">{{ link.name }}</router-link>
     <div id="buttons">
+       <img src="../assets/profile.png" alt="">
        <a href="/#/login">
-         <img src="../assets/profile.png" alt="">
+          <img src="../assets/logout.png" alt="">
        </a>
-      <img src="../assets/logout.png" alt="">
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@ export default {
   padding: 0.9rem;
   position: relative;
   z-index: 1;
-box-shadow: 0 3px 1px -2px rgba(0,0,0,.2);
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2);
   overflow: hidden;
 }
 
@@ -50,10 +50,10 @@ p {
 }
 
 .link {
-  color: white;
-  text-decoration: none;
+  color: #555 !important;
+  text-decoration: none !important;
   border-radius: 10px 10px 0 0;
-  font-family: "Play";
+  font-famiy: "Play";
   padding: 0.8rem;
   transition: background-color 0.2s ease, color 0.2s ease;
   position: relative;
