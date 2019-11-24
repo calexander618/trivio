@@ -10,9 +10,9 @@ export function signin(data) {
         body: JSON.stringify(data)
     })
         .then(res => {
-            if (res.status === 404) {
+            if (res.status === 400) {
                 console.log("username or password invalid");
-                return "";
+                return "invalid";
             } else {
                 return res.json();
             }
@@ -38,7 +38,7 @@ export function signup(data) {
     });
 }
 
-export function checkToken() {
+export async function checkToken() {
     return fetch('http://localhost:3000/api/user/verifySignin', {
         headers: {
             'Authorization': store.state.token
