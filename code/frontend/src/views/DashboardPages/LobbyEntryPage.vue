@@ -1,11 +1,12 @@
 <template>
   <div id="landing-page">
+    <p id="error">{{errorMessage}}</p>
     <div class="row">
       <div class="tile" @click="showDialog = true">
         <h1>Create New Game</h1>
         <img src="../../assets/battle.png" alt />
       </div>
-      <div class="tile">
+      <div class="tile" @click="joinGame()">
         <h1>Join Game</h1>
       </div>
     </div>
@@ -66,6 +67,7 @@ export default {
   name: "lobbyentrypage",
   data() {
     return {
+      errorMessage: '', 
       gameId: null,
       difficulty: undefined,
       category: undefined,
@@ -78,6 +80,18 @@ export default {
       socketInfo: {}
     };
   },
+  sockets: {
+    gameJoined(data) {
+      this.$router.push(`/dashboard/game/${data.gameId}`);
+    }, 
+    gameCreated(data) {
+      this.$router.push(`/dashboard/game/${data.gameId}`);
+    }, 
+    errorMessage(data) {
+      console.log(data.message);
+      this.errorMessage = data.message;
+    }
+  }, 
   methods: {
     createGame() {
       this.gameId = generateId();
@@ -88,10 +102,13 @@ export default {
         category: this.category,
         questionCount: this.questions
       });
-      this.$router.push(`/dashboard/game/${this.gameId}`);
+    }, 
+    joinGame() {
+      this.$socket.emit("joinRequest", {
+        playerId: this.$store.state.username, 
+      });
     }
-  },
-  sockets: {}
+  }
 };
 </script>
 
@@ -154,5 +171,11 @@ h1 {
 
 img {
   width: 3rem;
+}
+
+#error {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
 }
 </style>
