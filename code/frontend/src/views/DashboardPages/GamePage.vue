@@ -65,7 +65,21 @@ export default {
 
   created() {
     this.getQuestions(this.gameId);
+    window.addEventListener('beforeunload', function(event) {
+      console.log(event);
+      this.$socket.emit('navigatingAway', {
+        gameId: this.gameId, 
+        playerId: this.$store.state.username
+      });
+    });
   },
+
+  beforeDestroy() {
+    this.$socket.emit('navigatingAway', {
+      gameId: this.gameId, 
+      playerId: this.$store.state.username
+    });
+  }, 
 
   sockets: {
     connect() {},
@@ -73,7 +87,6 @@ export default {
 
     playerJoin(data) {
       this.chatMessages.push("Player " + data.playerId + " has joined.");
-      this.getQuestions(this.gameId);
     },
     playerMessage(data) {
       this.chatMessages.push(data.playerId + ": " + data.message);
@@ -112,6 +125,10 @@ export default {
     waitingForPlayersToFinish() {
       console.log('waiting for other player to finish');
       this.notificationMessage = 'waiting for other player to finish'
+    }, 
+    earlyEnd() {
+      this.gameResult = "other player left the game";
+      this.gameIsFinished = true;
     }
 
   },

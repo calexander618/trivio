@@ -40,18 +40,15 @@ var gameQueue = [];
 io.on('connection', function (socket) {
     // ON CREATE GAME REQUEST
     socket.on('createRequest', function (req) {
-        console.log(1);
         // get questions from api
         https.get(`https://opentdb.com/api.php?amount=${req.questionCount}&category=${req.category}&difficulty=${req.difficulty}&type=multiple`, (resp) => {
             let data = '';
-            console.log(2);
             // A chunk of data has been recieved.
             resp.on('data', (chunk) => {
                 data += chunk;
             });
 
             resp.on('end', () => {
-                console.log(3);
                 // once request is processed, add questions to gameSession being created
                 // store gamesession in map
                 gameSessions.set(req.gameId, {
@@ -174,11 +171,24 @@ io.on('connection', function (socket) {
             // tell frontend who won
             // notify frontend with game results
             io.to(req.gameId).emit('gameFinished', gameSession);
+            gameSessions.delete(req.gameId);
             return;
         }
 
         console.log('waiting for player to finish');
         socket.emit('waitingForPlayersToFinish');
+    });
+
+    socket.on('navigatingAway', function(req) {
+        console.log(req);
+        // emit to players still in game that game is left
+        let gameSession = gameSessions.get(req.gameId);
+        io.to(req.gameId).emit('earlyEnd');
+        // remove game from gamesessions
+        gameSessions.delete(req.gameId);
+        gameQueue = gameQueue.filter(g => g !== req.gameId);
+        console.log(gameSessions.get(req.gameId));
+        console.log(gameQueue);
     });
 
     socket.on('messageRequest', function (req) {
@@ -187,33 +197,51 @@ io.on('connection', function (socket) {
     });
 
     socket.on('triviaRequest', function (req) {
+        socket.playerId = req.playerId;
+        socket.gameId = req.gameId;
+        console.log('PLAYER ID: ' + socket.playerId);
+        console.log(1);
         let gameSession = gameSessions.get(req.gameId);
         if (typeof gameSession === 'undefined') {
+            console.log(2);
             socket.emit('inGameError', {message: 'game not found'});
             return;
         }
         if (typeof gameSession.players.find(p => p.playerId === req.playerId) === 'undefined') {
+            console.log(3);
             socket.emit('inGameError', {message: 'player not in game'});
             return;
         }
         if (gameSession.playersServed.includes(req.playerId)) {
+            console.log(4);
             socket.emit('inGameError', {message: 'player already served questions'});
             return;
         }
         // console.log(gameSession);
-
+        console.log(5);
         gameSession.playersServed.push(req.playerId);
+        gameSessions.set(req.gameId, gameSession);
+        console.log(gameSession.playersServed);
         socket.emit('newQuestions', { questions: gameSession.questions });
 
         // check if game is ready to be played
         if (gameSession.playersServed.length === 2) {
+            console.log(6);
             io.to(req.gameId).emit('gameReady');
         }
     });
 
 
-    // socket.on('disconnect', function () {
-    //   io.emit('user disconnected');
-    // });
+    socket.on('disconnect', function () {
+      console.log('user disconnect');
+        // emit to players still in game that game is left
+        let gameSession = gameSessions.get(socket.gameId);
+        io.to(socket.gameId).emit('earlyEnd');
+        // remove game from gamesessions
+        gameSessions.delete(socket.gameId);
+        gameQueue = gameQueue.filter(g => g !== socket.gameId);
+        console.log(gameSessions.get(socket.gameId));
+        console.log(gameQueue);
+    });
 
 });
