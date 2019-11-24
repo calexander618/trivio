@@ -10,7 +10,7 @@ import LeaderboardsPage from '../views/DashboardPages/LeaderboardsPage.vue';
 import AboutPage from '../views/DashboardPages/AboutPage.vue';
 import PageNotFound from '../views/PageNotFound.vue';
 // import { store } from '../store.js';
-import { checkToken } from '../controllers/LoginController';
+import { checkToken, checkLocalStorageForToken } from '../controllers/LoginController';
 
 Vue.use(VueRouter);
 
@@ -73,6 +73,8 @@ router.beforeEach((to, from, next) => {
   // if public route, allow through
   if (publicroutes.includes(to.path)) return next();
   else {
+    //before we check token, we check localstorage to see if theres a token in there
+    checkLocalStorageForToken();
     checkToken().then(isSignedIn => {
       console.log(isSignedIn);
       if (isSignedIn !== false) return next();
