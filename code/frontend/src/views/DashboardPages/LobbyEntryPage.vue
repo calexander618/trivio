@@ -3,11 +3,11 @@
     <p id="error">{{errorMessage}}</p>
     <div class="row">
       <div class="tile" @click="showDialog = true">
-        <h1>Create New Game</h1>
+        <p class="tile-header">Create New Game</p>
         <img src="../../assets/battle.png" alt />
       </div>
       <div class="tile" @click="joinGame()">
-        <h1>Join Game</h1>
+        <p class="tile-header">Join Game</p>
       </div>
     </div>
     <md-dialog :md-active.sync="showDialog">
@@ -153,6 +153,7 @@ h1 {
   font-size: 3rem;
   color: #acacac;
   margin: 0;
+  display: block;
 }
 
 .row {
@@ -167,6 +168,9 @@ h1 {
   background-color: lightgrey;
   padding: 30px;
   box-shadow: 10px 10px 20px #22222277;
+  height: 20rem;
+  width: 16rem;
+  position: relative;
 }
 
 img {
@@ -177,5 +181,18 @@ img {
   color: red;
   text-align: center;
   margin-top: 1rem;
+}
+
+.tile-header {
+  font-size: 4rem;
+  display: block;
+  line-height: 4rem;
+  margin: 0;
+}
+
+img {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 }
 </style>
