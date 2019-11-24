@@ -69,6 +69,7 @@
 import PageHeader from "../components/PageHeader.vue";
 import Notification from "../components/Notification";
 import { signin, signup } from "../controllers/LoginController";
+import { validateInput } from "../controllers/ValidationController";
 
 export default {
   name: "loginpage",
@@ -87,6 +88,9 @@ export default {
     };
   },
   methods: {
+    valid(input) {
+      return validateInput(input);
+    },
     createAccount() {
       var right = document.getElementById("right");
       var create_right = document.getElementById("create-right");
@@ -100,12 +104,15 @@ export default {
       create_right.classList.add("hidden");
     },
     submitSignin() {
+      if (!this.valid(this.username) || !this.valid(this.password)) {
+        this.notification = "Invalid input, please try again!";
+        return;
+      }
       // set up sign in object
       const signinObject = {
         username: this.username,
         password: this.password
       };
-      console.log(signinObject);
 
       signin(signinObject).then(token => {
         if (token) {
@@ -120,7 +127,13 @@ export default {
     submitSignup() {
       // check if passwords match
       if (this.createPassword !== this.confirmPassword) {
-          this.notification = "Passwords don't match, please try again.";
+        this.notification = "Passwords don't match, please try again.";
+        return;
+      } else if (
+        !this.valid(this.createUsername) ||
+        !this.valid(this.createPassword)
+      ) {
+        this.notification = "Invalid input, please try again!";
         return;
       }
       // create signup object to send to signup endpoint
