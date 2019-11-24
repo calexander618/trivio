@@ -247,6 +247,26 @@ export default {
 
 <style scoped>
 @import "./animate.css";
+
+@media only screen and (max-width: 700px) {
+  #right {
+    display: none;
+  }
+
+  #left {
+    width: 95% !important;
+  }
+  
+  #game {
+    width: 90% !important;
+  }
+}
+
+#game {
+  width: 90% !important;
+  max-width: 600px !important;
+}
+
 .md-field {
   margin: 0px !important;
   background: white;
@@ -265,10 +285,11 @@ export default {
 #game-page {
   display: flex;
   width: 100%;
-  height: 740px;
+  height: 600px;
   margin: auto;
   justify-content: space-evenly;
   margin-top: 2rem;
+  padding-bottom: 2rem;
 }
 #left {
   width: 60%;
@@ -284,25 +305,34 @@ export default {
   background-color: #343434be;
   padding: 1rem;
   position: relative;
+  overflow: hidden;
 }
 #chat-inputs {
   position: absolute;
   bottom: 10px;
   left: 15px;
-  width: calc(100% - 20px);
+  width: calc(100% - 20px) !important;
   display: flex;
 }
 #chat-inputs > .md-input {
-  width: calc(70% - 5px);
+  width: calc(70% - 5px) !important;
   border: none;
   padding: 5px;
   color: white;
   background-color: #25a15fbd;
 }
 #chat-inputs > .md-button {
-  width: calc(30% - 5px);
+  width: calc(30% - 5px) !important;
   border: none;
   padding: 5px;
+}
+
+#chat-inputs > .md-field {
+  width: calc(70% - 5px) !important;
+}
+
+#chat-inputs > .md-button {
+  width: calc(30% - 5px) !important;
 }
 .message {
   font-family: "Roboto";
