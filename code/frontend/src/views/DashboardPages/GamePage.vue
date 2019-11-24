@@ -1,5 +1,7 @@
 <template>
   <div id="game-page">
+    <!-- <p id="notificiation">{{notificationMessage}}</p> -->
+    <notification class="noti" :notificationMessage="gameResult" v-if="gameIsFinished" @ok="endingRedirect()"></notification>
     <md-card md-with-hover id="left">
       <md-card v-if="started" id="game">
         <div id="card-header">
@@ -31,13 +33,16 @@
 </template>
 
 <script>
-import { generateId } from "../../controllers/IdController";
+import Notification from '../../components/Notification';
+import {updatePlayerRecord} from '../../controllers/GameController';
 
 export default {
+  components: {
+    Notification
+  }, 
   data() {
     return {
       gameId: this.$route.params.id,
-      playerId: generateId(),
       currentTime: 0,
       timer: undefined,
       started: false,
@@ -51,13 +56,30 @@ export default {
       score: 0,
       chatMessages: [],
       message: "", 
-      gameStart: false
+      gameStart: false, 
+      notificationMessage: '', 
+      gameResult: '', 
+      gameIsFinished: false
     };
   },
 
   created() {
     this.getQuestions(this.gameId);
+    window.addEventListener('beforeunload', function(event) {
+      console.log(event);
+      this.$socket.emit('navigatingAway', {
+        gameId: this.gameId, 
+        playerId: this.$store.state.username
+      });
+    });
   },
+
+  beforeDestroy() {
+    this.$socket.emit('navigatingAway', {
+      gameId: this.gameId, 
+      playerId: this.$store.state.username
+    });
+  }, 
 
   sockets: {
     connect() {},
@@ -65,7 +87,6 @@ export default {
 
     playerJoin(data) {
       this.chatMessages.push("Player " + data.playerId + " has joined.");
-      this.getQuestions(this.gameId);
     },
     playerMessage(data) {
       this.chatMessages.push(data.playerId + ": " + data.message);
@@ -81,11 +102,41 @@ export default {
     }, 
     gameReady() {
       this.gameStart = true;
+    }, 
+    gameFinished(data) {
+      console.log(data);
+      //this is where we would update backend with win or loss
+      let myScore = data.players.find(p => p.playerId === this.$store.state.username).score;
+      let otherScore = data.players.find(p => p.playerId !== this.$store.state.username).score;
+      if (myScore > otherScore) {
+        this.gameResult = 'win';
+      } else if (otherScore > myScore) {
+        this.gameResult = 'lose';
+      } else {
+        this.gameResult = 'tie';
+      }
+      this.gameIsFinished = true;
+      console.log('game result: ' + this.gameResult);
+      updatePlayerRecord({
+        username: this.$store.state.username, 
+        result: this.gameResult
+      });
+    }, 
+    waitingForPlayersToFinish() {
+      console.log('waiting for other player to finish');
+      this.notificationMessage = 'waiting for other player to finish'
+    }, 
+    earlyEnd() {
+      this.gameResult = "other player left the game";
+      this.gameIsFinished = true;
     }
 
   },
 
   methods: {
+    endingRedirect() {
+      this.$router.push('/dashboard/lobbyentry');
+    }, 
     countDownTimer() {
       this.timer = setInterval(() => {
         if (this.currentTime <= 0) {
@@ -95,8 +146,11 @@ export default {
           }
           else {
               this.evaluateResponse();
-            // UNCOMMENT THIS LATER ON, KEEP IT HERE
-            //   this.started = false;
+              this.$socket.emit('finishGame', {
+                playerId: this.$store.state.username, 
+                gameId: this.gameId, 
+                score: this.score
+              });
           }
           return;
         }

@@ -1,5 +1,6 @@
 <template>
   <div id="landing-page">
+    <p id="error">{{errorMessage}}</p>
     <div class="row">
       <div class="tile" @click="showDialog = true">
         <h1>Create New Game</h1>
@@ -66,6 +67,7 @@ export default {
   name: "lobbyentrypage",
   data() {
     return {
+      errorMessage: '', 
       gameId: null,
       difficulty: undefined,
       category: undefined,
@@ -84,6 +86,10 @@ export default {
     }, 
     gameCreated(data) {
       this.$router.push(`/dashboard/game/${data.gameId}`);
+    }, 
+    errorMessage(data) {
+      console.log(data.message);
+      this.errorMessage = data.message;
     }
   }, 
   methods: {
@@ -165,5 +171,11 @@ h1 {
 
 img {
   width: 3rem;
+}
+
+#error {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
 }
 </style>

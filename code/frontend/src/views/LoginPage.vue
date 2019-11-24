@@ -66,6 +66,7 @@
 
 <script>
 import PageHeader from "../components/PageHeader.vue";
+import { signin, signup } from "../controllers/LoginController";
 
 export default {
   name: "loginpage",
@@ -101,30 +102,12 @@ export default {
         password: this.password
       };
       console.log(signinObject);
-      // make request to sign in
-      fetch("http://localhost:3000/api/user/signin", {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        method: "post",
-        body: JSON.stringify(signinObject)
-      })
-        .then(res => {
-          if (res.status === 404) {
-            console.log("username or password invalid");
-            return "";
-          } else {
-            return res.json();
-          }
-        })
-        .then(res => {
-           if (typeof res.token !== 'undefined') {
-              // store token here
-              this.$store.state.token = res.token;
-              this.$store.state.username = this.username;
-              this.$router.push('dashboard/lobbyentry');
-           }
-        });
+
+      signin(signinObject).then(token => {
+        this.$store.state.token = token;
+        this.$store.state.username = this.username;
+        this.$router.push("dashboard/lobbyentry");
+      });
     },
     submitSignup() {
       // check if passwords match
@@ -138,13 +121,7 @@ export default {
         password: this.createPassword
       };
       // make request
-      fetch("http://localhost:3000/api/user/signup", {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(signupObject),
-        method: "post"
-      }).then(res => {
+      signup(signupObject).then(res => {
         if (res.status === 200) {
           // signup successful
           console.log("successfully signed up");
