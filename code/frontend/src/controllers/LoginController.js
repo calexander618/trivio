@@ -20,6 +20,7 @@ export function signin(data) {
         .then(res => {
             if (typeof res.token !== 'undefined') {
                 localStorage.setItem('trivioLocalStorageToken', res.token);
+                localStorage.setItem('trivioLocalStorageUsername', data.username);
                 return res.token;
                 // store token here
                 //   this.$store.state.token = res.token;
@@ -56,5 +57,12 @@ export function checkLocalStorageForToken() {
     let tokenFromLocalStorage = localStorage.getItem('trivioLocalStorageToken');
     if (tokenFromLocalStorage) {
         store.state.token = tokenFromLocalStorage;
+    }
+}
+
+export function checkLocalStorageForUsername() {
+    let usernameFromLocalStorage = localStorage.getItem('trivioLocalStorageUsername');
+    if (usernameFromLocalStorage) {
+        store.state.username = usernameFromLocalStorage;
     }
 }
