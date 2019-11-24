@@ -8,12 +8,18 @@ import GamePage from '../views/DashboardPages/GamePage.vue';
 import UserProfilePage from '../views/DashboardPages/UserProfilePage.vue';
 import LeaderboardsPage from '../views/DashboardPages/LeaderboardsPage.vue';
 import AboutPage from '../views/DashboardPages/AboutPage.vue';
+import PageNotFound from '../views/PageNotFound.vue';
 // import { store } from '../store.js';
 import { checkToken } from '../controllers/LoginController';
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: '*', 
+    name: 'page-not-found',
+    component: PageNotFound
+  }, 
   {
     path: '/',
     name: 'redirect-to-login',
