@@ -5,7 +5,7 @@ export function updatePlayerRecord(data) {
     fetch('http://localhost:3000/api/user/updateHistory', {
         headers: {
             'Content-Type': 'application/json'
-        }, 
+        },
         method: 'post',
         body: JSON.stringify({
             username: data.username,
@@ -14,4 +14,14 @@ export function updatePlayerRecord(data) {
     })
         .then(res => res.text())
         .then(res => console.log(res));
+}
+
+export function getLeaderboards() {
+    fetch('http://localhost:3000/api/user/getusers', {
+        method: 'get',
+    })
+        .then(res => res.json())
+        .then(res => {
+            console.log(res);
+        })
 }

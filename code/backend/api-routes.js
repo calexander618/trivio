@@ -129,4 +129,20 @@ router.route('/user/updateHistory')
         })
     });
 
+router.route('/user/getusers')
+    .get(function (req, res) {
+        User.find((err, users) => {
+            let usersToReturn = users.map(u => {
+                return {
+                    username: u.username, 
+                    gamesPlayed: u.gamesPlayed, 
+                    gamesWon: u.gamesWon, 
+                    gamesLost: u.gamesLost, 
+                    gamesTied: u.gamesTied
+                };
+            });
+            res.status(200).json(usersToReturn).end();
+        });
+    });
+
 module.exports = router;
