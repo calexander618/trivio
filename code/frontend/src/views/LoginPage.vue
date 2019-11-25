@@ -10,13 +10,12 @@
     <div id="login-content">
       <md-card id="left">
         <md-card-header>
-          <h2>Play Trivia Online</h2>
+          <h2>Online Trivia</h2>
         </md-card-header>
         <ul>
-          <md-card-content>A fast-paced competitive trivia game</md-card-content>
-          <md-card-content>Play against friends and other competitors online</md-card-content>
-          <md-card-content>Track you and your friends stats</md-card-content>
-          <md-card-content>Check how you stack up in the global leaderboard</md-card-content>
+          <md-card-content>-A fast-paced trivia game</md-card-content>
+          <md-card-content>-Track your stats as you go</md-card-content>
+          <md-card-content>-See how you compare to other players</md-card-content>
         </ul>
       </md-card>
       <md-card id="right">
@@ -250,5 +249,11 @@ a {
 }
 .md-button {
   margin-top: 20px !important;
+}
+#left > .md-card-header {
+  font-size: 1.5rem;
+}
+.md-card-content {
+  font-size: 1rem;
 }
 </style>
