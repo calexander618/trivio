@@ -164,7 +164,7 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           // signup successful
-          console.log("successfully signed up");
+          //console.log("successfully signed up");
           document.getElementById("create-right").classList.add("hidden");
           document.getElementById("right").classList.remove("hidden");
           document.getElementById("act-create-success").classList.remove("hidden");
@@ -172,7 +172,7 @@ export default {
           document.getElementById("act-create-failure-usr").classList.add("hidden");
         } else if (res.status === 400) {
           // signup failed
-          console.log("signup failed");
+          //console.log("signup failed");
           document.getElementById("act-create-success").classList.add("hidden");
           document.getElementById("act-create-failure-pwd").classList.add("hidden");
           document.getElementById("act-create-failure-usr").classList.remove("hidden");

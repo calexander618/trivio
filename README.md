@@ -1,126 +1,47 @@
-# Hack Week Project
-
-## Overview 
-
-*Due Sunday, November 24 at 11:59:00pm*
-
-*Submit through GitHub Classroom **AND** Canvas*
-
-GitHub Classroom Link: [https://classroom.github.com/g/HIuHJjfO](https://classroom.github.com/g/HIuHJjfO)
-
-In JavaScript terms, I’d like you to…
-
-```javascript
-// Get your friends  
-$.get("http://cs:4830-7830/friends", function(friends) {  
-	// Get your computers  
-	for (var i in friends) {  
-		friends[i].getComputer();  
-	}  
-	// And some snacks  
-	while (snacks > 0) {  
-		friends.code();  
-	}  
-});
-```
-
-In other words, the Hack Week Project is a collaborative, exploration-style assignment where you are to brainstorm and build a complete web application prototype. When the word `prototype` is being used here, it means a valid beta version of the app where the app is working correctly. 
-
-**Help with Decision:** If you need help on making a decision then let us know. The best project idea is something that interests you!
-
-## Getting Started and GitHub Submission Link
-
-To start the challenge, go to this link:  [https://classroom.github.com/g/HIuHJjfO](https://classroom.github.com/g/HIuHJjfO)
-
-Each feature (maybe each group member) will have their own branch. 
-
-`Link` your account, `clone` the repository, make a new `branch`, go into the `code` directory, and `create` your application 
-
-Make sure you start a new `development` branch. The `master` branch will be the production branch. At the end, when you are finished, do the final `commit` from all the feature branches back to the `development`, and the final `merge` to `master` then `push` the `master` and `development` branch back up for grading. 
-
-**If you work the entire time on master, you will get points deducted.**  This is not a good industry practice.
-
-After pushing back to `origin` for the final submission, I recommend to go to your remote repository on GitHub, download the repository which will give you a zip file of your repo on your local machine, then submit that zip to canvas. The challenge submission will require both on GitHub and Canvas.
-
-**Note:** Make sure the Canvas submission has all of the elements that are included in your GitHub submission which includes a link to the server, the raw code, the journal, and screenshots of the application. **Make sure the canvas submission is up-to-date.**
+# Link to Web-App
 
 
-## Requirements 
+# A Short Introduction
+We are Los Animales and our members are Dylan Bunch, Chase Alexander, and Michael Woodruff. We are making a rapid-fire trivia game called Triv.io (we currently do not own this domain, but that could be a future addition). All 3 of us worked on the UI at some point, but Dylan was mostly responsible for making Triv.io into something pretty using Vue Material design. Chase and Michael primarily worked on the Node backend, the web-sockets for matchmaking. Michael also worked with JWT for account authentication.
+When you enter the website, you'll see two panels on the login page. The left panel is a short description of the web-app and the right is where you can login to the website. If you do not have an account, you can click the "Create Account" button at the bottom of the login panel. Then the login panel changes into the create account panel, and you can enter in your desired credentials. If you choose to create an account with a username that is taken, an error message will appear to notify you as such. The same can be said about passwords that do not match in both fields.
+Upon logging in, you are presented with a navbar, 2 tiles, and the logout button. The Navbar allows easy navigation between the game page, the leaderboards page, and the about page. There is also a button on the opposite end of the navigation tabs that logs you out and redirects you to the login page. On the game lobby page you will find the aforementioned 2 tiles: one that says "Create Game" and one that says "Join Game". If  you click "Create Game", a dialog box will appear and direct you to select the difficulty of the questions, the category in which to pull from, and the number of questions in the round. If you click "Join Game" you will be presented with a dialog box prompting you to choose the game you want to join.
+The leaderboards page is where you can find the top 10 highest scoring players. On the about page you will find information regarding the website, how it was built, and who did what in the project.
 
-You should send me a list of your team and a team name. However, you should get started now, don't wait.
+# The Problem
+Have you ever been hanging out with your friends, but everyone's bored so their noses are buried in their phones? 
 
-The content and function of the application are up to you. You could create a mashup that combines various web technologies and APIs; you could borrow concepts and ideas from the class; or you could search around the Internet and tech blogs for inspiration.
+# Our Solution
+Triv.io is our solution to that problem of needing more fun things to do with your friends. It'll be a web-app also availabe on mobile devices, so you can play whenever and wherever with your friends.
 
-Hack Week is set for the week before Thanksgiving Break. Each project will demo their work after Thanksgiving Break on Tuesday 12/3 and Thursday 12/5. Presentations are required for the grade, have fun and show off your work !!
+# Implementation
+We'll be usinf NodeJS to set up our server, Vue for a frontend framework, MongoDB to manage game/user data, the TDB api to pull trivia questions, web-sockets to manage connections to games, and Vue Material to style everything. Chase and Michael handled mongodb, web-sockets, and the TDB api. Dylan handled the Vue Material frontend.
 
-Hack Week Projects account for 20% of your weighted grade. Please use GitHub Classroom to share your code and Amazon AWS to host the result, you are also welcome to make a hybrid application. Firebase and other hosting services can be used. Submit a link to each here and **be sure to include the names of your group members**. Note: If you need a group, then let me know. This semester we will be working in groups of 3s. 
+## Where We Meet Requirements
+ - Consistent Design and User Experience
+	- We used Vue Matrial for a large portion of our html elements. These can be seen in the LoginPage.vue, GamePage.vue, Leaderboards.vue, LobbyEntryPage.vue, and AboutPage.vue.
+ - Well-Structured
+	- In all of the pages mentioned under Consistent Design and User Experience, there is a style section which the styles for elements. For example, if you wanted to change the background color of all the cards on the LeaderboardsPage.vue all you would need to do is modify the leaderboard-entry class on line 73.
+ - Authentication
+	- Publicly available content is the LoginPage.vue while the other pages are only available after logged in. In order to manage this, we use JWT for per-request authentication and we store users' hashed passwords in a MongoDB database. The user sends their hashed password to our server and we check the hashed passwords together. Functions can be found in LoginPage.vue on lines 109 and 143.
+ - Architecture
+	- MVC is maintained through the use of controllers and .vue pages. The controllers are in the controllers folder, being ClientController.js and IdController.js. Views are stored in the views folder and are the .vue files. The model can be found in the backend folder under the model folder. We're using mongoose to manage the Mongo database that holds all the data from games/users. 
+ - Persistent
+	- Persistence is implemented inside the model/user.js file using mongoose and MongoDB.
+ - Security
+	- The site is secure since every request sent must be validated with a JWT generated on login. You can see their use in the functions on lines 109 and 143 of LoginPage.vue.
+ - Responsive
+	- We used material design with nearly every element we could. Can be found in the LoginPage.vue under the template section.
+ - Content
+	- We have data, in fact we pull all of our trivia from TDB, a trivia database of user-submitted questions. Can be found within the server.js file in backend.
+ - Error Handling
+	- If you log-in with an incorrect password, a message will be displayed informing you as such. The same can be said if you register with a taken username or if the passwords do not match. Also when creating a game a dialog will appear with several dropdowns. If you do not fill in all fields, the create button will be disabled until all fields are entered. Can be found in LobbyEntryPage.vue and LoginPage.vue
+ - Publicly Viewable
+	- The publicly viewable content is the LoginPage.vue while the other content is hidden behind the login screen.
+ - Overall Purpose
+	- We just wanted to make a fun game that you could play with your friends when you run out of things to do or if you just need to kill some time. 
 
-**Note:** Make sure you test your application and make sure it works correctly. Run through the document that you created (act like you are the person grading the assignment) to make sure the document is crystal clear.  
+# Knowledge Gained
+Since Dylan didn't know Vue and he worked on the front-end, he learned how to use that framework. Michael and Chase got more experience with web-sockets, Vue, Node, and MongoDB since they worked on the backend. We also learned that it can be hard to manage the project with only 2 branches (frontend and backend). Instead, a branch per group member keeps toes from being stepped on until merges, but merges are where toes get stepped on anyway. We also learned that communication is imperative as we lost hours of work when Dylan designed an Angular frontend but, because of bad communication on everyone's part, we ended up having to ditch the Angular frontend since Chase and Michael needed a frontend to test with and Dylan had not finished yet, so they made a Vue frontend instead.
 
-
-## What and Where to Submit 
-**For GitHub:** 
-1. Raw Code:  
-	- Server side code 
-	- Front end code 
-2. Report with URL to your instance and: 
-	- Documentation for project (Format of document is Markdown. The documentation should be more like a project report not a list of items. If you have already written a document, you can keep the material you already have but re-organize it into these clear sections).  
-	    -   A short introduction
-	        -   Group name, Group members, what you worked on and how to use it, basic background information
-	    -   The problem
-	        -   What are you trying to solve
-	    -   Your solution
-	        -   How you decided to solve the problem
-	    -   Implementation
-	        -   Talk about the technologies you used
-	        -   How you used them
-	        -   Who implemented what
-	        -   What and where we should look for grading purposes
-	            -   What do you want to show off in terms of hard work
-	            -   What are you proud of that you accomplished
-	            -   Show us where you did good work
-	    -   Knowledge Gained
-	        -   Pointers, knowledge, tricks to inform the rest of the class
-	    -   Future Work
-	        -   What needs to be finished before the due date 
-3. Screenshots of your application running with the system clock. 
-	- You may also want to take some screenshots of your finished code 
-	- The system clock must contain the date/time to be valid 
-	- **Note:** Link the screenshots in your report as in previous challenges 
-
-**For Canvas:**
-
-4. Submit the URL to the Team's GitHub Classroom Repo
-5. Submit your URL to your instance using a "URL Submission" type
-6. Then click on `Resubmit`, download your GitHub repository after your final submission and submit that zip file on Canvas and named it `<TeamName>HackWeekProject.zip` where you replace `<TeamName>` with your actual team name.  
-
-**NOTE:** For canvas, you cannot submit different types of submissions at the same time. Therefore, you may submit two different submissions, the first submission will be a `URL submission`, where you will copy and paste your URL to your output on the instance and GitHub Repo, then click submit. After the submission is successful, you will click on the big blue button called `Re-submit assignment`, then do a second submission for a `file upload`. You will upload a zip file from your final GitHub submission. On your end it will look like you only submitted the zip file but on our end we will see both submissions.
-
-Total points is 200 -> 100 points for finished product and 100 points for demo/presentation.
-
-Have fun hacking!
-
-
-## Notes: 
-1. There is a `code` directory in the GitHub classroom template, this is where your raw code will go. Make sure you do not submit any build code here. 
-2. There is a `report` directory, this is where your markdown `.md` file will go for the report. Please link your screenshots in the report as in previous challenges. Place your URL link in the report. As well as the information that was asked of you in the requirements. 
-3. There is a `screenshots` directory, you can place your screenshots there, but please link them in your report. 
-
-
-## Help
-
-If there is anything unclear about what you need to do please let me or the TAs know. If you need help, office hours are located under `Modules` -> `Course Information` -> `Office Hours and TA Information`
-
-## Due date/time
-
-This hack week project will be  **due at 11:59:00PM on Sunday, November 24**.  Therefore, you will have approximately 2 weeks to complete this assignment. This includes pushing everything to GitHub classroom, submitting the downloaded zip from GitHub on Canvas, and posting the discussion. 
-
-**NOTE:** Remember to complete the discussion board. 
-**NOTE:** Remember to submit the Instance link, GitHub link, and zip file on Canvas 
-
----
-
-> © 2019 Professor Wergeles. All rights reserved. 
-> _This document is provided with the materials for an educational course and are meant for personal use by the student while participating in the course and is not to be distributed to others._
-
-
+# Future Work
+What we need to finish before the due date is a login page and the functionality behind it, a create account functionality, the game lobby page, the game page, the leaderboards page, and the about page. We need buttons so navigation on the page is easy, as well as a button to log out when you're done with the game. 
