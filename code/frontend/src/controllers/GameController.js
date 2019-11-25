@@ -2,7 +2,7 @@
 
 export function updatePlayerRecord(data) {
     console.log(data);
-    fetch('http://localhost:3000/api/user/updateHistory', {
+    fetch('https://www.michaelwoodruffdev.com/api/user/updateHistory', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -17,7 +17,7 @@ export function updatePlayerRecord(data) {
 }
 
 export function getLeaderboards() {
-    return fetch('http://localhost:3000/api/user/getusers', {
+    return fetch('https://www.michaelwoodruffdev.com/api/user/getusers', {
         method: 'get',
     })
         .then(res => res.json())
@@ -34,7 +34,7 @@ export function getLeaderboards() {
 
 export function getProfile(playerId) {
     console.log(playerId);
-    return fetch(`http://localhost:3000/api/user/getuser?playerId=${playerId}`, {
+    return fetch(`https://www.michaelwoodruffdev.com/api/user/getuser?playerId=${playerId}`, {
         method: 'get'
     })
         .then(res => res.json());
