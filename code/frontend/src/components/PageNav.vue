@@ -5,23 +5,34 @@
       <img @click="toggleProfile()" src="../assets/profile.png" alt />
       <img @click="logout()" src="../assets/logout.png" alt />
     </div>
+    <transition name="slide">
+      <profile-tab class="profile-tab" v-if="isProfileOpen" @click="toggleProfile()"></profile-tab>
+    </transition>
   </div>
 </template>
 
 <script>
+import ProfileTab from "./ProfileTab.vue";
 export default {
   name: "pagenav",
+  components: {
+    ProfileTab
+  },
   methods: {
     logout() {
-      localStorage.removeItem('trivioLocalStorageToken');
-      this.$router.push('/login');
-    }, 
+      localStorage.removeItem("trivioLocalStorageToken");
+      localStorage.removeItem("trivioLocalStorageUsername");
+      this.$store.state.token = null;
+      this.$store.state.username = null;
+      this.$router.push("/login");
+    },
     toggleProfile() {
-
+      this.isProfileOpen = !this.isProfileOpen;
     }
-  }, 
+  },
   data() {
     return {
+      isProfileOpen: false,
       links: [
         {
           name: "Play",
@@ -42,6 +53,41 @@ export default {
 </script>
 
 <style scoped>
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.slide-enter,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(100px);
+}
+
+.slide-enter-to,
+.slide-leave {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.profile-tab {
+  position: absolute;
+  z-index: 10;
+  bottom: -405px;
+  right: 5px;
+  background-color: white !important;
+  font-family: "Roboto";
+  height: 400px;
+  width: 300px;
+  box-shadow: -5px 5px 20px 0 #11111144;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
 #page-nav {
   background-color: #4dcc9bf8;
   margin: 0;
@@ -49,7 +95,6 @@ export default {
   position: relative;
   z-index: 1;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
 }
 
 p {

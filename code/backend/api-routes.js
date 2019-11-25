@@ -133,15 +133,32 @@ router.route('/user/getusers')
         User.find((err, users) => {
             let usersToReturn = users.map(u => {
                 return {
-                    username: u.username, 
-                    gamesPlayed: u.gamesPlayed, 
-                    gamesWon: u.gamesWon, 
-                    gamesLost: u.gamesLost, 
-                    gamesTied: u.gamesTied, 
+                    username: u.username,
+                    gamesPlayed: u.gamesPlayed,
+                    gamesWon: u.gamesWon,
+                    gamesLost: u.gamesLost,
+                    gamesTied: u.gamesTied,
                     ratio: u.gamesWon / ((u.gamesPlayed) === 0 ? 1 : (u.gamesPlayed))
                 };
             });
             res.status(200).json(usersToReturn).end();
+        });
+    });
+
+router.route('/user/getuser')
+    .get(function (req, res) {
+        let playerId = req.query.playerId;
+        console.log(playerId);
+        User.findOne({ username: playerId }, (err, user) => {
+            let userToReturn = {
+                username: user.username,
+                gamesPlayed: user.gamesPlayed,
+                gamesWon: user.gamesWon,
+                gamesLost: user.gamesLost,
+                gamesTied: user.gamesTied,
+                ratio: user.gamesWon / ((user.gamesPlayed) === 0 ? 1 : (user.gamesPlayed))
+            }
+            res.status(200).json(userToReturn).end();
         });
     });
 
