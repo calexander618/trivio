@@ -76,7 +76,6 @@ router.route('/user/signin')
                     if (!isMatch) return res.status(400).json({
                         message: 'Wrong Password.'
                     }).end();
-                    console.log(user);
                     let token = jwt.sign({
                         user: user
                     }, 'secretkey', (err, token) => {
@@ -100,7 +99,6 @@ router.route('/user/updateHistory')
             "username": req.body.username
         }, (err, user) => {
             if (err) console.log(err);
-            console.log(user);
             let setObject = {
                 gamesPlayed: user.gamesPlayed + 1,
             }
@@ -115,7 +113,6 @@ router.route('/user/updateHistory')
                     setObject.gamesTied = user.gamesTied + 1;
                     break;
             }
-            console.log(setObject);
             User.updateOne({
                 "username": req.body.username
             }, {
@@ -148,7 +145,6 @@ router.route('/user/getusers')
 router.route('/user/getuser')
     .get(function (req, res) {
         let playerId = req.query.playerId;
-        console.log(playerId);
         User.findOne({ username: playerId }, (err, user) => {
             let userToReturn = {
                 username: user.username,
