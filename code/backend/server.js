@@ -163,6 +163,9 @@ io.on('connection', function (socket) {
     socket.on('finishGame', function(req) {
         // update score for finished game
         let gameSession = gameSessions.get(req.gameId);
+        if (!gameSession) {
+            return;
+        }
         gameSession.players[gameSession.players.findIndex(p => p.playerId === req.playerId)].score = req.score;
         gameSession.playersDone.push(req.playerId);
         gameSessions.set(req.gameId, gameSession);
@@ -183,7 +186,9 @@ io.on('connection', function (socket) {
         console.log(req);
         // emit to players still in game that game is left
         let gameSession = gameSessions.get(req.gameId);
-        io.to(req.gameId).emit('earlyEnd');
+        if (typeof gameSession !== 'undefined') {
+            io.to(req.gameId).emit('earlyEnd');
+        }
         // remove game from gamesessions
         gameSessions.delete(req.gameId);
         gameQueue = gameQueue.filter(g => g !== req.gameId);

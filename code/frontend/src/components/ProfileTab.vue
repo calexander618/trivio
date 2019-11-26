@@ -35,6 +35,8 @@ export default {
 #profile-tab {
     background-color: white !important;
     font-family: 'Roboto';
+    position: absolute;
+    z-index: 10;
 }
 button {
     position: absolute;
