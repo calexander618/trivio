@@ -1,7 +1,7 @@
 <template>
   <div id="page-header">
     <div class="left">
-      <img src="../assets/logo.png" alt />
+      <img src="../assets/logo.png" alt @click="$router.push('/dashboard/lobbyentry')"/>
       <h1>Triv.io</h1>
     </div>
     <div class="right" v-if="loggedIn">

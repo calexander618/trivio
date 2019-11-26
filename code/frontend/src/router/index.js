@@ -77,7 +77,6 @@ router.beforeEach((to, from, next) => {
     checkLocalStorageForToken();
     checkLocalStorageForUsername();
     checkToken().then(isSignedIn => {
-      console.log(isSignedIn);
       if (isSignedIn !== false) return next();
       else return next('/login');
     });

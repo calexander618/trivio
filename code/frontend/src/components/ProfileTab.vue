@@ -18,7 +18,9 @@ export default {
     data() {
         return {
             username: this.$store.state.username, 
-            profile: null
+            profile: {
+                ratio: null
+            }
         }
     }, 
     mounted() {

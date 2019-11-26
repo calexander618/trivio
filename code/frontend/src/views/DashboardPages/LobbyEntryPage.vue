@@ -8,12 +8,16 @@
     ></notification>
     <div class="row">
       <div class="tile" @click="showDialog = true">
-        <p class="tile-header">Create New Game</p>
+        <p class="tile-header">Create Game</p>
         <img src="../../assets/hammer.png" alt />
       </div>
       <div class="tile" @click="joinGame()">
         <p class="tile-header">Join Game</p>
         <img src="../../assets/join.png" alt />
+      </div>
+      <div class="tile" @click="toggleFriends()">
+        <p class="tile-header">Join Friend</p>
+        <img src="../../assets/friends.png" alt />
       </div>
     </div>
     <md-dialog :md-active.sync="showDialog">
@@ -60,6 +64,18 @@
             <md-option value="15">15</md-option>
           </md-select>
         </md-field>
+        <span>Visibility</span>
+        <md-field>
+          <md-select
+            v-model="visibility"
+            name="visibility"
+            id="visibility"
+            placeholder="visibility"
+          >
+            <md-option value="public">public</md-option>
+            <md-option value="private">private</md-option>
+          </md-select>
+        </md-field>
       </div>
       <md-dialog-actions>
         <md-button class="md-primary" @click="showDialog = false">Close</md-button>
@@ -81,7 +97,7 @@ export default {
   name: "lobbyentrypage",
   components: {
     Notification
-  }, 
+  },
   data() {
     return {
       errorMessage: "",
@@ -89,13 +105,15 @@ export default {
       difficulty: undefined,
       category: undefined,
       questions: undefined,
+      visibility: undefined,
       showDialog: false,
       settings: {
         difficulty: null,
         category: null
       },
       socketInfo: {},
-      notification: undefined
+      notification: undefined,
+      hasCreated: false
     };
   },
   sockets: {
@@ -111,19 +129,34 @@ export default {
     }
   },
   methods: {
+    toggleFriends() {
+      console.log(this);
+      this.$parent.$children[1].toggleFriends();
+    }, 
     createGame() {
+      if (this.hasCreated) {
+        return;
+      }
+      this.hasCreated = true;
       this.gameId = generateId();
       this.$socket.emit("createRequest", {
         playerId: this.$store.state.username,
         gameId: this.gameId,
         difficulty: this.difficulty,
         category: this.category,
-        questionCount: this.questions
+        questionCount: this.questions,
+        visibility: this.visibility
       });
     },
     joinGame() {
       this.$socket.emit("joinRequest", {
         playerId: this.$store.state.username
+      });
+    }, 
+    joinFriend(playerId) {
+      this.$socket.emit('joinFriendRequest', {
+        playerId: this.$store.state.username, 
+        friend: playerId
       });
     }
   }
@@ -191,6 +224,7 @@ h1 {
   width: 80%;
   margin: auto;
   margin-top: 3rem;
+  flex-wrap: wrap;
 }
 
 .tile {
@@ -200,6 +234,7 @@ h1 {
   height: 20rem;
   width: 16rem;
   position: relative;
+  margin: 0 20px 20px 20px;
 }
 
 img {

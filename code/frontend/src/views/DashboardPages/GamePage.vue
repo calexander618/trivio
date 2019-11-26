@@ -8,14 +8,18 @@
     ></notification>
     <md-card id="left">
       <md-card v-if="started" id="game">
-        <p>{{ currentQuestion }} / {{ questions.length }}</p>
+        <p id="question-fraction">{{ currentQuestion }} / {{ questions.length }}</p>
         <div id="card-header">
           <h1 id="timer" class="md-card-header">Time: {{currentTime}}</h1>
           <h1 id="score" class="md-card-header">Score: {{score}}</h1>
         </div>
         <h3 v-html="questions[currentQuestion-1].question" class="trivia-question"></h3>
-        <hr>
-        <div class="answer" v-for="(answer, index) in currentAnswers.answers" :key="index">
+        <hr />
+        <div
+          class="answer"
+          v-for="(answer, index) in currentAnswers.answers"
+          :key="index + (transitionKey * 4)"
+        >
           <div>
             <md-radio
               class="trivia-radio"
@@ -43,7 +47,12 @@
       </div>
       <div id="chat-inputs">
         <md-field id="input-field">
-          <md-input id="chat-input" v-model="message" placeholder="Send a message" @keyup.enter="sendMessage(gameId, playerId, message)"></md-input>
+          <md-input
+            id="chat-input"
+            v-model="message"
+            placeholder="Send a message"
+            @keyup.enter="sendMessage(gameId, playerId, message)"
+          ></md-input>
         </md-field>
         <md-button
           class="md-raised md-primary"
@@ -83,7 +92,8 @@ export default {
       gameIsFinished: false,
       pregameTimerInterval: undefined,
       pregameTimerStart: false,
-      pregameTimer: "Waiting for Player..."
+      pregameTimer: "Waiting for Player...",
+      transitionKey: 1
     };
   },
 
@@ -236,6 +246,7 @@ export default {
 
       this.currentQuestion++;
       this.getAnswers();
+      this.transitionKey++;
     },
     getAnswers() {
       this.currentAnswers = {
@@ -290,6 +301,23 @@ export default {
   #game {
     width: 90% !important;
   }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.slide-enter-to,
+.slide-leave {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.slide-enter,
+.slide-leave-to {
+  transform: translateX(-350px);
+  opacity: 0;
 }
 
 #game {
@@ -409,7 +437,7 @@ export default {
   font-family: "Roboto";
   font-weight: 900;
 }
-.md-card > p {
+#question-fraction {
   position: absolute;
   bottom: 1rem;
   right: 2rem;
