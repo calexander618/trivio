@@ -1,6 +1,7 @@
 <template>
     <div id="profile-tab">
         <h1>{{ username }}</h1>
+        <hr>
         <h3>W/L Ratio: {{ profile.ratio }}</h3>
         <h3>Games Played: {{ profile.gamesPlayed }}</h3>
         <h3>Games Won: {{ profile.gamesWon }}</h3>
@@ -17,11 +18,12 @@ export default {
     data() {
         return {
             username: this.$store.state.username, 
-            profile: null
+            profile: {
+                ratio: null
+            }
         }
     }, 
     mounted() {
-        console.log(this.$store.state.username);
         getProfile(this.$store.state.username)
         .then(res => {
             this.profile = res;
@@ -35,6 +37,8 @@ export default {
 #profile-tab {
     background-color: white !important;
     font-family: 'Roboto';
+    position: absolute;
+    z-index: 10;
 }
 button {
     position: absolute;
@@ -53,5 +57,9 @@ button {
 button:hover {
     background-color: grey;
     cursor: pointer;
+}
+
+hr {
+    width: 100%;
 }
 </style>

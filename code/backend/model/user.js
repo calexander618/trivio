@@ -28,6 +28,10 @@ const userSchema = mongoose.Schema({
     gamesTied: {
         type: Number, 
         required: true
+    }, 
+    friends: {
+        type: [String], 
+        required: false // for now in testing
     }
 });
 

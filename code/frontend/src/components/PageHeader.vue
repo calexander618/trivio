@@ -1,7 +1,7 @@
 <template>
   <div id="page-header">
     <div class="left">
-      <img src="../assets/logo.png" alt />
+      <img src="../assets/logo.png" alt @click="$router.push('/dashboard/lobbyentry')"/>
       <h1>Triv.io</h1>
     </div>
     <div class="right" v-if="loggedIn">
@@ -21,6 +21,7 @@ export default {
 <style scoped>
 #page-header {
   font-family: "Play";
+  height: 8rem;
   background-color: #4dcc9bf8;
   padding: 1rem;
   /* box-shadow: 0 0 30px black; */
@@ -33,7 +34,7 @@ export default {
 
 h1 {
   margin: 0;
-  font-size: 3rem;
+  font-size: 4rem;
   color: #ededed;
   margin-left: 1rem;
 }

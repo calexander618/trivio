@@ -37,6 +37,7 @@ app.get('/', function (req, res) {
 
 var gameSessions = new Map();
 var gameQueue = [];
+var privateGames = [];
 
 io.on('connection', function (socket) {
     // ON CREATE GAME REQUEST
@@ -71,7 +72,18 @@ io.on('connection', function (socket) {
                 console.log(gameSessions.get(req.gameId));
                 // user creating game will join gamesession
                 socket.join(req.gameId);
-                // store in game queue
+                // store in game queue or game session
+                switch( req.visibility ) {
+                    case 'public': 
+                        gameQueue.push(req.gameId);
+                        break;
+                    case 'private': 
+                        privateGames.push({
+                            username: req.playerId, 
+                            gameId: req.gameId
+                        });
+                        break;
+                }
                 gameQueue.push(req.gameId);
                 socket.emit('gameCreated', {
                     gameId: req.gameId
@@ -83,6 +95,42 @@ io.on('connection', function (socket) {
         }).on('error', (err) => {
             console.log("ERROR GETTING TRIVIA: " + err.message);
         });
+    });
+
+    socket.on('joinFriendRequest', function (req) {
+        console.log('got joinfriendrequest');
+        if (!privateGames.map(p => p.username).includes(req.friend)) {
+            socket.emit('errorMessage', {message: `${req.friend} isnt hosting a game right now`});
+            return;
+        }
+
+        let playerId = req.playerId;
+        let gameId = privateGames.find(p => p.username === req.friend).gameId;
+        privateGames = privateGames.filter(p => p.username !== req.friend);
+        let gameToJoin = gameSessions.get(gameId);
+
+        console.log(`playerId: ${playerId}`);
+        console.log(`gameId: ${gameId}`);
+        console.dir(`game: ${gameToJoin}`);
+
+        // update gamesession object
+        gameToJoin.playerCount++;
+        gameToJoin.players.push({playerId: playerId, score: 0});
+        gameSessions.set(gameId, gameToJoin);
+
+        // notify lobby that player joined
+        io.to(gameId).emit('playerJoin', { playerId: playerId });
+
+        // join lobby
+        socket.join(gameId);
+        console.log('PLAYER ' + playerId + ' JOINED GAME ' + gameId);
+
+        // notify joining socket that it's successfully joined
+        socket.emit('gameJoined', { gameId: gameId });
+
+        return;
+
+
     });
 
     socket.on('joinRequest', function (req) {
@@ -133,6 +181,9 @@ io.on('connection', function (socket) {
     socket.on('finishGame', function (req) {
         // update score for finished game
         let gameSession = gameSessions.get(req.gameId);
+        if (!gameSession) {
+            return;
+        }
         gameSession.players[gameSession.players.findIndex(p => p.playerId === req.playerId)].score = req.score;
         gameSession.playersDone.push(req.playerId);
         gameSessions.set(req.gameId, gameSession);
@@ -153,7 +204,9 @@ io.on('connection', function (socket) {
         console.log(req);
         // emit to players still in game that game is left
         let gameSession = gameSessions.get(req.gameId);
-        io.to(req.gameId).emit('earlyEnd');
+        if (typeof gameSession !== 'undefined') {
+            io.to(req.gameId).emit('earlyEnd');
+        }
         // remove game from gamesessions
         gameSessions.delete(req.gameId);
         gameQueue = gameQueue.filter(g => g !== req.gameId);

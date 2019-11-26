@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="leaderboards-page">
     <md-table v-model="leaderboards" md-card>
       <md-table-toolbar>
         <h1 class="md-title">Top Players</h1>
@@ -48,6 +48,9 @@ export default {
     margin-top: 0 !important;
   }
 }
+.leaderboards-page {
+  z-index: -2 !important;
+}
 md-card {
     background-color: #343434be;
 }
@@ -56,5 +59,7 @@ md-card {
   margin-top: 1rem !important;
   width: 100% !important;
   max-width: 800px !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 </style>

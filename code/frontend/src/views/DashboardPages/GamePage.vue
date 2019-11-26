@@ -8,12 +8,18 @@
     ></notification>
     <md-card id="left">
       <md-card v-if="started" id="game">
+        <p id="question-fraction">{{ currentQuestion }} / {{ questions.length }}</p>
         <div id="card-header">
           <h1 id="timer" class="md-card-header">Time: {{currentTime}}</h1>
           <h1 id="score" class="md-card-header">Score: {{score}}</h1>
         </div>
         <h3 v-html="questions[currentQuestion-1].question" class="trivia-question"></h3>
-        <div class="answer" v-for="(answer, index) in currentAnswers.answers" :key="index">
+        <hr />
+        <div
+          class="answer"
+          v-for="(answer, index) in currentAnswers.answers"
+          :key="index + (transitionKey * 4)"
+        >
           <div>
             <md-radio
               class="trivia-radio"
@@ -26,12 +32,14 @@
           </div>
         </div>
       </md-card>
+      <p id="pregame-timer" v-if="!started">{{pregameTimer}}</p>
       <md-button
         class="md-raised md-primary"
         id="start"
-        v-on:click="nextQuestion()"
-        :disabled="currentQuestion>=questions.length || !gameStart"
-      >START GAME</md-button>
+        v-on:click="nextQuestionOrSubmit()"
+        :disabled="currentQuestion>questions.length || !started"
+        v-if="gameStart"
+      >NEXT</md-button>
     </md-card>
     <md-card id="right">
       <div class="messages">
@@ -39,7 +47,12 @@
       </div>
       <div id="chat-inputs">
         <md-field id="input-field">
-          <md-input id="chat-input" v-model="message" placeholder="Send a message"></md-input>
+          <md-input
+            id="chat-input"
+            v-model="message"
+            placeholder="Send a message"
+            @keyup.enter="sendMessage(gameId, playerId, message)"
+          ></md-input>
         </md-field>
         <md-button
           class="md-raised md-primary"
@@ -76,7 +89,11 @@ export default {
       message: "",
       gameStart: false,
       gameResult: undefined,
-      gameIsFinished: false
+      gameIsFinished: false,
+      pregameTimerInterval: undefined,
+      pregameTimerStart: false,
+      pregameTimer: "Waiting for Player...",
+      transitionKey: 1
     };
   },
 
@@ -117,7 +134,18 @@ export default {
       console.log(data.message);
     },
     gameReady() {
+      this.timerStart = true;
+      this.pregameTimer = 3;
+      this.pregameTimerStart = true;
+      this.pregameTimerInterval = setInterval(() => {
+        this.pregameTimer--;
+      }, 1000);
       this.gameStart = true;
+      setTimeout(() => {
+        this.nextQuestion();
+        clearInterval(this.pregameTimerInterval);
+        this.pregameTimerStart = false;
+      }, 3000);
     },
     gameFinished(data) {
       //this is where we would update backend with win or loss
@@ -153,9 +181,21 @@ export default {
     endingRedirect() {
       if (this.gameResult !== "Waiting for other players to finish.") {
         this.$router.push("/dashboard/lobbyentry");
-      }
-      else {
+      } else {
         this.gameResult = undefined;
+      }
+    },
+    nextQuestionOrSubmit() {
+      clearInterval(this.timer);
+      if (this.currentQuestion < this.questions.length) {
+        this.nextQuestion();
+      } else {
+        this.evaluateResponse();
+        this.$socket.emit("finishGame", {
+          playerId: this.$store.state.username,
+          gameId: this.gameId,
+          score: this.score
+        });
       }
     },
     countDownTimer() {
@@ -193,7 +233,7 @@ export default {
     },
     nextQuestion() {
       clearInterval(this.timer);
-      this.currentTime = 10;
+      this.currentTime = 15;
       this.countDownTimer();
 
       if (!this.started) {
@@ -206,6 +246,7 @@ export default {
 
       this.currentQuestion++;
       this.getAnswers();
+      this.transitionKey++;
     },
     getAnswers() {
       this.currentAnswers = {
@@ -256,10 +297,27 @@ export default {
   #left {
     width: 95% !important;
   }
-  
+
   #game {
     width: 90% !important;
   }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.slide-enter-to,
+.slide-leave {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.slide-enter,
+.slide-leave-to {
+  transform: translateX(-350px);
+  opacity: 0;
 }
 
 #game {
@@ -372,5 +430,17 @@ export default {
   flex-direction: column;
   align-items: left;
   margin-left: 50px;
+}
+#pregame-timer {
+  font-size: 2rem;
+  color: white;
+  font-family: "Roboto";
+  font-weight: 900;
+}
+#question-fraction {
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  font-size: 2rem;
 }
 </style>

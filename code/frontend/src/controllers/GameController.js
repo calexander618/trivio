@@ -13,7 +13,7 @@ export function updatePlayerRecord(data) {
         })
     })
         .then(res => res.text())
-        .then(res => console.log(res));
+        .then(res => res);
 }
 
 export function getLeaderboards() {
@@ -27,15 +27,53 @@ export function getLeaderboards() {
                 r.ratio = (Math.round(r.ratio * 1000)) / 1000;
                 return r;
             });
-            console.log(mappedSortedRankings);
-            return sortedRankings;
+            return mappedSortedRankings;
         });
 }
 
 export function getProfile(playerId) {
-    console.log(playerId);
-    return fetch(`https://www.michaelwoodruffdev.com/api/user/getuser?playerId=${playerId}`, {
+
+    return fetch(`http://localhost:3000/api/user/getuser?playerId=${playerId}`, {
         method: 'get'
     })
         .then(res => res.json());
+}
+
+export function getFriends(playerId) {
+    return fetch(`http://localhost:3000/api/user/getFriends?playerId=${playerId}`, {
+        method: 'get', 
+        headers: {
+            'Content-Type': 'application/json', 
+        }
+    });
+}
+
+export function addFriend(playerId, friend) {
+    let bodyToSend = {
+        playerId, 
+        friend
+    };
+    return fetch('http://localhost:3000/api/user/addFriend', {
+        method: 'post', 
+        headers: {
+            'Content-Type': 'application/json'
+        }, 
+        body: JSON.stringify(bodyToSend)
+    });
+}
+
+export function removeFriend(playerId, friend) {
+    console.log(playerId + friend);
+    let bodyToSend = {
+        playerId, 
+        friend
+    };
+    console.log(bodyToSend);
+    return fetch('http://localhost:3000/api/user/removeFriend', {
+        method: 'post', 
+        headers: {
+            'Content-Type': 'application/json'
+        }, 
+        body: JSON.stringify(bodyToSend)
+    });
 }
