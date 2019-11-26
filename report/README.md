@@ -32,7 +32,7 @@ We'll be usinf NodeJS to set up our server, Vue for a frontend framework, MongoD
 	- ‘code/backend/model’ contains models for data housed in the MongoDB
 	- ‘code/backend/api-routes.js’ contains node/express endpoints for frontend to hit
 	- ‘code/backend/server.js’ contains logic for web sockets and serving static resources
-	- `code/frontend/src` contains views and controllers for components of the application
+	- ‘code/frontend/src’ contains views and controllers for components of the application
 	- This organization made it pretty clear where to look to change something, and made many pieces of code reusable
  - Authentication
 	- Passwords are hashed and stored in the database, plain text passwords are not used in the database
