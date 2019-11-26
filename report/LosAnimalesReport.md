@@ -1,11 +1,13 @@
 # Link to Web-App
-
+https://www.michaelwoodruffdev.com/
 
 # A Short Introduction
 We are Los Animales and our members are Dylan Bunch, Chase Alexander, and Michael Woodruff. We are making a rapid-fire trivia game called Triv.io (we currently do not own this domain, but that could be a future addition). All 3 of us worked on the UI at some point, but Dylan was mostly responsible for making Triv.io into something pretty using Vue Material design. Chase and Michael primarily worked on the Node backend, the web-sockets for matchmaking. Michael also worked with JWT for account authentication.
 When you enter the website, you'll see two panels on the login page. The left panel is a short description of the web-app and the right is where you can login to the website. If you do not have an account, you can click the "Create Account" button at the bottom of the login panel. Then the login panel changes into the create account panel, and you can enter in your desired credentials. If you choose to create an account with a username that is taken, an error message will appear to notify you as such. The same can be said about passwords that do not match in both fields.
 Upon logging in, you are presented with a navbar, 3 tiles, and the profile, friends, and logout button. The Navbar allows easy navigation between the game page, the leaderboards page, and the about page. On the game lobby page you will find the aforementioned 3 tiles: one that says "Create Game", one that says "Join Friend", and one that says "Join Game". If  you click "Create Game", a dialog box will appear and direct you to select the difficulty of the questions, the category in which to pull from, and the number of questions in the round. If you click "Join Game" you will be presented with a dialog box prompting you to choose the game you want to join. If you click "Join Friend" you'll be prompted to join one of your friends' open games.
 The leaderboards page is where you can find the top-scoring players in a tabled form with all their game statistics on display. On the about page you will find information regarding the website, how it was built, and who did what in the project.
+
+Note: <strong>You must be signed in as two different users to be able to play a game, so we recommend playing on two different devices</strong>.
 
 # The Problem
 Have you ever been hanging out with your friends, but everyone's bored so their noses are buried in their phones? 
@@ -30,7 +32,7 @@ We'll be usinf NodeJS to set up our server, Vue for a frontend framework, MongoD
 	- ‘code/backend/model’ contains models for data housed in the MongoDB
 	- ‘code/backend/api-routes.js’ contains node/express endpoints for frontend to hit
 	- ‘code/backend/server.js’ contains logic for web sockets and serving static resources
-	- `code/frontend/src` contains views and controllers for components of the application
+	- ‘code/frontend/src’ contains views and controllers for components of the application
 	- This organization made it pretty clear where to look to change something, and made many pieces of code reusable
  - Authentication
 	- Passwords are hashed and stored in the database, plain text passwords are not used in the database
@@ -61,6 +63,7 @@ We'll be usinf NodeJS to set up our server, Vue for a frontend framework, MongoD
 	- Persistence is implemented inside the model/user.js file using mongoose and MongoDB.
  - Security
 	- The site is secure since every request sent must be validated with a JWT generated on login. You can see their use in the functions on lines 109 and 143 of LoginPage.vue.
+	- User input that involves DB operations are tested using a regular expression located in the ValidationController.
  - Responsive
 	- We used material design with nearly every element we could. Can be found in the LoginPage.vue under the template section.
 	- Media queries in the css are used to make sure each page is responsive
