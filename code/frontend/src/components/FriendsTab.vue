@@ -42,6 +42,9 @@ export default {
     },
     add() {
       let friend = prompt("Enter username of friend: ");
+      if (!friend) {
+        return;
+      }
       addFriend(this.$store.state.username, friend).then(() => this.get());
     },
     get() {

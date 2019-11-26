@@ -51,19 +51,6 @@
             <md-option value="26">Celebrities</md-option>
           </md-select>
         </md-field>
-        <span>Number of Questions</span>
-        <md-field>
-          <md-select
-            v-model="questions"
-            name="questions"
-            id="questions"
-            placeholder="Number of Questions"
-          >
-            <md-option value="5">5</md-option>
-            <md-option value="10">10</md-option>
-            <md-option value="15">15</md-option>
-          </md-select>
-        </md-field>
         <span>Visibility</span>
         <md-field>
           <md-select
@@ -104,7 +91,7 @@ export default {
       gameId: null,
       difficulty: undefined,
       category: undefined,
-      questions: undefined,
+      questions: 5,
       visibility: undefined,
       showDialog: false,
       settings: {

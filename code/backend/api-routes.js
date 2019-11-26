@@ -160,30 +160,42 @@ router.route('/user/getuser')
 
 router.route('/user/addFriend')
     .post(function (req, res) {
-        User.findOne({ username: req.body.playerId }, (err, user) => {
+        User.findOne({ username: req.body.friend }, (err, user) => {
             if (err) {
-                res.status(500).send('error finding user').end();
+                res.status(500).send('couldnt find friend').end();
                 return;
             } else {
-                if (user.friends.includes(req.body.friend)) {
-                    res.status(200).send('friend already added').end();
+                if (!user) {
+                    res.status(500).send('couldnt find friend').end();
                     return;
+                } else {
+                    User.findOne({ username: req.body.playerId }, (err, user) => {
+                        if (err) {
+                            res.status(500).send('error finding user').end();
+                            return;
+                        } else {
+                            if (user.friends.includes(req.body.friend)) {
+                                res.status(200).send('friend already added').end();
+                                return;
+                            }
+                            user.friends.push(req.body.friend);
+                            User.updateOne({ username: req.body.playerId }, {
+                                $set: {
+                                    friends: user.friends
+                                }
+                            }, (err, raw) => {
+                                if (err) {
+                                    res.status(500).send('error adding friend').end();
+                                    return;
+                                } else {
+                                    res.status(200).send(`added ${req.body.friend}`).end();
+                                }
+                            });
+                        }
+                    });
                 }
-                user.friends.push(req.body.friend);
-                User.updateOne({ username: req.body.playerId }, {
-                    $set: {
-                        friends: user.friends
-                    }
-                }, (err, raw) => {
-                    if (err) {
-                        res.status(500).send('error adding friend').end();
-                        return;
-                    } else {
-                        res.status(200).send(`added ${req.body.friend}`).end();
-                    }
-                });
             }
-        });
+        })
     });
 
 router.route('/user/removeFriend')
