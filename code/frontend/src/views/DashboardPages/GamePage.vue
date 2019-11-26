@@ -14,6 +14,7 @@
           <h1 id="score" class="md-card-header">Score: {{score}}</h1>
         </div>
         <h3 v-html="questions[currentQuestion-1].question" class="trivia-question"></h3>
+        <hr>
         <div class="answer" v-for="(answer, index) in currentAnswers.answers" :key="index">
           <div>
             <md-radio
