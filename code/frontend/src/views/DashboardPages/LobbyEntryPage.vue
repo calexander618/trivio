@@ -95,7 +95,8 @@ export default {
         category: null
       },
       socketInfo: {},
-      notification: undefined
+      notification: undefined, 
+      hasCreated: false
     };
   },
   sockets: {
@@ -112,6 +113,10 @@ export default {
   },
   methods: {
     createGame() {
+      if (this.hasCreated) {
+        return;
+      }
+      this.hasCreated = true;
       this.gameId = generateId();
       this.$socket.emit("createRequest", {
         playerId: this.$store.state.username,
