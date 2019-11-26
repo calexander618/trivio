@@ -131,7 +131,7 @@ export default {
       this.getAnswers();
     },
     inGameError(data) {
-      console.log(data.message);
+      this.gameResult = data.message;
     },
     gameReady() {
       this.timerStart = true;

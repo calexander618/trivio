@@ -188,7 +188,6 @@ export default {
   height: 36px !important;
 }
 .input-field {
-  /*margin-top: 6px !important;*/
   min-height: 36px !important;
 }
 form {

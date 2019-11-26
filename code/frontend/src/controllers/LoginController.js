@@ -11,7 +11,6 @@ export function signin(data) {
     })
         .then(res => {
             if (res.status === 400) {
-                console.log("username or password invalid");
                 return "invalid";
             } else {
                 return res.json();

@@ -28,7 +28,6 @@ export default {
   methods: {
     remove(e, friend) {
       e.stopPropagation();
-      console.log(e);
       if (confirm(`Remove ${friend} from friends list?`)) {
         removeFriend(this.$store.state.username, friend)
           .then(() => this.get());

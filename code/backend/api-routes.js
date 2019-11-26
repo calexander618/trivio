@@ -94,7 +94,6 @@ router.route('/user/signin')
 
 router.route('/user/updateHistory')
     .post(function (req, res) {
-        console.log(req.body);
 
         User.findOne({
             "username": req.body.username
@@ -161,7 +160,6 @@ router.route('/user/getuser')
 
 router.route('/user/addFriend')
     .post(function (req, res) {
-        console.log(req.body);
         User.findOne({ username: req.body.playerId }, (err, user) => {
             if (err) {
                 res.status(500).send('error finding user').end();
@@ -190,13 +188,11 @@ router.route('/user/addFriend')
 
 router.route('/user/removeFriend')
     .post(function (req, res) {
-        console.log(req.body);
         User.findOne({ username: req.body.playerId }, (err, user) => {
             if (err) {
                 res.status(500).send('error finding user').end();
                 return;
             } else {
-                console.log(user);
                 User.updateOne({ username: req.body.playerId }, {
                     $set: {
                         friends: user.friends.filter(f => f !== req.body.friend)
@@ -215,14 +211,12 @@ router.route('/user/removeFriend')
 
 router.route('/user/getFriends')
     .get(function (req, res) {
-        console.log(req.query);
         User.findOne({ username: req.query.playerId }, (err, user) => {
             if (err) {
                 console.log(err);
                 res.status(404).send('error finding user').end();
                 return;
             }
-            console.log(user);
             res.status(200).json(user.friends).end();
         })
     })

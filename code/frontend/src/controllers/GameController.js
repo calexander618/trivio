@@ -1,7 +1,6 @@
 
 
 export function updatePlayerRecord(data) {
-    console.log(data);
     fetch('https://www.michaelwoodruffdev.com/api/user/updateHistory', {
         headers: {
             'Content-Type': 'application/json'
@@ -33,14 +32,14 @@ export function getLeaderboards() {
 
 export function getProfile(playerId) {
 
-    return fetch(`http://localhost:3000/api/user/getuser?playerId=${playerId}`, {
+    return fetch(`https://www.michaelwoodruffdev.com/api/user/getuser?playerId=${playerId}`, {
         method: 'get'
     })
         .then(res => res.json());
 }
 
 export function getFriends(playerId) {
-    return fetch(`http://localhost:3000/api/user/getFriends?playerId=${playerId}`, {
+    return fetch(`https://www.michaelwoodruffdev.com/api/user/getFriends?playerId=${playerId}`, {
         method: 'get', 
         headers: {
             'Content-Type': 'application/json', 
@@ -53,7 +52,7 @@ export function addFriend(playerId, friend) {
         playerId, 
         friend
     };
-    return fetch('http://localhost:3000/api/user/addFriend', {
+    return fetch('https://www.michaelwoodruffdev.com/api/user/addFriend', {
         method: 'post', 
         headers: {
             'Content-Type': 'application/json'
@@ -63,13 +62,11 @@ export function addFriend(playerId, friend) {
 }
 
 export function removeFriend(playerId, friend) {
-    console.log(playerId + friend);
     let bodyToSend = {
         playerId, 
         friend
     };
-    console.log(bodyToSend);
-    return fetch('http://localhost:3000/api/user/removeFriend', {
+    return fetch('https://www.michaelwoodruffdev.com/api/user/removeFriend', {
         method: 'post', 
         headers: {
             'Content-Type': 'application/json'

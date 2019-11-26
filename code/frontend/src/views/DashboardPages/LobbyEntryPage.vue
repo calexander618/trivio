@@ -124,13 +124,11 @@ export default {
       this.$router.push(`/dashboard/game/${data.gameId}`);
     },
     errorMessage(data) {
-      console.log(data.message);
       this.notification = data.message;
     }
   },
   methods: {
     toggleFriends() {
-      console.log(this);
       this.$parent.$children[1].toggleFriends();
     }, 
     createGame() {

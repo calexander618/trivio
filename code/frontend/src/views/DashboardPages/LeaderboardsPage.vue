@@ -6,7 +6,6 @@
       </md-table-toolbar>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <!-- <md-table-cell md-label="Rank" md-numeric>{{ rank }}</md-table-cell> -->
         <md-table-cell md-label="User">{{ item.username }}</md-table-cell>
         <md-table-cell md-label="W/L Ratio">{{ item.ratio}}</md-table-cell>
         <md-table-cell md-label="Games" class="responsive-remove">{{ item.gamesPlayed }}</md-table-cell>
@@ -17,7 +16,6 @@
     </md-table>
 
   </div>
-  <!-- <p v-for="player in leaderboards" :key="player.username">{{player.username}}</p> -->
 </template>
 
 <script>
@@ -41,9 +39,6 @@ export default {
 
 <style scoped>
 @media only screen and (max-width: 700px) {
-  /* .responsive-remove {
-    display: none;
-  } */
   .md-table {
     margin-top: 0 !important;
   }

@@ -226,24 +226,20 @@ io.on('connection', function (socket) {
         socket.playerId = req.playerId;
         socket.gameId = req.gameId;
         console.log('PLAYER ID: ' + socket.playerId);
-        console.log(1);
         let gameSession = gameSessions.get(req.gameId);
         if (typeof gameSession === 'undefined') {
-            console.log(2);
             socket.emit('inGameError', {
                 message: 'game not found'
             });
             return;
         }
         if (typeof gameSession.players.find(p => p.playerId === req.playerId) === 'undefined') {
-            console.log(3);
             socket.emit('inGameError', {
                 message: 'player not in game'
             });
             return;
         }
         if (gameSession.playersServed.includes(req.playerId)) {
-            console.log(4);
             socket.emit('inGameError', {
                 message: 'player already served questions'
             });
