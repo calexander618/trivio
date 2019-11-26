@@ -63,6 +63,7 @@ We'll be usinf NodeJS to set up our server, Vue for a frontend framework, MongoD
 	- Persistence is implemented inside the model/user.js file using mongoose and MongoDB.
  - Security
 	- The site is secure since every request sent must be validated with a JWT generated on login. You can see their use in the functions on lines 109 and 143 of LoginPage.vue.
+	- User input that involves DB operations are tested using a regular expression located in the ValidationController.
  - Responsive
 	- We used material design with nearly every element we could. Can be found in the LoginPage.vue under the template section.
 	- Media queries in the css are used to make sure each page is responsive
