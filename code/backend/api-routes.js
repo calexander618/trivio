@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
 router.route('/user/signup')
     .post(function (req, res) {
         const user = new User({
-            username: req.body.username,
+            username: req.body.username.toLowerCase(),
             password: req.body.password,
             gamesPlayed: 0,
             gamesWon: 0,
@@ -64,7 +64,7 @@ router.route('/user/verifySignin')
 router.route('/user/signin')
     .post(function (req, res) {
         User.findOne({
-            "username": req.body.username
+            "username": req.body.username.toLowerCase()
         }, (err, user) => {
             if (err) throw err;
             if (!user) {

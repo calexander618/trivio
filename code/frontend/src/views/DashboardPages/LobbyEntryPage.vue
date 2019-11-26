@@ -8,7 +8,7 @@
     ></notification>
     <div class="row">
       <div class="tile" @click="showDialog = true">
-        <p class="tile-header">Create New Game</p>
+        <p class="tile-header">Create Game</p>
         <img src="../../assets/hammer.png" alt />
       </div>
       <div class="tile" @click="joinGame()">
