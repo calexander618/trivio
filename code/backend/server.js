@@ -163,6 +163,9 @@ io.on('connection', function (socket) {
     socket.on('finishGame', function(req) {
         // update score for finished game
         let gameSession = gameSessions.get(req.gameId);
+        if (!gameSession) {
+            return;
+        }
         gameSession.players[gameSession.players.findIndex(p => p.playerId === req.playerId)].score = req.score;
         gameSession.playersDone.push(req.playerId);
         gameSessions.set(req.gameId, gameSession);

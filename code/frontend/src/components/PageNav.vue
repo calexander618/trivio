@@ -135,8 +135,8 @@ p {
 }
 
 #buttons img {
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   padding: 0.3rem;
   margin-right: 5px;
   border-radius: 2rem;
