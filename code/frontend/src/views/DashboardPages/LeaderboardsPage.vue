@@ -56,5 +56,7 @@ md-card {
   margin-top: 1rem !important;
   width: 100% !important;
   max-width: 800px !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 </style>

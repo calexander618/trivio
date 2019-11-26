@@ -72,7 +72,7 @@ export default {
 
 .profile-tab {
   position: absolute;
-  z-index: 10;
+  z-index: 3;
   bottom: -405px;
   right: 5px;
   background-color: white !important;
@@ -102,7 +102,7 @@ p {
 }
 
 .link {
-  color: white;
+  color: white !important;
   text-decoration: none;
   border-radius: 10px 10px 0 0;
   font-family: "Play";

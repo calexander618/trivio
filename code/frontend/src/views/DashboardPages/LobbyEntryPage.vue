@@ -35,9 +35,16 @@
         <span>Category</span>
         <md-field>
           <md-select v-model="category" name="category" id="category" placeholder="Category">
+            <md-option value="17">Nature</md-option>
+            <md-option value="18">Computers</md-option>
+            <md-option value="19">Math</md-option>
+            <md-option value="20">Mythology</md-option>
+            <md-option value="21">Sports</md-option>
             <md-option value="22">Geography</md-option>
             <md-option value="24">Politics</md-option>
             <md-option value="23">History</md-option>
+            <md-option value="25">Art</md-option>
+            <md-option value="26">Celebrities</md-option>
           </md-select>
         </md-field>
         <span>Number of Questions</span>

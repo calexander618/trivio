@@ -8,6 +8,7 @@
     ></notification>
     <md-card id="left">
       <md-card v-if="started" id="game">
+        <p>{{ currentQuestion }} / {{ questions.length }}</p>
         <div id="card-header">
           <h1 id="timer" class="md-card-header">Time: {{currentTime}}</h1>
           <h1 id="score" class="md-card-header">Score: {{score}}</h1>
@@ -406,5 +407,11 @@ export default {
   color: white;
   font-family: "Roboto";
   font-weight: 900;
+}
+.md-card > p {
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  font-size: 2rem;
 }
 </style>
