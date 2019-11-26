@@ -1,16 +1,21 @@
 <template>
   <div id="login-page">
     <page-header :loggedIn="false"></page-header>
+    <notification
+      class="notification"
+      :notificationMessage="notification"
+      v-if="notification"
+      @ok="notification = undefined"
+    ></notification>
     <div id="login-content">
       <md-card id="left">
         <md-card-header>
-          <h2>Play Trivia Online</h2>
+          <h2>Online Trivia</h2>
         </md-card-header>
         <ul>
-          <md-card-content>A fast-paced competitive trivia game</md-card-content>
-          <md-card-content>Play against friends and other competitors online</md-card-content>
-          <md-card-content>Track you and your friends stats</md-card-content>
-          <md-card-content>Check how you stack up in the global leaderboard</md-card-content>
+          <md-card-content>-A fast-paced trivia game</md-card-content>
+          <md-card-content>-Track your stats as you go</md-card-content>
+          <md-card-content>-See how you compare to other players</md-card-content>
         </ul>
       </md-card>
       <md-card id="right">
@@ -25,15 +30,11 @@
             <md-field :md-toggle-password="false" class="input-field">
               <md-input placeholder="Password" type="password" v-model="password"></md-input>
             </md-field>
-            <md-button
-              class="md-raised md-primary"
-              id="login-button"
-              v-on:click="submitSignin()"
-            >Login</md-button>
+            <md-button class="md-raised md-primary login-button" v-on:click="submitSignin()">Login</md-button>
+            <md-button v-on:click="createAccount()">Create Account</md-button>
           </form>
         </div>
         <!-- <a href="/#/create">Create Account</a> -->
-        <md-button id="create-button" v-on:click="createAccount()">Create Account</md-button>
       </md-card>
       <md-card id="create-right" class="hidden">
         <div id="forms-container">
@@ -51,14 +52,13 @@
               <md-input placeholder="Confirm Password" type="password" v-model="confirmPassword"></md-input>
             </md-field>
             <md-button
-              class="md-raised md-primary .md-field.md-input-actionary"
-              id="login-button"
+              class="md-raised md-primary .md-field.md-input-actionary login-button"
               v-on:click="submitSignup()"
             >Sign Up</md-button>
+            <md-button v-on:click="goBack()">I already have an account</md-button>
           </form>
         </div>
         <!-- <a href="/#/create">Create Account</a> -->
-        <md-button id="uncreate-button" v-on:click="goBack()">I already have an account</md-button>
       </md-card>
     </div>
   </div>
@@ -66,11 +66,15 @@
 
 <script>
 import PageHeader from "../components/PageHeader.vue";
+import Notification from "../components/Notification";
+import { signin, signup } from "../controllers/LoginController";
+import { validateInput } from "../controllers/ValidationController";
 
 export default {
   name: "loginpage",
   components: {
-    PageHeader
+    PageHeader,
+    Notification
   },
   data() {
     return {
@@ -78,10 +82,14 @@ export default {
       password: "",
       createUsername: "",
       createPassword: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      notification: undefined
     };
   },
   methods: {
+    valid(input) {
+      return validateInput(input);
+    },
     createAccount() {
       var right = document.getElementById("right");
       var create_right = document.getElementById("create-right");
@@ -95,41 +103,36 @@ export default {
       create_right.classList.add("hidden");
     },
     submitSignin() {
+      if (!this.valid(this.username) || !this.valid(this.password)) {
+        this.notification = "Invalid input, please try again!";
+        return;
+      }
       // set up sign in object
       const signinObject = {
         username: this.username,
         password: this.password
       };
-      console.log(signinObject);
-      // make request to sign in
-      fetch("http://localhost:3000/api/user/signin", {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        method: "post",
-        body: JSON.stringify(signinObject)
-      })
-        .then(res => {
-          if (res.status === 404) {
-            console.log("username or password invalid");
-            return "";
-          } else {
-            return res.json();
-          }
-        })
-        .then(res => {
-           if (typeof res.token !== 'undefined') {
-              // store token here
-              this.$store.state.token = res.token;
-              this.$store.state.username = this.username;
-              this.$router.push('dashboard/lobbyentry');
-           }
-        });
+
+      signin(signinObject).then(token => {
+        if (token) {
+          this.$store.state.token = token;
+          this.$store.state.username = this.username;
+          this.$router.push("dashboard/lobbyentry");
+        } else {
+          this.notification = "Invalid info, please try again.";
+        }
+      });
     },
     submitSignup() {
       // check if passwords match
       if (this.createPassword !== this.confirmPassword) {
-        console.log("passwords dont match");
+        this.notification = "Passwords don't match, please try again.";
+        return;
+      } else if (
+        !this.valid(this.createUsername) ||
+        !this.valid(this.createPassword)
+      ) {
+        this.notification = "Invalid input, please try again!";
         return;
       }
       // create signup object to send to signup endpoint
@@ -138,19 +141,12 @@ export default {
         password: this.createPassword
       };
       // make request
-      fetch("http://localhost:3000/api/user/signup", {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(signupObject),
-        method: "post"
-      }).then(res => {
+      signup(signupObject).then(res => {
         if (res.status === 200) {
-          // signup successful
-          console.log("successfully signed up");
+          this.notification = "Successfully signed up.";
         } else if (res.status === 400) {
           // signup failed
-          console.log("signup failed");
+          this.notification = "Signup failed, please try again.";
         }
       });
     }
@@ -159,6 +155,23 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (max-width: 600px) {
+  #left {
+    display: none;
+  }
+
+  #right,
+  #create-right {
+    width: 100% !important;
+    height: auto;
+  }
+
+  #login-content {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 .md-field {
   background: white;
   border-radius: 2px 2px 2px 2px;
@@ -179,6 +192,8 @@ export default {
 }
 form {
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 #right,
 #create-right {
@@ -194,7 +209,6 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
 }
 #login-header {
   text-align: center;
@@ -242,5 +256,17 @@ a {
 }
 .hidden {
   display: none !important;
+}
+.md-field {
+  margin-top: 20px !important;
+}
+.md-button {
+  margin-top: 20px !important;
+}
+#left > .md-card-header {
+  font-size: 1.5rem;
+}
+.md-card-content {
+  font-size: 1rem;
 }
 </style>

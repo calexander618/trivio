@@ -8,11 +8,18 @@ import GamePage from '../views/DashboardPages/GamePage.vue';
 import UserProfilePage from '../views/DashboardPages/UserProfilePage.vue';
 import LeaderboardsPage from '../views/DashboardPages/LeaderboardsPage.vue';
 import AboutPage from '../views/DashboardPages/AboutPage.vue';
-import { store } from '../store.js';
+import PageNotFound from '../views/PageNotFound.vue';
+// import { store } from '../store.js';
+import { checkToken, checkLocalStorageForToken, checkLocalStorageForUsername } from '../controllers/LoginController';
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: '*', 
+    name: 'page-not-found',
+    component: PageNotFound
+  }, 
   {
     path: '/',
     name: 'redirect-to-login',
@@ -62,30 +69,20 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const publicroutes = ['/login', '/create'];
+  const publicroutes = ['/login'];
   // if public route, allow through
   if (publicroutes.includes(to.path)) return next();
   else {
-    console.log(store.state.token);
-    fetch('http://localhost:3000/api/user/verifySignin', {
-      headers: {
-        'Authorization': store.state.token
-      },
-      method: 'post'
-    })
-      .then(res => {
-        if (res.status === 200) return next();
-        else return next('/login');
-      })
-      .then(res => console.log(res));
-    // console.log(store.state.token);
+    //before we check token, we check localstorage to see if theres a token in there
+    checkLocalStorageForToken();
+    checkLocalStorageForUsername();
+    checkToken().then(isSignedIn => {
+      console.log(isSignedIn);
+      if (isSignedIn !== false) return next();
+      else return next('/login');
+    });
   }
-  // else
-  //   pull token from vuex
-  //   call on /api/user/verifySignin endpoint
-  //   if 200 status, allow to next page
-  //   else return next('/login')
-})
+});
 
 
 export default router;

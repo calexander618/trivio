@@ -1,12 +1,19 @@
 <template>
   <div id="landing-page">
+    <notification
+      class="notification"
+      :notificationMessage="notification"
+      v-if="notification"
+      @ok="notification = undefined"
+    ></notification>
     <div class="row">
       <div class="tile" @click="showDialog = true">
-        <h1>Create New Game</h1>
-        <img src="../../assets/battle.png" alt />
+        <p class="tile-header">Create New Game</p>
+        <img src="../../assets/hammer.png" alt />
       </div>
       <div class="tile" @click="joinGame()">
-        <h1>Join Game</h1>
+        <p class="tile-header">Join Game</p>
+        <img src="../../assets/join.png" alt />
       </div>
     </div>
     <md-dialog :md-active.sync="showDialog">
@@ -28,9 +35,16 @@
         <span>Category</span>
         <md-field>
           <md-select v-model="category" name="category" id="category" placeholder="Category">
+            <md-option value="17">Nature</md-option>
+            <md-option value="18">Computers</md-option>
+            <md-option value="19">Math</md-option>
+            <md-option value="20">Mythology</md-option>
+            <md-option value="21">Sports</md-option>
             <md-option value="22">Geography</md-option>
             <md-option value="24">Politics</md-option>
             <md-option value="23">History</md-option>
+            <md-option value="25">Art</md-option>
+            <md-option value="26">Celebrities</md-option>
           </md-select>
         </md-field>
         <span>Number of Questions</span>
@@ -60,12 +74,17 @@
 </template>
 
 <script>
+import Notification from "../../components/Notification.vue";
 import { generateId } from "../../controllers/IdController";
 
 export default {
   name: "lobbyentrypage",
+  components: {
+    Notification
+  }, 
   data() {
     return {
+      errorMessage: "",
       gameId: null,
       difficulty: undefined,
       category: undefined,
@@ -75,31 +94,36 @@ export default {
         difficulty: null,
         category: null
       },
-      socketInfo: {}
+      socketInfo: {},
+      notification: undefined
     };
   },
   sockets: {
     gameJoined(data) {
       this.$router.push(`/dashboard/game/${data.gameId}`);
-    }, 
+    },
     gameCreated(data) {
       this.$router.push(`/dashboard/game/${data.gameId}`);
+    },
+    errorMessage(data) {
+      console.log(data.message);
+      this.notification = data.message;
     }
-  }, 
+  },
   methods: {
     createGame() {
       this.gameId = generateId();
       this.$socket.emit("createRequest", {
-        playerId: this.$store.state.username, 
+        playerId: this.$store.state.username,
         gameId: this.gameId,
         difficulty: this.difficulty,
         category: this.category,
         questionCount: this.questions
       });
-    }, 
+    },
     joinGame() {
       this.$socket.emit("joinRequest", {
-        playerId: this.$store.state.username, 
+        playerId: this.$store.state.username
       });
     }
   }
@@ -107,6 +131,17 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (max-width: 600px) {
+  .row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tile {
+    margin: 0 0 20px 0;
+  }
+}
 .tile:hover {
   background: #dedede;
   cursor: pointer;
@@ -147,6 +182,7 @@ h1 {
   font-size: 3rem;
   color: #acacac;
   margin: 0;
+  display: block;
 }
 
 .row {
@@ -158,12 +194,35 @@ h1 {
 }
 
 .tile {
-  background-color: lightgrey;
+  background-color: white;
   padding: 30px;
   box-shadow: 10px 10px 20px #22222277;
+  height: 20rem;
+  width: 16rem;
+  position: relative;
 }
 
 img {
   width: 3rem;
+}
+
+#error {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.tile-header {
+  font-size: 4rem;
+  display: block;
+  line-height: 4rem;
+  margin: 0;
+  color: #11111188;
+}
+
+img {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 }
 </style>
