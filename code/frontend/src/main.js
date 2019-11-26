@@ -11,7 +11,7 @@ import VueMaterial from 'vue-material';
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/default.css';
 
-export const SocketInstance = socketio('http://localhost:3000');
+export const SocketInstance = socketio('https://www.michaelwoodruffdev.com', { secure: true });
 
 Vue.use(VueSocketIO, SocketInstance);
 Vue.use(VueMaterial);
