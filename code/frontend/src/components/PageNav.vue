@@ -2,21 +2,27 @@
   <div id="page-nav">
     <router-link v-for="link in links" :key="link.href" :to="link.href" class="link">{{ link.name }}</router-link>
     <div id="buttons">
+      <img @click="toggleFriends()" src="../assets/friends-nav.png" alt />
       <img @click="toggleProfile()" src="../assets/profile.png" alt />
       <img @click="logout()" src="../assets/logout.png" alt />
     </div>
     <transition name="slide">
       <profile-tab class="profile-tab" v-if="isProfileOpen" @click="toggleProfile()"></profile-tab>
     </transition>
+    <transition name="slide">
+      <friends-tab class="friends-tab" v-if="isFriendsOpen" @click="toggleFriends()"></friends-tab>
+    </transition>
   </div>
 </template>
 
 <script>
 import ProfileTab from "./ProfileTab.vue";
+import FriendsTab from "./FriendsTab.vue";
 export default {
   name: "pagenav",
   components: {
-    ProfileTab
+    ProfileTab, 
+    FriendsTab
   },
   methods: {
     logout() {
@@ -27,12 +33,18 @@ export default {
       this.$router.push("/login");
     },
     toggleProfile() {
+      this.isFriendsOpen = false;
       this.isProfileOpen = !this.isProfileOpen;
+    },
+    toggleFriends() {
+      this.isProfileOpen = false;
+      this.isFriendsOpen = !this.isFriendsOpen;
     }
   },
   data() {
     return {
       isProfileOpen: false,
+      isFriendsOpen: false,
       links: [
         {
           name: "Play",
@@ -70,7 +82,7 @@ export default {
   transform: translateX(0);
 }
 
-.profile-tab {
+.profile-tab, .friends-tab {
   position: absolute;
   z-index: 3;
   bottom: -405px;
@@ -86,6 +98,10 @@ export default {
   flex-direction: column;
   justify-content: space-evenly;
   text-align: center;
+}
+
+.friends-tab {
+  justify-content: flex-start;
 }
 
 #page-nav {

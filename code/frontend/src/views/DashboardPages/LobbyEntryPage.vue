@@ -15,9 +15,9 @@
         <p class="tile-header">Join Game</p>
         <img src="../../assets/join.png" alt />
       </div>
-      <div class="tile" @click="joinFriend('DemoUser')">
+      <div class="tile" @click="toggleFriends()">
         <p class="tile-header">Join Friend</p>
-        <img src="../../assets/join.png" alt />
+        <img src="../../assets/friends.png" alt />
       </div>
     </div>
     <md-dialog :md-active.sync="showDialog">
@@ -129,6 +129,10 @@ export default {
     }
   },
   methods: {
+    toggleFriends() {
+      console.log(this);
+      this.$parent.$children[1].toggleFriends();
+    }, 
     createGame() {
       if (this.hasCreated) {
         return;
