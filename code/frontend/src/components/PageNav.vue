@@ -65,6 +65,13 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (max-width: 700px) {
+  #buttons > img {
+    width: 2.2rem !important;
+    height: 2.2rem !important;
+  }
+}
+
 .slide-enter-active,
 .slide-leave-active {
   transition: transform 0.3s ease, opacity 0.2s ease;
