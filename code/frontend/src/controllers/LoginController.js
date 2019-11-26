@@ -2,7 +2,7 @@ import { store } from '../store.js';
 
 export function signin(data) {
     // make request to sign in
-    return fetch("http://localhost:3000/api/user/signin", {
+    return fetch("https://www.michaelwoodruffdev.com/api/user/signin", {
         headers: {
             "Content-Type": "application/json"
         },
@@ -31,7 +31,7 @@ export function signin(data) {
 }
 
 export function signup(data) {
-    return fetch("http://localhost:3000/api/user/signup", {
+    return fetch("https://www.michaelwoodruffdev.com/api/user/signup", {
         headers: {
             "Content-Type": "application/json"
         },
@@ -41,7 +41,7 @@ export function signup(data) {
 }
 
 export async function checkToken() {
-    return fetch('http://localhost:3000/api/user/verifySignin', {
+    return fetch('https://www.michaelwoodruffdev.com/api/user/verifySignin', {
         headers: {
             'Authorization': store.state.token
         },
