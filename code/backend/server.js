@@ -80,7 +80,10 @@ io.on('connection', function (socket) {
                         });
                         break;
                 }
-                gameQueue.push(req.gameId);
+                console.log('public games');
+                console.log(gameQueue);
+                console.log('private games');
+                console.log(privateGames.map(g => g.gameId));
                 socket.emit('gameCreated', { gameId: req.gameId });
                 // console.log(data);
                 // console.log('SENDING TRIVIA TO GAME ' + req.gameId);
@@ -240,6 +243,7 @@ io.on('connection', function (socket) {
         // remove game from gamesessions
         gameSessions.delete(req.gameId);
         gameQueue = gameQueue.filter(g => g !== req.gameId);
+        privateGames = privateGames.filter(p => p.gameId !== req.gameId);
         console.log(gameSessions.get(req.gameId));
         console.log(gameQueue);
     });
@@ -293,6 +297,7 @@ io.on('connection', function (socket) {
         // remove game from gamesessions
         gameSessions.delete(socket.gameId);
         gameQueue = gameQueue.filter(g => g !== socket.gameId);
+        privateGames = privateGames.filter(p => p.gameId !== socket.gameId);
         console.log(gameSessions.get(socket.gameId));
         console.log(gameQueue);
     });
