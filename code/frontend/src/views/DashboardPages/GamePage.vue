@@ -7,7 +7,7 @@
       @ok="endingRedirect()"
     ></notification>
     <md-card id="left">
-      <md-card v-if="started" id="game">
+      <md-card v-if="started && !ended" id="game">
         <p id="question-fraction">{{ currentQuestion }} / {{ questions.length }}</p>
         <div id="card-header">
           <h1 id="timer" class="md-card-header">Time: {{currentTime}}</h1>
@@ -33,11 +33,12 @@
         </div>
       </md-card>
       <p id="pregame-timer" v-if="!started">{{pregameTimer}}</p>
+      <p id="pregame-timer" v-if="ended">You scored {{ score }} / {{ questions.length * 50 }} points</p>
       <md-button
         class="md-raised md-primary"
         id="start"
         v-on:click="nextQuestionOrSubmit()"
-        :disabled="currentQuestion>questions.length || !started"
+        :disabled="ended || !started"
         v-if="gameStart"
       >NEXT</md-button>
     </md-card>
@@ -77,6 +78,7 @@ export default {
       currentTime: 0,
       timer: undefined,
       started: false,
+      ended: false, 
       questions: [],
       currentQuestion: 1,
       currentAnswers: {
@@ -196,6 +198,7 @@ export default {
           gameId: this.gameId,
           score: this.score
         });
+        this.ended = true;
       }
     },
     countDownTimer() {
