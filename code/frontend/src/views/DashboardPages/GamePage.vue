@@ -443,4 +443,7 @@ export default {
   right: 2rem;
   font-size: 2rem;
 }
+.md-card {
+  z-index: 0 !important;
+}
 </style>

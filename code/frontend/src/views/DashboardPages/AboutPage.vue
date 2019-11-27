@@ -76,4 +76,8 @@ export default {
   max-width: 500px !important;
   margin: auto !important;
 }
+
+.md-card {
+  z-index: 0 !important;
+}
 </style>
