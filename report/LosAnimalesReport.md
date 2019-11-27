@@ -84,3 +84,18 @@ Since Dylan didn't know Vue and he worked on the front-end, he learned how to us
 
 # Future Work
 What we need to finish before the due date is a login page and the functionality behind it, a create account functionality, the game lobby page, the game page, the leaderboards page, and the about page. We need buttons so navigation on the page is easy, as well as a button to log out when you're done with the game. 
+
+# Screenshots
+![About Page](../screenshots/dashboard-pages/about-page.png "About Page")
+![alt text](../path/to/image.png "Leaderboards Page")
+![alt text](../path/to/image.png "Lobby Page")
+![alt text](../path/to/image.png "alt text")
+![alt text](../path/to/image.png "alt text")
+![alt text](../path/to/image.png "alt text")
+![alt text](../path/to/image.png "alt text")
+![alt text](../path/to/image.png "alt text")
+![alt text](../path/to/image.png "alt text")
+![alt text](../path/to/image.png "alt text")
+![alt text](../path/to/image.png "alt text")
+![alt text](../path/to/image.png "alt text")
+![alt text](../path/to/image.png "alt text")
