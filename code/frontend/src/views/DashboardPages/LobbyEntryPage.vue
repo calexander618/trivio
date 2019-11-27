@@ -69,7 +69,7 @@
         <md-button
           class="md-primary"
           @click="createGame()"
-          v-bind:disabled="!difficulty || !category || !questions"
+          v-bind:disabled="!difficulty || !category || !visibility"
         >Create</md-button>
       </md-dialog-actions>
     </md-dialog>
