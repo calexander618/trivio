@@ -1,11 +1,37 @@
-# Link to Web-App
-https://www.michaelwoodruffdev.com/
+# Web App Link and Testing
 
-# A Short Introduction
-We are Los Animales and our members are Dylan Bunch, Chase Alexander, and Michael Woodruff. We are making a rapid-fire trivia game called Triv.io (we currently do not own this domain, but that could be a future addition). All 3 of us worked on the UI at some point, but Dylan was mostly responsible for making Triv.io into something pretty using Vue Material design. Chase and Michael primarily worked on the Node backend, the web-sockets for matchmaking. Michael also worked with JWT for account authentication.
+__Where to find__
+- https://www.michaelwoodruffdev.com/
+
+- Due to authentication, two browsers or devices signed into two different accounts are required to properly test this app
+- We recommend Chrome and Firefox
+
+__Users__
+
+|     Username    | Password |
+|:---------------:|----------|
+| michael         | testing  |
+| zionChilliamson | testing  |
+| chase           | testing  |
+| dylan           | testing  | 
+
+# Los Animales (Group Intro)
+
+__Group Members__
+- Michael Woodruff (frontend and backend)
+- Dylan Bunch (frontend and some backend)
+- Chase Alexander (frontend and backend)
+
+__About__ 
+
+We are making a fast-paced trivia game called Triv.io. After finding an api to recieve questions with answers (opentdb.com), we were inspired to create a trivia web app with public and private matchmaking and leaderboards. In creating this app, we learned a ton about things like authentication, component-based web frameworks, and web sockets.
+
+While implementing Triv.io was a great learning experience, we would like to further this project in the future and implement things we think would improve the experience of the app.
+
+<!-- We are Los Animales and our members are Dylan Bunch, Chase Alexander, and Michael Woodruff. We are making a rapid-fire trivia game called Triv.io (we currently do not own this domain, but that could be a future addition). All 3 of us worked on the UI at some point, but Dylan was mostly responsible for making Triv.io into something pretty using Vue Material design. Chase and Michael primarily worked on the Node backend, the web-sockets for matchmaking. Michael also worked with JWT for account authentication.
 When you enter the website, you'll see two panels on the login page. The left panel is a short description of the web-app and the right is where you can login to the website. If you do not have an account, you can click the "Create Account" button at the bottom of the login panel. Then the login panel changes into the create account panel, and you can enter in your desired credentials. If you choose to create an account with a username that is taken, an error message will appear to notify you as such. The same can be said about passwords that do not match in both fields.
 Upon logging in, you are presented with a navbar, 3 tiles, and the profile, friends, and logout button. The Navbar allows easy navigation between the game page, the leaderboards page, and the about page. On the game lobby page you will find the aforementioned 3 tiles: one that says "Create Game", one that says "Join Friend", and one that says "Join Game". If  you click "Create Game", a dialog box will appear and direct you to select the difficulty of the questions, the category in which to pull from, and the number of questions in the round. If you click "Join Game" you will be presented with a dialog box prompting you to choose the game you want to join. If you click "Join Friend" you'll be prompted to join one of your friends' open games.
-The leaderboards page is where you can find the top-scoring players in a tabled form with all their game statistics on display. On the about page you will find information regarding the website, how it was built, and who did what in the project.
+The leaderboards page is where you can find the top-scoring players in a tabled form with all their game statistics on display. On the about page you will find information regarding the website, how it was built, and who did what in the project. -->
 
 Note: <strong>You must be signed in as two different users to be able to play a game, so we recommend playing on two different devices</strong>.
 
@@ -114,7 +140,8 @@ __Persistent__
 - Persistence is implemented inside the model/user.js file using mongoose and MongoDB.
 
 __Security__
-- The site is secure since every request sent must be validated with a JWT generated on login. You can see their use in the functions on lines 109 and 143 of LoginPage.vue.
+- The site is secure since every request sent must be validated with a JWT generated on login. 
+- SSL is utilized to allow https
 - User input that involves DB operations are tested using a regular expression located in the ValidationController.
 
 __Responsive__
@@ -137,6 +164,8 @@ __Error Handling__
 - If you register with a taken username or if the passwords do not match, a message will display informing you as such. 
 - When creating a game, a dialog will appear with several dropdowns. while any of the fields are unfilled, the create button will be disabled. (LobbyEntryPage.vue and LoginPage.vue)
 - consistently styled messages will appear throughout the application informing the user about web socket information (User left the match, User is not hosting a match, No games found, etc)
+- public and private 'rooms' or 'lobbies' are stored within the server, and checked against throughout the flow of the web socket connection
+- Adding friend checks that the user does actually exist in the database before adding
 
 __Publicly Viewable__
 - the application is hosted on the domain 'michaelwoodruffdev.com'
@@ -147,10 +176,55 @@ __Overall Purpose__
 - In trying to meet the purpose of our application, we learned a lot about web sockets, authentication, node servers, and component-based web frameworks in general
 
 # Knowledge Gained
-Since Dylan didn't know Vue and he worked on the front-end, he learned how to use that framework. Michael and Chase got more experience with web-sockets, Vue, Node, and MongoDB since they worked on the backend. We also learned that it can be hard to manage the project with only 2 branches (frontend and backend). Instead, a branch per group member keeps toes from being stepped on until merges, but merges are where toes get stepped on anyway. We also learned that communication is imperative as we lost hours of work when Dylan designed an Angular frontend but, because of bad communication on everyone's part, we ended up having to ditch the Angular frontend since Chase and Michael needed a frontend to test with and Dylan had not finished yet, so they made a Vue frontend instead.
+__Git / Github__
+- Branch management is very important
+- We started off with the branches master, frontend, and backend
+- We switched to having branches master, dev, dev-mw, dev-ca, dev-db
+- this allowed us all to work on features in our own branch, merge them into dev and resolve conflicts, and then push what should actually deploy to master
+
+__VueJS__
+- Dylan gained a lot of knowledge in using this framework as he's never used it before
+- We all gained knowledge in more advanced Vue concepts like how to deal with authentication, localstorage and global state management
+
+__Socket.io__
+- We all learned about dealing with web sockets in respect to the client and the server
+- Public and private matchmaking was a cool concept to learn
+
+__MongoDB__
+- We learned about the Mongoose library, and best practices for interfacing with MongoDB within a NodeJS script.
+
+__Authentication__
+- We learned a lot about authentication, specifically libraries to deal with sessions on the server, token generation and verification, and how those come together.
+
+__Project Organization__
+- Looking back on it, we see several places where the structure of our project could be improved, in future projects, we will all have to keep these things in mind
+
+__Communication__
+- In the beginning of the project, due to some lack of communication, we lost some development time on things that didn't make it into the final project
+- Communication and agreement on technologies used early in development goes a long way
+
+<!-- Since Dylan didn't know Vue and he worked on the front-end, he learned how to use that framework. Michael and Chase got more experience with web-sockets, Vue, Node, and MongoDB since they worked on the backend. We also learned that it can be hard to manage the project with only 2 branches (frontend and backend). Instead, a branch per group member keeps toes from being stepped on until merges, but merges are where toes get stepped on anyway. We also learned that communication is imperative as we lost hours of work when Dylan designed an Angular frontend but, because of bad communication on everyone's part, we ended up having to ditch the Angular frontend since Chase and Michael needed a frontend to test with and Dylan had not finished yet, so they made a Vue frontend instead. -->
 
 # Future Work
-What we need to finish before the due date is a login page and the functionality behind it, a create account functionality, the game lobby page, the game page, the leaderboards page, and the about page. We need buttons so navigation on the page is easy, as well as a button to log out when you're done with the game. 
+- Implement rematch functionality
+- Improve the experience of adding/playing a friend
+- Find more consistent api for a question bank or create our own
+- Improve match history statistics (break down by category, compare with friends, etc)
+- Refactor / reorganize sections of codebase
+- Keep checking for small or large bugs
+
+# References
+- https://vuejs.org/v2/guide/
+- https://nodejs.org/en/
+- https://expressjs.com/
+- https://mongoosejs.com/
+- https://socket.io/
+- https://vuematerial.io/
+- https://www.mongodb.com/
+- https://opentdb.com/
+- https://www.npmjs.com/package/bcrypt
+- https://jwt.io/
+- https://developer.mozilla.org/en-US/
 
 # Screenshots
 ![About Page](../screenshots/dashboard-pages/about-page.png "About Page")
