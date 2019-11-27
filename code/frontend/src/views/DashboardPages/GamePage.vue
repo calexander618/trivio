@@ -306,6 +306,10 @@ export default {
   }
 }
 
+.pregame-timer {
+  font-size: 2rem;
+}
+
 .slide-enter-active,
 .slide-leave-active {
   transition: transform 0.2s ease, opacity 0.2s ease;
