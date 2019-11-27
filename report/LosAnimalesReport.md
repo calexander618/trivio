@@ -84,3 +84,29 @@ Since Dylan didn't know Vue and he worked on the front-end, he learned how to us
 
 # Future Work
 What we need to finish before the due date is a login page and the functionality behind it, a create account functionality, the game lobby page, the game page, the leaderboards page, and the about page. We need buttons so navigation on the page is easy, as well as a button to log out when you're done with the game. 
+
+# Screenshots
+![About Page](../screenshots/dashboard-pages/about-page.png "About Page")
+The about page; where you can find information about the project and the team-members.
+![Leaderboards Page](../screenshots/dashboard-pages/leaderboards-page.png "Leaderboards Page")
+The leaderboards where you can see the top scores.
+![Lobby Page](../screenshots/dashboard-pages/lobby-page.png "Lobby Page")
+The game lobby page where you can choose how to enter a new or existing game.
+![Game Result](../screenshots/gampages/gameresult.png "Game Result")
+The end of the game page; displays after a game of Triv.io is finished.
+![Mid-Game](../screenshots/gampages/midgame.png "Mid-Game")
+The in-game page; displays while inside the game; where you answer questions and receive scores.
+![Pre-Game](../screenshots/gampages/pregame.png "Pre-Game")
+The pre-game page; displays after starting a game, but before answering questions.
+![Create Account](../screenshots/login:create/create-account.png "Create Account")
+The create-account page; shared with login page.
+![Login Page](../screenshots/login:create/login.png "Login Page")
+The login page; shared with create account page.
+![Add Friend](../screenshots/sidebars/add-friend.png "Add Friend")
+The add friend dialog; dialog box that appears so you can add to your friends list.
+![Create Game](../screenshots/sidebars/create-game.png "Create Game")
+The create game dialog; dialog that manages settings for a new game.
+![Friends](../screenshots/sidebars/friends.png "Friends")
+The friends dialog; manages your friends list.
+![Profile](../screenshots/sidebars/profile.png "Profile")
+The profile dialog; user profile where stats can be shown.
