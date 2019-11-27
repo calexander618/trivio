@@ -154,10 +154,13 @@ __Content__
 - User content is stored on the Mongo DB
 - Question content is received on the fly from [this](https://opentdb.com/api_config.php) api
 - Initial User Data is the following
-  - Username: michael, Password: testing
-  - Username: zion chilliamson, Password: testing
-  - Username: chase, Password: testing
-  - Username: Dylan, Password: testing
+
+|     Username    | Password |
+|:---------------:|----------|
+| michael         | testing  |
+| zionChilliamson | testing  |
+| chase           | testing  |
+| dylan           | testing  | 
 
 __Error Handling__
 - If you log-in with an incorrect password or username, a message will be displayed informing you as such. 
