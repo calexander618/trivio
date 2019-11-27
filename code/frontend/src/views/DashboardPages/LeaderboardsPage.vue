@@ -44,7 +44,7 @@ export default {
   }
 }
 .leaderboards-page {
-  z-index: -2 !important;
+  z-index: 0 !important;
 }
 md-card {
     background-color: #343434be;
@@ -55,6 +55,6 @@ md-card {
   width: 100% !important;
   max-width: 800px !important;
   position: relative !important;
-  z-index: 1 !important;
+  z-index: 0 !important;
 }
 </style>
