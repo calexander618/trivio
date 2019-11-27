@@ -78,7 +78,7 @@ export default {
       currentTime: 0,
       timer: undefined,
       started: false,
-      ended: false, 
+      ended: false,
       questions: [],
       currentQuestion: 1,
       currentAnswers: {
@@ -306,12 +306,6 @@ export default {
   }
 }
 
-.pregame-timer {
-  font-size: 2rem;
-  line-height: 2rem;
-  text-align: center;
-}
-
 .slide-enter-active,
 .slide-leave-active {
   transition: transform 0.2s ease, opacity 0.2s ease;
@@ -445,6 +439,8 @@ export default {
   color: white;
   font-family: "Roboto";
   font-weight: 900;
+  line-height: 2rem;
+  text-align: center;
 }
 #question-fraction {
   position: absolute;
