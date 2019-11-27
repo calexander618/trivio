@@ -84,7 +84,6 @@ io.on('connection', function (socket) {
                         });
                         break;
                 }
-                gameQueue.push(req.gameId);
                 socket.emit('gameCreated', {
                     gameId: req.gameId
                 });
@@ -210,6 +209,7 @@ io.on('connection', function (socket) {
         // remove game from gamesessions
         gameSessions.delete(req.gameId);
         gameQueue = gameQueue.filter(g => g !== req.gameId);
+        privateGames = privateGames.filter(p => p.gameId !== req.gameId);
         console.log(gameSessions.get(req.gameId));
         console.log(gameQueue);
     });
@@ -270,6 +270,7 @@ io.on('connection', function (socket) {
         // remove game from gamesessions
         gameSessions.delete(socket.gameId);
         gameQueue = gameQueue.filter(g => g !== socket.gameId);
+        privateGames = privateGames.filter(p => p.gameId !== socket.gameId);
         console.log(gameSessions.get(socket.gameId));
         console.log(gameQueue);
     });
