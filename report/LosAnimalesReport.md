@@ -92,11 +92,11 @@ The about page; where you can find information about the project and the team-me
 The leaderboards where you can see the top scores.
 ![Lobby Page](../screenshots/dashboard-pages/lobby-page.png "Lobby Page")
 The game lobby page where you can choose how to enter a new or existing game.
-![Game Result](../screenshots/gamepages/gameresult.png "Game Result")
+![Game Result](../screenshots/gampages/gameresult.png "Game Result")
 The end of the game page; displays after a game of Triv.io is finished.
-![Mid-Game](../screenshots/gamepages/midgame.png "Mid-Game")
+![Mid-Game](../screenshots/gampages/midgame.png "Mid-Game")
 The in-game page; displays while inside the game; where you answer questions and receive scores.
-![Pre-Game](../screenshots/gamepages/pregame.png "Pre-Game")
+![Pre-Game](../screenshots/gampages/pregame.png "Pre-Game")
 The pre-game page; displays after starting a game, but before answering questions.
 ![Create Account](../screenshots/login:create/create-account.png "Create Account")
 The create-account page; shared with login page.
