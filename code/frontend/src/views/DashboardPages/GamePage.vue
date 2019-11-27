@@ -308,6 +308,8 @@ export default {
 
 .pregame-timer {
   font-size: 2rem;
+  line-height: 2rem;
+  text-align: center;
 }
 
 .slide-enter-active,

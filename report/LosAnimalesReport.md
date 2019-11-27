@@ -6,14 +6,12 @@ __Where to find__
 - Due to authentication, two browsers or devices signed into two different accounts are required to properly test this app
 - We recommend Chrome and Firefox
 
-__Users__
+__Some users to login with__
 
 |     Username    | Password |
 |:---------------:|----------|
-| michael         | testing  |
-| zionChilliamson | testing  |
-| chase           | testing  |
-| dylan           | testing  | 
+| michaelWoodruff | testing  |
+| Chase           | testing  |
 
 # Los Animales (Group Intro)
 
@@ -157,10 +155,8 @@ __Content__
 
 |     Username    | Password |
 |:---------------:|----------|
-| michael         | testing  |
-| zionChilliamson | testing  |
-| chase           | testing  |
-| dylan           | testing  | 
+| michaelWoodruff | testing  |
+| Chase           | testing  |
 
 __Error Handling__
 - If you log-in with an incorrect password or username, a message will be displayed informing you as such. 
