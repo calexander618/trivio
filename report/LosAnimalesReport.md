@@ -226,6 +226,8 @@ __Communication__
 - https://developer.mozilla.org/en-US/
 
 # Screenshots
+![Deployment](../screenshots/deployment.png)
+Deployed over HTTPS
 ![About Page](../screenshots/dashboard-pages/about-page.png "About Page")
 The about page; where you can find information about the project and the team-members.
 ![Leaderboards Page](../screenshots/dashboard-pages/leaderboards-page.png "Leaderboards Page")
